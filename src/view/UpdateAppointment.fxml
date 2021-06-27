@@ -89,6 +89,6 @@
             </font>
         </Label>
         <TextField fx:id="text_UserId" disable="true" layoutX="237.0" layoutY="454.0" prefHeight="25.0" prefWidth="54.0" AnchorPane.bottomAnchor="78.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="183.0" />
-        <Button fx:id="button_AddApp" layoutX="167.0" layoutY="503.0" mnemonicParsing="false" text="Update Appointment" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="168.0" />
+        <Button fx:id="button_UpdateApp" layoutX="167.0" layoutY="503.0" mnemonicParsing="false" text="Update Appointment" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="168.0" />
     </children>
 </AnchorPane>
