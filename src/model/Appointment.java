@@ -16,6 +16,7 @@ public class Appointment {
     private String appStart;
     private String appEnd;
     private String appContact;
+    private String appCustomer;
 
     public Appointment(int id, String title, String description, String location, String type, String start, String end, String contact){
         appId = id;
@@ -62,6 +63,8 @@ public class Appointment {
         return appContact;
     }
 
+    public String getAppCustomer(){return appCustomer;}
+
     public void setAppId(int appId) {
         this.appId = appId;
     }
@@ -93,6 +96,8 @@ public class Appointment {
     public void setAppContact(String appContact) {
         this.appContact = appContact;
     }
+
+    public void setAppCustomer(String appCustomer) { this.appCustomer = appCustomer;}
 
     public String getAppStartTime(){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");

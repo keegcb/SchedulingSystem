@@ -5,14 +5,16 @@ public class Customer {
     private int custId;
     private String custName;
     private String custAddress;
-    private String custZip;
+    private String custPostal;
     private String custPhone;
+    private String custState;
+    private String custCountry;
 
     public Customer(int id, String name, String address, String zip, String phone) {
         custId = id;
         custName = name;
         custAddress = address;
-        custZip = zip;
+        custPostal = zip;
         custPhone = phone;
     }
 
@@ -30,31 +32,43 @@ public class Customer {
         return custAddress;
     }
 
-    public String getCustZip(){
-        return custZip;
+    public String getCustPostal(){
+        return custPostal;
     }
 
     public String getCustPhone(){
         return custPhone;
     }
 
+    public String getCustState(){ return custState; }
+
+    public String getCustCountry(){return custCountry;}
+
     public void setCustId(int id){
-        custId = id;
+        this.custId = id;
     }
 
     public void setCustName(String name){
-        custName = name;
+        this.custName = name;
     }
 
     public void setCustAddress(String address){
-        custAddress = address;
+        this.custAddress = address;
     }
 
-    public void setCustZip(String zip){
-        custZip = zip;
+    public void setCustPostal(String zip){
+        this.custPostal = zip;
     }
 
     public void setCustPhone(String phone){
-        custPhone = phone;
+        this.custPhone = phone;
+    }
+
+    public void setCustState(String custState) {
+        this.custState = custState;
+    }
+
+    public void setCustCountry(String custCountry) {
+        this.custCountry = custCountry;
     }
 }

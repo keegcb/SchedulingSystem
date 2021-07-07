@@ -4,35 +4,35 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="511.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainScreenController">
+<AnchorPane fx:id="anchor_MainScreen" prefHeight="511.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainScreenController">
    <children>
       <TabPane prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <tabs>
-          <Tab text="Appointments">
+          <Tab fx:id="tab_Appointment" text="Appointments">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView id="table_Appointments" layoutX="49.0" layoutY="56.0" prefHeight="344.0" prefWidth="705.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="68.0">
+                        <TableView id="table_Appointments" fx:id="table_Appointment" layoutX="49.0" layoutY="56.0" prefHeight="344.0" prefWidth="705.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="68.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="75.0" text="Title" />
-                            <TableColumn prefWidth="75.0" text="Description" />
-                            <TableColumn prefWidth="75.0" text="Location" />
-                            <TableColumn prefWidth="75.0" text="Contact" />
-                            <TableColumn prefWidth="75.0" text="Type" />
-                            <TableColumn prefWidth="75.0" text="Start" />
-                            <TableColumn prefWidth="75.0" text="End" />
-                            <TableColumn prefWidth="75.0" text="Customer" />
+                            <TableColumn fx:id="col_AppId" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="col_AppTitle" prefWidth="75.0" text="Title" />
+                            <TableColumn fx:id="col_AppDesc" prefWidth="75.0" text="Description" />
+                            <TableColumn fx:id="col_AppLocation" prefWidth="75.0" text="Location" />
+                            <TableColumn fx:id="col_AppContact" prefWidth="75.0" text="Contact" />
+                            <TableColumn fx:id="col_AppType" prefWidth="75.0" text="Type" />
+                            <TableColumn fx:id="col_AppStart" prefWidth="75.0" text="Start" />
+                            <TableColumn fx:id="col_AppEnd" prefWidth="75.0" text="End" />
+                            <TableColumn fx:id="col_AppCust" prefWidth="75.0" text="Customer" />
                           </columns>
                            <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <RadioButton layoutX="450.0" layoutY="28.0" mnemonicParsing="false" text="Month">
+                        <RadioButton fx:id="radio_Month" layoutX="450.0" layoutY="28.0" mnemonicParsing="false" text="Month">
                            <font>
                               <Font size="13.0" />
                            </font></RadioButton>
-                        <RadioButton layoutX="348.0" layoutY="28.0" mnemonicParsing="false" text="Week">
+                        <RadioButton fx:id="radio_Week" layoutX="348.0" layoutY="28.0" mnemonicParsing="false" text="Week">
                            <font>
                               <Font size="13.0" />
                            </font>
@@ -42,17 +42,17 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Button layoutX="76.0" layoutY="428.0" mnemonicParsing="false" text="Add Appointment" AnchorPane.bottomAnchor="24.0">
+                        <Button fx:id="button_AddApp" layoutX="76.0" layoutY="428.0" mnemonicParsing="false" text="Add Appointment" AnchorPane.bottomAnchor="24.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button layoutX="330.0" layoutY="428.0" mnemonicParsing="false" text="Update Appointment" AnchorPane.bottomAnchor="24.0">
+                        <Button fx:id="button_UpdateApp" layoutX="330.0" layoutY="428.0" mnemonicParsing="false" text="Update Appointment" AnchorPane.bottomAnchor="24.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button layoutX="599.0" layoutY="428.0" mnemonicParsing="false" text="Delete Appointment" AnchorPane.bottomAnchor="24.0">
+                        <Button fx:id="button_DeleteApp" layoutX="599.0" layoutY="428.0" mnemonicParsing="false" text="Delete Appointment" AnchorPane.bottomAnchor="24.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -61,35 +61,35 @@
               </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Customers">
+          <Tab fx:id="tab_Customer" text="Customers">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView id="table_Customers" layoutX="105.0" layoutY="75.0" prefHeight="332.0" prefWidth="640.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="68.0">
+                        <TableView id="table_Customers" fx:id="table_Customer" layoutX="105.0" layoutY="75.0" prefHeight="332.0" prefWidth="640.0" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="68.0">
                           <columns>
-                            <TableColumn prefWidth="75.0" text="ID" />
-                            <TableColumn prefWidth="75.0" text="Name" />
-                            <TableColumn prefWidth="75.0" text="Phone" />
-                            <TableColumn prefWidth="75.0" text="Address" />
-                            <TableColumn prefWidth="75.0" text="Postal Code" />
-                            <TableColumn prefWidth="75.0" text="State/Province" />
-                            <TableColumn prefWidth="75.0" text="Country" />
+                            <TableColumn fx:id="col_CustId" prefWidth="75.0" text="ID" />
+                            <TableColumn fx:id="col_CustName" prefWidth="75.0" text="Name" />
+                            <TableColumn fx:id="col_CustPhone" prefWidth="75.0" text="Phone" />
+                            <TableColumn fx:id="col_CustAddress" prefWidth="75.0" text="Address" />
+                            <TableColumn fx:id="col_CustPostal" prefWidth="75.0" text="Postal Code" />
+                            <TableColumn fx:id="col_CustState" prefWidth="75.0" text="State/Province" />
+                            <TableColumn fx:id="col_CustCountry" prefWidth="75.0" text="Country" />
                           </columns>
                           <columnResizePolicy>
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                           </columnResizePolicy>
                         </TableView>
-                        <Button layoutX="68.0" layoutY="427.0" mnemonicParsing="false" text="Add Customer">
+                        <Button fx:id="button_AddCust" layoutX="68.0" layoutY="427.0" mnemonicParsing="false" text="Add Customer">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button layoutX="341.0" layoutY="427.0" mnemonicParsing="false" text="Update Customer">
+                        <Button fx:id="button_UpdateCust" layoutX="341.0" layoutY="427.0" mnemonicParsing="false" text="Update Customer">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button layoutX="614.0" layoutY="427.0" mnemonicParsing="false" text="Delete Customer">
+                        <Button fx:id="button_DeleteCust" layoutX="614.0" layoutY="427.0" mnemonicParsing="false" text="Delete Customer">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -97,7 +97,7 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-          <Tab text="Reports">
+          <Tab fx:id="tab_Reports" text="Reports">
             <content>
                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
             </content>
