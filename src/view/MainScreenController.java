@@ -110,10 +110,10 @@ public class MainScreenController {
 
     public void toggleWeekMonth(){
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Week)){
-
+            AppointmentData.getAppsByWeek();
         }
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Month)){
-
+            AppointmentData.getAppsByMonth();
         }
     }
 }
