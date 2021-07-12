@@ -79,17 +79,17 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                           </columnResizePolicy>
                         </TableView>
-                        <Button fx:id="button_AddCust" layoutX="68.0" layoutY="427.0" mnemonicParsing="false" text="Add Customer">
+                        <Button fx:id="button_AddCust" layoutX="68.0" layoutY="427.0" mnemonicParsing="false" text="Add Customer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="68.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_UpdateCust" layoutX="341.0" layoutY="427.0" mnemonicParsing="false" text="Update Customer">
+                        <Button fx:id="button_UpdateCust" layoutX="341.0" layoutY="427.0" mnemonicParsing="false" text="Update Customer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="341.0">
                            <font>
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_DeleteCust" layoutX="614.0" layoutY="427.0" mnemonicParsing="false" text="Delete Customer">
+                        <Button fx:id="button_DeleteCust" layoutX="614.0" layoutY="427.0" mnemonicParsing="false" text="Delete Customer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="614.0">
                            <font>
                               <Font size="14.0" />
                            </font>

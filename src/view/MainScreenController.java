@@ -108,6 +108,16 @@ public class MainScreenController {
         table_Customer.setItems(CustomerData.getAllCustomers());
     }
 
+    @FXML
+    private void handleAddAppointment(){
+
+    }
+
+    @FXML
+    private void handleAddCustomer(){
+
+    }
+
     public void toggleWeekMonth(){
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Week)){
             AppointmentData.getAppsByWeek();

@@ -4,17 +4,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="254.0" prefWidth="417.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="254.0" prefWidth="417.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" text="Login">
          <font>
             <Font size="18.0" />
          </font></Label>
-      <TextField layoutX="134.0" layoutY="70.0" promptText="Enter User Name" />
-      <PasswordField layoutX="134.0" layoutY="115.0" promptText="Enter Password" />
+      <TextField fx:id="text_Username" layoutX="134.0" layoutY="70.0" promptText="Enter User Name" />
+      <PasswordField fx:id="text_Password" layoutX="134.0" layoutY="115.0" promptText="Enter Password" />
       <Label layoutX="59.0" layoutY="74.0" text="Username:" />
       <Label layoutX="61.0" layoutY="119.0" text="Password:" />
-      <Button layoutX="322.0" layoutY="115.0" mnemonicParsing="false" text="Login" />
+      <Button fx:id="button_Login" layoutX="322.0" layoutY="115.0" mnemonicParsing="false" onAction="#handleLogin" text="Login" />
       <Label layoutX="13.0" layoutY="208.0" text="Location:" />
       <Label layoutX="87.0" layoutY="208.0" text="Label" />
    </children>

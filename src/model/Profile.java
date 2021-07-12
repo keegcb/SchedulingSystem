@@ -2,11 +2,11 @@ package model;
 
 public class Profile {
 
-    private String username;
+    private static String username;
 
     public Profile(){}
 
-    public String getUsername(){
+    public static String getUsername(){
         return username;
     }
 

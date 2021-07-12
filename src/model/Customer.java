@@ -9,6 +9,8 @@ public class Customer {
     private String custPhone;
     private String custState;
     private String custCountry;
+    private int stateId;
+    private int countryId;
 
     public Customer(int id, String name, String address, String zip, String phone) {
         custId = id;
@@ -44,6 +46,10 @@ public class Customer {
 
     public String getCustCountry(){return custCountry;}
 
+    public int getStateId(){return stateId;}
+
+    public int getCountryId(){return countryId;}
+
     public void setCustId(int id){
         this.custId = id;
     }
@@ -71,4 +77,8 @@ public class Customer {
     public void setCustCountry(String custCountry) {
         this.custCountry = custCountry;
     }
+
+    public void setStateId(int stateId){this.stateId = stateId;}
+
+    public void setCountryId(int countryId){this.countryId = countryId;}
 }
