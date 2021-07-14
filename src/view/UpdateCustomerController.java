@@ -24,9 +24,9 @@ public class UpdateCustomerController {
     @FXML
     private Button button_UpdateCust;
 
-    /*
+
     @FXML
-    private void handleUpdate(){
+    private void handleUpdateCustomer(){
         if(validCustomer()){
             int id = Integer.parseInt(text_CustId.getText());
             String name = text_CustName.getText();
@@ -47,5 +47,70 @@ public class UpdateCustomerController {
         }
     }
 
-     */
+    public boolean validCustomer(){
+        boolean valid = true;
+        String errorMessage = "";
+
+        if(text_CustName.getText().isEmpty()){
+            errorMessage += "* Name field is not populated\n";
+            valid = false;
+        }
+        if(text_Phone.getText().isEmpty()){
+            errorMessage += "* Phone number is not populated\n";
+            valid = false;
+        }
+        else {
+            try{
+                String phone = text_Phone.getText();
+                int num = Integer.parseInt(phone);
+                //verify if there is certain number format required
+                if (num != -1 && phone.length() != 10){
+                    errorMessage += "* Phone number must be 10 numbers in length\n";
+                    valid = false;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Phone Number contains non-integer characters.");
+                e.getMessage();
+                errorMessage += "* Phone number contains non-number characters\n";
+                valid = false;
+            }
+        }
+        if(text_Address.getText().isEmpty()){
+            errorMessage += "* Address field is not populated\n";
+            valid = false;
+        }
+        if (text_Postal.getText().isEmpty()){
+            errorMessage += "* Postal code is not populated\n";
+            valid = false;
+        }
+        else {
+            try {
+                String post = text_Postal.getText();
+                int num = Integer.parseInt(post);
+            } catch (NumberFormatException e){
+                System.out.println("Postal Code contains non-integer characters");
+                e.getMessage();
+                errorMessage += "* Postal Code contains non-number characters\n";
+                valid = false;
+            }
+        }
+        if(combo_State.getSelectionModel().isEmpty()){
+            errorMessage += "* State has not been selected\n";
+            valid = false;
+        }
+        if(combo_Country.getSelectionModel().isEmpty()){
+            errorMessage += "* Country has not been selected\n";
+            valid = false;
+        }
+
+        if (!valid) {
+            Alert fieldError = new Alert(Alert.AlertType.ERROR);
+            fieldError.setTitle("Error");
+            fieldError.setHeaderText("Errors occurred when attempting to create the Customer.\n" +
+                    "Please address the following issues and try again:");
+            fieldError.setContentText(errorMessage);
+            fieldError.showAndWait();
+        }
+        return valid;
+    }
 }
