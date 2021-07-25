@@ -1,6 +1,7 @@
 package db;
 
 import java.sql.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -48,8 +49,8 @@ public class Database {
         }
     }
 
-    public static Timestamp getTimestamp(){
-        Timestamp ts =
+    public static Timestamp createTimestamp(){
+        return Timestamp.valueOf(LocalDateTime.now());
     }
 
 }

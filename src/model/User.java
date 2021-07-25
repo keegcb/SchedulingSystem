@@ -3,6 +3,7 @@ package model;
 public class User {
 
     private static String username;
+    private  static int userId;
 
     public User(){}
 
@@ -10,7 +11,12 @@ public class User {
         return username;
     }
 
+    public static int getUserId(){return userId;}
+
     public void setUsername(String username) {
-        this.username = username;
+        User.username = username;
     }
+
+    public void setUserId(int id){
+        userId = id; }
 }

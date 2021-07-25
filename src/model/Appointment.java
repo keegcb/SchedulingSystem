@@ -1,5 +1,6 @@
 package model;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -13,12 +14,12 @@ public class Appointment {
     private String appDescription;
     private String appLocation;
     private String appType;
-    private String appStart;
-    private String appEnd;
+    private Timestamp appStart;
+    private Timestamp appEnd;
     private String appContact;
     private String appCustomer;
 
-    public Appointment(int id, String title, String description, String location, String type, String start, String end, String contact){
+    public Appointment(int id, String title, String description, String location, String type, Timestamp start, Timestamp end, String contact){
         appId = id;
         appTitle = title;
         appDescription = description;
@@ -51,11 +52,11 @@ public class Appointment {
         return appType;
     }
 
-    public String getAppStart(){
+    public Timestamp getAppStart(){
         return appStart;
     }
 
-    public String getAppEnd(){
+    public Timestamp getAppEnd(){
         return appEnd;
     }
 
@@ -85,11 +86,11 @@ public class Appointment {
         this.appType = appType;
     }
 
-    public void setAppStart(String appStart) {
+    public void setAppStart(Timestamp appStart) {
         this.appStart = appStart;
     }
 
-    public void setAppEnd(String appEnd) {
+    public void setAppEnd(Timestamp appEnd) {
         this.appEnd = appEnd;
     }
 
@@ -99,22 +100,5 @@ public class Appointment {
 
     public void setAppCustomer(String appCustomer) { this.appCustomer = appCustomer;}
 
-    public String getAppStartTime(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime local = LocalDateTime.parse(appStart, formatter);
-        ZonedDateTime zone = local.atZone(ZoneId.of("UTC"));
-        ZoneId idZone = ZoneId.systemDefault();
-        ZonedDateTime formatTime = zone.withZoneSameInstant(idZone);
-        return formatTime.toLocalDateTime().toString();
-    }
-
-    public String getAppEndTime(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        LocalDateTime local = LocalDateTime.parse(appEnd, formatter);
-        ZonedDateTime zone = local.atZone(ZoneId.of("UTC"));
-        ZoneId idZone = ZoneId.systemDefault();
-        ZonedDateTime formatTime = zone.withZoneSameInstant(idZone);
-        return formatTime.toLocalDateTime().toString();
-    }
 
 }

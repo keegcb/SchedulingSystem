@@ -1,13 +1,15 @@
 package view;
 
+import db.AppointmentData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import model.Appointment;
 
-import java.time.LocalDate;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public class AddAppointmentController {
 
@@ -26,13 +28,9 @@ public class AddAppointmentController {
     @FXML
     private ComboBox<String> combo_Type;
     @FXML
-    private ComboBox combo_SHour;
+    private ComboBox<LocalTime> combo_STime;
     @FXML
-    private ComboBox combo_SMin;
-    @FXML
-    private ComboBox combo_EHour;
-    @FXML
-    private ComboBox combo_EMin;
+    private ComboBox<LocalTime> combo_ETime;
     @FXML
     private ComboBox<String> combo_Contact;
     @FXML
@@ -44,22 +42,22 @@ public class AddAppointmentController {
     @FXML
     private Button button_AddApp;
 
-    ObservableList<String> hour = FXCollections.observableArrayList();
-    ObservableList<String> min = FXCollections.observableArrayList();
+    private static final ObservableList<LocalTime> timeList = FXCollections.observableArrayList();
 
 
     @FXML
-    public void initizlize(){
-        hour.addAll("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-                "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
-        min.addAll("00", "15", "30", "45");
-        combo_SHour.setItems(hour);
-        combo_SMin.setItems(min);
-        combo_EHour.setItems(hour);
-        combo_EMin.setItems(min);
-
+    public void initialize(){
+        LocalTime start = LocalTime.of(0, 0);
+        LocalTime end = LocalTime.of(23, 59);
+        while(start.isBefore(end.plusSeconds(1))){
+            timeList.add(start);
+            start = start.plusMinutes(5);
+        }
+        combo_STime.setItems(timeList);
+        combo_ETime.setItems(timeList);
     }
 
+    @FXML
     private void handleSaveAppointment(){
         if(validAppointment()){
             String id = text_AppId.getText();
@@ -67,18 +65,23 @@ public class AddAppointmentController {
             String description = text_Description.getText();
             String location = text_Location.getText();
             String type = combo_Type.getValue();
-            LocalDateTime lsd = combineDateTime(date_Start.getValue(), combo_SHour.getValue(), combo_SMin.getValue());
-            LocalDateTime led = combineDateTime(date_End.getValue(), combo_EHour.getValue(), combo_EMin.getValue());
+            Timestamp tLSD = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
+            Timestamp tLED = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
             String contact = combo_Contact.getValue();
             String customer = combo_Customer.getValue();
 
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, lsd.toString(), led.toString(), contact);
+
+            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, contact);
             appointment.setAppCustomer(customer);
+
+            AppointmentData.addAppointment(appointment);
         }
     }
 
     public boolean validAppointment(){
         boolean valid = true;
+        boolean dates = true;
+        boolean times = true;
         String errorMessage = "";
 
         if(text_Title.getText().isEmpty()){
@@ -95,11 +98,35 @@ public class AddAppointmentController {
         }
         if(date_Start.getValue() == null){
             errorMessage += "* Starting date was not selected\n";
+            dates = false;
             valid = false;
         }
         if(date_End.getValue() == null){
             errorMessage += "* End date was not selected\n";
+            dates = false;
             valid = false;
+        }
+        if(combo_STime.getValue() == null){
+            errorMessage += "* Start time must be selected\n";
+            times = false;
+            valid = false;
+        }
+        if(combo_ETime.getValue() == null){
+            errorMessage += "* End time must be selected\n";
+            times = false;
+            valid = false;
+        }
+        if(dates){
+            if(date_Start.getValue().isAfter(date_End.getValue())){
+                errorMessage += "* Selected start date cannot be after the selected end date\n";
+                valid = false;
+            }
+            if(times){
+                if((date_Start.getValue().equals(date_End.getValue()) && (combo_STime.getValue().isAfter(combo_ETime.getValue())))){
+                    errorMessage += "* Selected start time cannot be after the selected end time\n";
+                    valid = false;
+                }
+            }
         }
         if(combo_Type.getSelectionModel().getSelectedIndex() == -1){
             errorMessage += "* Type of appointment was not selected\n";
@@ -122,17 +149,6 @@ public class AddAppointmentController {
             fieldError.showAndWait();
         }
         return valid;
-    }
-
-    private LocalDateTime combineDateTime(LocalDate date, Object hour, Object min){
-        LocalDate nDate = date;
-        String nHour = (String) hour;
-        String nMin = (String) min;
-
-        LocalDateTime ldt = LocalDateTime.of(nDate.getYear(), nDate.getMonthValue(), nDate.getDayOfMonth(),
-                Integer.parseInt(nHour), Integer.parseInt(nMin));
-
-        return ldt;
     }
 
 }

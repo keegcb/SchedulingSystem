@@ -65,7 +65,7 @@ public class CustomerData {
         return null;
     }
 
-    public int getCustomerByName(String name) {
+    public static int getCustomerByName(String name) {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Customer_ID FROM customers WHERE Customer_Name = '" + name +"'");

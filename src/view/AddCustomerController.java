@@ -17,9 +17,9 @@ public class AddCustomerController {
     @FXML
     private TextField text_Address;
     @FXML
-    private ComboBox combo_Country;
+    private ComboBox<String> combo_Country;
     @FXML
-    private ComboBox combo_State;
+    private ComboBox<String> combo_State;
     @FXML
     private TextField text_Postal;
     @FXML
@@ -54,8 +54,8 @@ public class AddCustomerController {
             String phone = text_Phone.getText();
             String address = text_Address.getText();
             String postal = text_Postal.getText();
-            String state = (String) combo_State.getSelectionModel().getSelectedItem();
-            String country = (String) combo_Country.getSelectionModel().getSelectedItem();
+            String state = combo_State.getSelectionModel().getSelectedItem();
+            String country = combo_Country.getSelectionModel().getSelectedItem();
             int stateId = CustomerData.getCustStateId(state);
             int countryId = CustomerData.getCustCountryId(stateId);
             Customer customer = new Customer(id, name, address, postal, phone);
@@ -71,16 +71,20 @@ public class AddCustomerController {
 
     @FXML
     private void handleCountrySelection(){
-        String cSelect = (String) combo_Country.getSelectionModel().getSelectedItem();
+        String cSelect = combo_Country.getSelectionModel().getSelectedItem();
         state = CustomerData.getDivisionByCountry(cSelect);
         combo_State.setItems(state);
     }
 
     @FXML
     private void handleDivisionSelection(){
-        String dSelect = (String) combo_State.getSelectionModel().getSelectedItem();
+        String dSelect = combo_State.getSelectionModel().getSelectedItem();
         String cName = CustomerData.getCountryByDivision(dSelect);
-        combo_Country.setValue(cName);
+        for(String n : combo_Country.getItems()){
+            if(n.equals(cName)){
+                combo_Country.setValue(cName);
+            }
+        }
     }
 
     public boolean validCustomer(){

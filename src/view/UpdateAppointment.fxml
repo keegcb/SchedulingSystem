@@ -88,11 +88,7 @@
         </Label>
         <TextField fx:id="text_UserId" disable="true" layoutX="237.0" layoutY="454.0" prefHeight="25.0" prefWidth="54.0" AnchorPane.bottomAnchor="78.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="183.0" />
         <Button fx:id="button_UpdateApp" layoutX="167.0" layoutY="503.0" mnemonicParsing="false" text="Update Appointment" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="168.0" />
-        <ComboBox fx:id="combo_SHour" layoutX="326.0" layoutY="288.0" prefHeight="25.0" prefWidth="75.0" promptText="hr" AnchorPane.bottomAnchor="244.0" AnchorPane.rightAnchor="135.0" />
-        <ComboBox fx:id="combo_SMin" layoutX="418.0" layoutY="288.0" prefHeight="25.0" prefWidth="75.0" promptText="min" AnchorPane.bottomAnchor="244.0" AnchorPane.rightAnchor="30.0" />
-        <Label layoutX="402.0" layoutY="292.0" text=":" AnchorPane.bottomAnchor="248.0" AnchorPane.rightAnchor="120.0" />
-        <ComboBox fx:id="combo_EHour" layoutX="326.0" layoutY="330.0" prefHeight="25.0" prefWidth="75.0" promptText="hr" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="135.0" />
-        <ComboBox fx:id="combo_EMin" layoutX="431.0" layoutY="330.0" prefHeight="25.0" prefWidth="75.0" promptText="min" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="30.0" />
-        <Label layoutX="413.0" layoutY="334.0" text=":" />
+        <ComboBox fx:id="combo_STime" layoutX="326.0" layoutY="288.0" prefHeight="25.0" prefWidth="116.0" promptText="HH : mm" AnchorPane.bottomAnchor="244.0" AnchorPane.rightAnchor="94.0" />
+        <ComboBox fx:id="combo_ETime" layoutX="326.0" layoutY="330.0" prefHeight="25.0" prefWidth="116.0" promptText="HH : mm" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="94.0" />
     </children>
 </AnchorPane>
