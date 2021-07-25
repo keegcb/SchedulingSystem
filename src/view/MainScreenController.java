@@ -78,6 +78,11 @@ public class MainScreenController {
     @FXML
     private Tab tab_Reports;
 
+    private static boolean validSelect;
+
+    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
+    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+
     @FXML
     public void initialize(){
         toggleGroup_WeekMonth = new ToggleGroup();
@@ -108,16 +113,6 @@ public class MainScreenController {
         table_Customer.setItems(CustomerData.getAllCustomers());
     }
 
-    @FXML
-    private void handleAddAppointment(){
-
-    }
-
-    @FXML
-    private void handleAddCustomer(){
-
-    }
-
     public void toggleWeekMonth(){
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Week)){
             table_Appointment.setItems(AppointmentData.getAppsByWeek());
@@ -126,4 +121,93 @@ public class MainScreenController {
             table_Appointment.setItems(AppointmentData.getAppsByMonth());
         }
     }
+
+    @FXML
+    void handleAddCustomer(){
+        SchedulingSystem.ScheduleSystem.openAddCustomer();
+    }
+
+    @FXML
+    void handleUpdateCustomer(){
+        if(isValidSelection(1)){
+            Customer updateCust = table_Customer.getSelectionModel().getSelectedItem();
+            if(updateCust != null){
+                SchedulingSystem.ScheduleSystem.openUpdateCustomer(updateCust);
+            }
+        }
+    }
+
+    @FXML
+    void handleAddAppointment(){
+        SchedulingSystem.ScheduleSystem.openAddAppointment();
+    }
+
+    @FXML
+    void handleUpdateAppointment(){
+        if(isValidSelection(1)){
+            Appointment updateApp = table_Appointment.getSelectionModel().getSelectedItem();
+            if(updateApp != null){
+                SchedulingSystem.ScheduleSystem.openUpdateAppointment(updateApp);
+            }
+        }
+    }
+
+    private boolean isValidSelection(int option){
+        switch (option){
+            case 1 -> {
+                Customer updateAttempt = table_Customer.getSelectionModel().getSelectedItem();
+                if(updateAttempt != null){
+                    validSelect = true;
+                } else {
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle("Warning");
+                    notValid.setHeaderText("Customer Not Selected.");
+                    notValid.setContentText("Please select from the list, the customer intended to be updated.");
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
+            case 2 -> {
+                Customer deleteAttempt = table_Customer.getSelectionModel().getSelectedItem();
+                if(deleteAttempt != null){
+                    validSelect = true;
+                } else {
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle("Warning");
+                    notValid.setHeaderText("Customer Not Selected.");
+                    notValid.setContentText("Please select from the list, the customer intended for removal.");
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
+            case 3 -> {
+                Appointment updateAttempt = table_Appointment.getSelectionModel().getSelectedItem();
+                if(updateAttempt != null){
+                    validSelect = true;
+                } else {
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle("Warning");
+                    notValid.setHeaderText("Appointment Not Selected.");
+                    notValid.setContentText("Please select from the list, the appointment intended to be updated.");
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
+            case 4 -> {
+                Appointment deleteAttempt = table_Appointment.getSelectionModel().getSelectedItem();
+                if(deleteAttempt != null){
+                    validSelect = true;
+                } else {
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle("Warning");
+                    notValid.setHeaderText("Appointment Not Selected.");
+                    notValid.setContentText("Please select from the list, the appointment intended for removal.");
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
+        }
+        return validSelect;
+    }
+
 }

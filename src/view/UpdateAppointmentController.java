@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.Appointment;
 
 import java.sql.Timestamp;
@@ -40,6 +41,12 @@ public class UpdateAppointmentController {
     private TextField text_UserId;
     @FXML
     private Button button_UpdateApp;
+
+    private Stage appStage;
+
+    public void createUpdateAppointment(Stage appStage){
+        this.appStage = appStage;
+    }
 
     ObservableList<LocalTime> timeList = FXCollections.observableArrayList();
 

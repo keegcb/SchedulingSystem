@@ -34,7 +34,7 @@ public class AddCustomerController {
 
     private Stage custStage;
 
-    public void createAddCustomerStage(Stage custStage){
+    public void createAddCustomer(Stage custStage){
         this.custStage = custStage;
     }
 

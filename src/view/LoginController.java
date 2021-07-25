@@ -1,15 +1,15 @@
 package view;
 
 import db.UserData;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 
@@ -22,6 +22,11 @@ public class LoginController {
     @FXML
     private Button button_Login;
 
+    private Stage loginStage;
+
+    public void createLogin(Stage loginStage) {
+        this.loginStage = loginStage;
+    }
 
     @FXML
     private AnchorPane rootPane;
@@ -31,12 +36,7 @@ public class LoginController {
         String user = text_Username.getText();
         String pass = text_Password.getText();
         if(UserData.login(user, pass)){
-            Stage stage = new Stage();
-            Parent root = FXMLLoader.load(getClass().getResource("MainScreen.fxml"));
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-            //add login page close
+            loginStage.close();
         }
 
     }

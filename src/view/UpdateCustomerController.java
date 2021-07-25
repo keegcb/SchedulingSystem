@@ -3,6 +3,7 @@ package view;
 import db.CustomerData;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import model.Customer;
 
 public class UpdateCustomerController {
@@ -24,6 +25,11 @@ public class UpdateCustomerController {
     @FXML
     private Button button_UpdateCust;
 
+    private Stage custStage;
+
+    public void createUpdateCustomer(Stage custStage){
+        this.custStage = custStage;
+    }
 
     @FXML
     private void handleUpdateCustomer(){

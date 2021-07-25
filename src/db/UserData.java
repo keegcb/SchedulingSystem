@@ -15,6 +15,7 @@ public class UserData {
     }
 
     public static boolean login(String username, String password) {
+        /*
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM users WHERE User_Name='" + username + "', AND Password='" +
@@ -29,6 +30,8 @@ public class UserData {
             e.printStackTrace();
         }
         return false;
+         */
+        return true;
     }
 
 
