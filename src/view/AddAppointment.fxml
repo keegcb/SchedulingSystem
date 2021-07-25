@@ -4,30 +4,30 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="557.0" prefWidth="474.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddAppointmentController">
+<AnchorPane prefHeight="557.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AddAppointmentController">
    <children>
       <Label layoutX="30.0" layoutY="26.0" text="Add Appointment" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="30.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <TextField id="text_AppId" fx:id="text_AppId" disable="true" layoutX="392.0" layoutY="34.0" prefHeight="27.0" prefWidth="54.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="34.0" />
-      <Label layoutX="347.0" layoutY="35.0" text="Apt Id:" AnchorPane.leftAnchor="319.0" AnchorPane.rightAnchor="108.0" AnchorPane.topAnchor="35.0">
+      <TextField id="text_AppId" fx:id="text_AppId" disable="true" layoutX="392.0" layoutY="34.0" prefHeight="27.0" prefWidth="54.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="34.0" />
+      <Label layoutX="391.0" layoutY="35.0" prefHeight="25.0" prefWidth="54.0" text="Apt Id:" AnchorPane.leftAnchor="391.0" AnchorPane.rightAnchor="91.0" AnchorPane.topAnchor="35.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="34.0" layoutY="414.0" text="Customer:" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="366.0">
+      <Label layoutX="34.0" layoutY="414.0" prefHeight="25.0" prefWidth="75.0" text="Customer:" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="425.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="21.0" layoutY="288.0" text="Start Date:" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="366.0">
+      <Label layoutX="21.0" layoutY="288.0" prefHeight="25.0" prefWidth="75.0" text="Start Date:" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="33.0" AnchorPane.rightAnchor="428.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Label layoutX="261.0" layoutY="288.0" text="Time:" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="160.0">
+      <Label layoutX="261.0" layoutY="288.0" prefHeight="25.0" prefWidth="41.0" text="Time:" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="219.0">
          <font>
             <Font size="16.0" />
          </font>
@@ -38,57 +38,61 @@
          </font>
       </Label>
       <TextField fx:id="text_Title" layoutX="141.0" layoutY="85.0" prefHeight="25.0" prefWidth="191.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="85.0" />
-      <Label layoutX="54.0" layoutY="142.0" text="Description:" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="142.0">
+      <Label layoutX="54.0" layoutY="142.0" prefHeight="25.0" prefWidth="90.0" text="Description:" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="396.0" AnchorPane.topAnchor="142.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <TextArea fx:id="text_Description" layoutX="141.0" layoutY="125.0" prefHeight="58.0" prefWidth="278.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="55.0" AnchorPane.topAnchor="125.0" />
-      <Label layoutX="76.0" layoutY="197.0" text="Location:" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="197.0">
+      <Label layoutX="76.0" layoutY="197.0" prefHeight="25.0" prefWidth="68.0" text="Location:" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="398.0" AnchorPane.topAnchor="197.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <TextField fx:id="text_Location" layoutX="141.0" layoutY="197.0" prefHeight="25.0" prefWidth="191.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="197.0" />
-      <Label layoutX="98.0" layoutY="235.0" text="Type:" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="340.0" AnchorPane.topAnchor="235.0">
+      <Label layoutX="98.0" layoutY="235.0" prefHeight="25.0" prefWidth="41.0" text="Type:" AnchorPane.leftAnchor="96.0" AnchorPane.rightAnchor="399.0" AnchorPane.topAnchor="235.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <DatePicker fx:id="date_Start" layoutX="102.0" layoutY="288.0" prefHeight="25.0" prefWidth="135.0" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="220.0" />
-      <DatePicker fx:id="date_End" layoutX="115.0" layoutY="330.0" prefHeight="25.0" prefWidth="135.0" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="115.0" AnchorPane.rightAnchor="220.0" />
-      <Label layoutX="276.0" layoutY="330.0" text="Time:" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="160.0">
+      <DatePicker fx:id="date_Start" layoutX="102.0" layoutY="288.0" prefHeight="25.0" prefWidth="135.0" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="115.0" />
+      <DatePicker fx:id="date_End" layoutX="115.0" layoutY="330.0" prefHeight="25.0" prefWidth="135.0" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="115.0" />
+      <Label layoutX="276.0" layoutY="330.0" prefHeight="25.0" prefWidth="41.0" text="Time:" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="276.0" AnchorPane.rightAnchor="219.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <ComboBox fx:id="combo_Type" layoutX="141.0" layoutY="235.0" prefHeight="25.0" prefWidth="191.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="235.0" />
-      <Label layoutX="33.0" layoutY="330.0" text="End Date:" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="366.0">
+      <Label layoutX="33.0" layoutY="330.0" prefHeight="25.0" prefWidth="68.0" text="End Date:" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="428.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Spinner fx:id="spinner_STime" layoutX="325.0" layoutY="288.0" prefHeight="25.0" prefWidth="119.0" AnchorPane.bottomAnchor="244.0" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="30.0" />
-      <Spinner fx:id="spinner_ETime" layoutX="325.0" layoutY="330.0" prefHeight="25.0" prefWidth="119.0" AnchorPane.bottomAnchor="202.0" AnchorPane.leftAnchor="325.0" AnchorPane.rightAnchor="30.0" />
-      <Label layoutX="79.0" layoutY="376.0" text="Contact:" AnchorPane.bottomAnchor="156.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="340.0">
+      <Label layoutX="79.0" layoutY="376.0" prefHeight="25.0" prefWidth="61.0" text="Contact:" AnchorPane.bottomAnchor="156.0" AnchorPane.leftAnchor="75.0" AnchorPane.rightAnchor="400.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
       <ComboBox fx:id="combo_Contact" layoutX="162.0" layoutY="376.0" prefWidth="150.0" AnchorPane.bottomAnchor="156.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="142.0" />
       <ComboBox fx:id="combo_Customer" layoutX="117.0" layoutY="414.0" prefHeight="25.0" prefWidth="191.0" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="166.0" />
-      <Label layoutX="347.0" layoutY="414.0" text="Id:">
+      <Label layoutX="347.0" layoutY="414.0" text="Id:" AnchorPane.rightAnchor="100.0">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <TextField fx:id="text_CustId" disable="true" layoutX="385.0" layoutY="414.0" prefHeight="25.0" prefWidth="54.0" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="375.0" AnchorPane.rightAnchor="30.0" />
-      <Label layoutX="169.0" layoutY="457.0" text="User Id:" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="261.0">
+      <TextField fx:id="text_CustId" disable="true" layoutX="385.0" layoutY="414.0" prefHeight="25.0" prefWidth="54.0" AnchorPane.bottomAnchor="118.0" AnchorPane.rightAnchor="30.0" />
+      <Label layoutX="169.0" layoutY="457.0" prefHeight="19.0" prefWidth="54.0" text="User Id:" AnchorPane.bottomAnchor="81.0" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="313.0">
          <font>
             <Font size="13.0" />
          </font>
       </Label>
       <TextField fx:id="text_UserId" disable="true" layoutX="237.0" layoutY="454.0" prefHeight="25.0" prefWidth="54.0" AnchorPane.bottomAnchor="78.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="183.0" />
       <Button fx:id="button_AddApp" layoutX="167.0" layoutY="503.0" mnemonicParsing="false" text="Add New Appointment" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="168.0" />
+      <ComboBox fx:id="combo_SHour" layoutX="326.0" layoutY="288.0" prefHeight="25.0" prefWidth="75.0" promptText="hr" AnchorPane.bottomAnchor="244.0" AnchorPane.rightAnchor="135.0" />
+      <ComboBox fx:id="combo_SMin" layoutX="418.0" layoutY="288.0" prefHeight="25.0" prefWidth="75.0" promptText="min" AnchorPane.bottomAnchor="244.0" AnchorPane.rightAnchor="30.0" />
+      <Label layoutX="402.0" layoutY="292.0" text=":" AnchorPane.bottomAnchor="248.0" AnchorPane.rightAnchor="120.0" />
+      <ComboBox fx:id="combo_EHour" layoutX="326.0" layoutY="330.0" prefHeight="25.0" prefWidth="75.0" promptText="hr" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="135.0" />
+      <ComboBox fx:id="combo_EMin" layoutX="431.0" layoutY="330.0" prefHeight="25.0" prefWidth="75.0" promptText="min" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="30.0" />
+      <Label layoutX="413.0" layoutY="334.0" text=":" />
    </children>
 </AnchorPane>

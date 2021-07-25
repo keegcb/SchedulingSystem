@@ -2,17 +2,17 @@ package db;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.concurrent.SynchronousQueue;
 
-import db.Database;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Customer;
-import model.Profile;
+import model.User;
 
 public class CustomerData {
 
     public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    public static ObservableList<String> countryList = FXCollections.observableArrayList();
+    public static ObservableList<String> divisionList = FXCollections.observableArrayList();
 
     public static ObservableList<Customer> getAllCustomers(){
         ObservableList<Customer> custList = FXCollections.observableArrayList();
@@ -21,7 +21,7 @@ public class CustomerData {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM customers " +
                     "JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID");
-            while (result.next() == true){
+            while (result.next()){
                 int id = result.getInt("Customer_ID");
                 String name = result.getString("Customer_Name");
                 String phone = result.getString("Phone");
@@ -52,7 +52,7 @@ public class CustomerData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM customers WHERE Customer_ID = '" + id +"'");
-            if(result.next() == true){
+            if(result.next()){
                 Customer qCust = new Customer();
                 qCust.setCustName(result.getString("Customer_Name"));
                 query.close();
@@ -63,6 +63,19 @@ public class CustomerData {
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
         }
         return null;
+    }
+
+    public int getCustomerByName(String name) {
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT Customer_ID FROM customers WHERE Customer_Name = '" + name +"'");
+            int custId = result.getInt("Customer_ID");
+            return custId;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+        }
+        return -1;
     }
 
     public static int getCustStateId(String division){
@@ -95,13 +108,71 @@ public class CustomerData {
         return -1;
     }
 
-    public String getCountryName(int countryId){
+    public static ObservableList<String> getAllCountries(){
+        try {
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT Country FROM countries");
+            while(result.next()){
+                String countryName = result.getString("Country");
+
+                countryList.add(countryName);
+            }
+            query.close();
+            return countryList;
+        }
+        catch(SQLException e){
+            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+        }
+        return null;
+    }
+
+    public static ObservableList<String> getAllDivisions(){
+        try {
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT Division FROM first_level_divisions");
+            while(result.next()){
+                String divisionName = result.getString("Division");
+
+                divisionList.add(divisionName);
+            }
+            query.close();
+            return divisionList;
+        }
+        catch(SQLException e){
+            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+        }
+        return null;
+    }
+
+    public static String getCountryByDivision(String divName){
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Country FROM countries WHERE Country_ID = '" + countryId + "'");
-            String country = result.getString("Country");
+            ResultSet result = query.executeQuery("SELECT Country FROM countries" +
+                    "JOIN first_level_divisions ON country.Country_ID = first_level_divisions.Country_ID " +
+                    "WHERE Division = '" + divName + "'");
+            String countryName = result.getString("Country");
             query.close();
-            return country;
+            return countryName;
+        }
+        catch(SQLException e){
+            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+        }
+        return null;
+    }
+
+    public static ObservableList<String> getDivisionByCountry(String cName){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT Division FROM first_level_divisions" +
+                    "JOIN country ON first_level_divisions.Country_ID = country.Country_ID " +
+                    "WHERE Country = '" + cName + "'");
+            while(result.next()){
+                String divisionName = result.getString("Division");
+
+                divisionList.add(divisionName);
+            }
+            query.close();
+            return divisionList;
         }
         catch(SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
@@ -115,8 +186,8 @@ public class CustomerData {
             query.executeQuery("INSERT INTO customers SET Customer_ID='" + customer.getCustId() + "', Customer_Name='" +
                     customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
                     customer.getCustPostal() + "', Phone='" + customer.getCustPhone() + "', Create_Date=" + LocalDateTime.now() +
-                    ", Created_By='" + Profile.getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
-                    Profile.getUsername() + "', Division_ID=" + customer.getStateId());
+                    ", Created_By='" + User.getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
+                    User.getUsername() + "', Division_ID=" + customer.getStateId());
             return true;
         }
         catch (SQLException e) {

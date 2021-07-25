@@ -1,10 +1,10 @@
 package model;
 
-public class Profile {
+public class User {
 
     private static String username;
 
-    public Profile(){}
+    public User(){}
 
     public static String getUsername(){
         return username;

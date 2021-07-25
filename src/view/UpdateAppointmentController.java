@@ -20,9 +20,13 @@ public class UpdateAppointmentController {
     @FXML
     private ComboBox combo_Type;
     @FXML
-    private Spinner spinner_STime;
+    private ComboBox combo_SHour;
     @FXML
-    private Spinner spinner_ETime;
+    private ComboBox combo_SMin;
+    @FXML
+    private ComboBox combo_EHour;
+    @FXML
+    private ComboBox combo_EMin;
     @FXML
     private ComboBox combo_Contact;
     @FXML

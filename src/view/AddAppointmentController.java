@@ -1,7 +1,10 @@
 package view;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import model.Appointment;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -21,15 +24,19 @@ public class AddAppointmentController {
     @FXML
     private DatePicker date_End;
     @FXML
-    private ComboBox combo_Type;
+    private ComboBox<String> combo_Type;
     @FXML
-    private Spinner spinner_STime;
+    private ComboBox combo_SHour;
     @FXML
-    private Spinner spinner_ETime;
+    private ComboBox combo_SMin;
     @FXML
-    private ComboBox combo_Contact;
+    private ComboBox combo_EHour;
     @FXML
-    private ComboBox combo_Customer;
+    private ComboBox combo_EMin;
+    @FXML
+    private ComboBox<String> combo_Contact;
+    @FXML
+    private ComboBox<String> combo_Customer;
     @FXML
     private TextField text_CustId;
     @FXML
@@ -37,18 +44,36 @@ public class AddAppointmentController {
     @FXML
     private Button button_AddApp;
 
+    ObservableList<String> hour = FXCollections.observableArrayList();
+    ObservableList<String> min = FXCollections.observableArrayList();
+
+
+    @FXML
+    public void initizlize(){
+        hour.addAll("00", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
+                "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23");
+        min.addAll("00", "15", "30", "45");
+        combo_SHour.setItems(hour);
+        combo_SMin.setItems(min);
+        combo_EHour.setItems(hour);
+        combo_EMin.setItems(min);
+
+    }
+
     private void handleSaveAppointment(){
-        if(validAppointment){
+        if(validAppointment()){
             String id = text_AppId.getText();
             String title = text_Title.getText();
             String description = text_Description.getText();
             String location = text_Location.getText();
-            LocalDate lsd = date_Start.getValue();
-            LocalDate led = date_End.getValue();
-            int type = combo_Type.getSelectionModel().getSelectedIndex();
+            String type = combo_Type.getValue();
+            LocalDateTime lsd = combineDateTime(date_Start.getValue(), combo_SHour.getValue(), combo_SMin.getValue());
+            LocalDateTime led = combineDateTime(date_End.getValue(), combo_EHour.getValue(), combo_EMin.getValue());
+            String contact = combo_Contact.getValue();
+            String customer = combo_Customer.getValue();
 
-            int contact = combo_Contact.getSelectionModel().getSelectedIndex();
-            //add remaining values
+            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, lsd.toString(), led.toString(), contact);
+            appointment.setAppCustomer(customer);
         }
     }
 
@@ -81,10 +106,33 @@ public class AddAppointmentController {
             valid = false;
         }
         if(combo_Contact.getSelectionModel().getSelectedIndex() == -1){
-            errorMessage += "* Contact has not been selected\n";
+            errorMessage += "* Contact was not selected\n";
             valid = false;
         }
-
+        if(combo_Customer.getSelectionModel().getSelectedIndex() == -1){
+            errorMessage += "* Customer was not selected\n";
+            valid = false;
+        }
+        if (!valid) {
+            Alert fieldError = new Alert(Alert.AlertType.ERROR);
+            fieldError.setTitle("Error");
+            fieldError.setHeaderText("Errors occurred when attempting to create the Appointment.\n" +
+                    "Please address the following issues and try again:");
+            fieldError.setContentText(errorMessage);
+            fieldError.showAndWait();
+        }
         return valid;
     }
+
+    private LocalDateTime combineDateTime(LocalDate date, Object hour, Object min){
+        LocalDate nDate = date;
+        String nHour = (String) hour;
+        String nMin = (String) min;
+
+        LocalDateTime ldt = LocalDateTime.of(nDate.getYear(), nDate.getMonthValue(), nDate.getDayOfMonth(),
+                Integer.parseInt(nHour), Integer.parseInt(nMin));
+
+        return ldt;
+    }
+
 }

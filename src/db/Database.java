@@ -48,4 +48,8 @@ public class Database {
         }
     }
 
+    public static Timestamp getTimestamp(){
+        Timestamp ts =
+    }
+
 }

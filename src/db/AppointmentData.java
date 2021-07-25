@@ -4,9 +4,11 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.User;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class AppointmentData {
 
@@ -84,5 +86,20 @@ public class AppointmentData {
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
             return null;
         }
+    }
+
+    public static boolean addAppointment(Appointment appointment){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            query.executeQuery("INSERT INTO appointments SET Appointment_ID ='" + appointment.getAppId() + "', Title='"
+                    + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
+                    appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + LocalDateTime.now() +
+                    "', Create_Date='" + LocalDateTime.now() + "', Created_By='" + User.getUsername() + "', Last_Update='" +
+                    "', Last_Updated_By='" + User.getUsername() + "' Customer_ID='" + ) ;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+        }
+        return false;
     }
 }

@@ -1,6 +1,8 @@
 package view;
 
 import db.CustomerData;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
@@ -25,6 +27,9 @@ public class AddCustomerController {
     @FXML
     private Button button_AddCustomer;
 
+    ObservableList<String> country = FXCollections.observableArrayList();
+    ObservableList<String> state = FXCollections.observableArrayList();
+
     private int addCustId;
 
     private Stage custStage;
@@ -33,6 +38,13 @@ public class AddCustomerController {
         this.custStage = custStage;
     }
 
+    @FXML
+    public void initialize(){
+        country = CustomerData.getAllCountries();
+        combo_Country.setItems(country);
+        state = CustomerData.getAllDivisions();
+        combo_State.setItems(state);
+    }
 
     @FXML
     private void handleSaveCustomer(){
@@ -53,7 +65,22 @@ public class AddCustomerController {
             customer.setCustCountry(country);
 
             CustomerData.customerList.add(customer);
+            CustomerData.addCustomer(customer);
         }
+    }
+
+    @FXML
+    private void handleCountrySelection(){
+        String cSelect = (String) combo_Country.getSelectionModel().getSelectedItem();
+        state = CustomerData.getDivisionByCountry(cSelect);
+        combo_State.setItems(state);
+    }
+
+    @FXML
+    private void handleDivisionSelection(){
+        String dSelect = (String) combo_State.getSelectionModel().getSelectedItem();
+        String cName = CustomerData.getCountryByDivision(dSelect);
+        combo_Country.setValue(cName);
     }
 
     public boolean validCustomer(){

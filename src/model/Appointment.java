@@ -100,7 +100,7 @@ public class Appointment {
     public void setAppCustomer(String appCustomer) { this.appCustomer = appCustomer;}
 
     public String getAppStartTime(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime local = LocalDateTime.parse(appStart, formatter);
         ZonedDateTime zone = local.atZone(ZoneId.of("UTC"));
         ZoneId idZone = ZoneId.systemDefault();
@@ -109,7 +109,7 @@ public class Appointment {
     }
 
     public String getAppEndTime(){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         LocalDateTime local = LocalDateTime.parse(appEnd, formatter);
         ZonedDateTime zone = local.atZone(ZoneId.of("UTC"));
         ZoneId idZone = ZoneId.systemDefault();
