@@ -5,6 +5,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 import java.io.IOException;
+import java.time.ZoneId;
 
 public class LoginController {
 
@@ -21,11 +23,19 @@ public class LoginController {
     private TextField text_Username;
     @FXML
     private Button button_Login;
+    @FXML
+    private Label label_UserZone;
 
     private Stage loginStage;
 
     public void createLogin(Stage loginStage) {
         this.loginStage = loginStage;
+    }
+
+    public void initialize(){
+        ZoneId zid = ZoneId.systemDefault();
+        String zone = zid.getId();
+        label_UserZone.setText(zone);
     }
 
     @FXML
@@ -37,6 +47,7 @@ public class LoginController {
         String pass = text_Password.getText();
         if(UserData.login(user, pass)){
             loginStage.close();
+
         }
 
     }

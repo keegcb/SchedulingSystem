@@ -1,5 +1,6 @@
 package view;
 
+import db.AppointmentData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -51,7 +52,7 @@ public class UpdateAppointmentController {
     ObservableList<LocalTime> timeList = FXCollections.observableArrayList();
 
     @FXML
-    public void initizlize(){
+    public void initialize(){
         LocalTime start = LocalTime.of(0, 0);
         LocalTime end = LocalTime.of(23, 59);
         while(start.isBefore(end.plusSeconds(1))){
@@ -60,6 +61,16 @@ public class UpdateAppointmentController {
         }
         combo_STime.setItems(timeList);
         combo_ETime.setItems(timeList);
+
+
+    }
+
+    public void setFields(Appointment appointment){
+        text_AppId.setText(Integer.toString(appointment.getAppId()));
+        text_Title.setText(appointment.getAppTitle());
+        text_Description.setText(appointment.getAppDescription());
+        text_Location.setText(appointment.getAppLocation());
+
     }
 
     private void handleSaveAppointment(){
@@ -77,6 +88,8 @@ public class UpdateAppointmentController {
 
             Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, contact);
             appointment.setAppCustomer(customer);
+
+            AppointmentData.addAppointment(appointment);
         }
     }
 

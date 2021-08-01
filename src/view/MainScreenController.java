@@ -96,8 +96,8 @@ public class MainScreenController {
         col_AppLocation.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
         col_AppContact.setCellValueFactory(new PropertyValueFactory<>("appContact"));
         col_AppType.setCellValueFactory(new PropertyValueFactory<>("appType"));
-        col_AppStart.setCellValueFactory(new PropertyValueFactory<>("appStart"));
-        col_AppEnd.setCellValueFactory(new PropertyValueFactory<>("appEnd"));
+        col_AppStart.setCellValueFactory(new PropertyValueFactory<>("zdtStart"));
+        col_AppEnd.setCellValueFactory(new PropertyValueFactory<>("zdtEnd"));
         col_AppCust.setCellValueFactory(new PropertyValueFactory<>("appCust"));
         table_Appointment.setItems(AppointmentData.getAppsByWeek());
 
@@ -124,7 +124,7 @@ public class MainScreenController {
 
     @FXML
     void handleAddCustomer(){
-        SchedulingSystem.ScheduleSystem.openAddCustomer();
+        SchedulingSystem.SchedulingSystem.openAddCustomer();
     }
 
     @FXML
@@ -132,14 +132,14 @@ public class MainScreenController {
         if(isValidSelection(1)){
             Customer updateCust = table_Customer.getSelectionModel().getSelectedItem();
             if(updateCust != null){
-                SchedulingSystem.ScheduleSystem.openUpdateCustomer(updateCust);
+                SchedulingSystem.SchedulingSystem.openUpdateCustomer(updateCust);
             }
         }
     }
 
     @FXML
     void handleAddAppointment(){
-        SchedulingSystem.ScheduleSystem.openAddAppointment();
+        SchedulingSystem.SchedulingSystem.openAddAppointment();
     }
 
     @FXML
@@ -147,7 +147,7 @@ public class MainScreenController {
         if(isValidSelection(1)){
             Appointment updateApp = table_Appointment.getSelectionModel().getSelectedItem();
             if(updateApp != null){
-                SchedulingSystem.ScheduleSystem.openUpdateAppointment(updateApp);
+                SchedulingSystem.SchedulingSystem.openUpdateAppointment(updateApp);
             }
         }
     }
@@ -209,5 +209,7 @@ public class MainScreenController {
         }
         return validSelect;
     }
+
+
 
 }

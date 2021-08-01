@@ -10,7 +10,7 @@ public class UserData {
 
     private static User activeUser;
 
-    private static User getActiveUser(){
+    public static User getActiveUser(){
         return activeUser;
     }
 
@@ -22,7 +22,9 @@ public class UserData {
             password + "'");
             if(result.next()){
                 activeUser = new User();
+                activeUser.setUserId(result.getInteger("User_ID"));
                 activeUser.setUsername(result.getString("User_Name"));
+                activeUser.setPassword(result.getString("Password"));
                 query.close();
                 return true;
             }
@@ -33,6 +35,5 @@ public class UserData {
          */
         return true;
     }
-
 
 }

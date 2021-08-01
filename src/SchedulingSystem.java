@@ -3,7 +3,6 @@ package SchedulingSystem;
 import db.Database;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
@@ -13,9 +12,15 @@ import model.Customer;
 import view.*;
 
 import java.io.IOException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Objects;
 
-public class ScheduleSystem extends Application {
+public class SchedulingSystem extends Application {
+
+    private static final ZoneId mainZid = ZoneId.systemDefault();
 
     private static Stage mainStage;
 
@@ -42,7 +47,7 @@ public class ScheduleSystem extends Application {
     public static void openLogin(){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Objects.requireNonNull(ScheduleSystem.class.getResource("/view/Login.fxml")));
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/Login.fxml")));
             AnchorPane loginWindow = loader.load();
 
             Stage loginStage = new Stage();
@@ -63,7 +68,7 @@ public class ScheduleSystem extends Application {
     public static void openAddCustomer(){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Objects.requireNonNull(ScheduleSystem.class.getResource("/view/AddCustomer.fxml")));
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/AddCustomer.fxml")));
             AnchorPane window = loader.load();
 
             Stage stage = new Stage();
@@ -84,7 +89,7 @@ public class ScheduleSystem extends Application {
     public static void openUpdateCustomer(Customer updateCust){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Objects.requireNonNull(ScheduleSystem.class.getResource("/view/UpdateCustomer.fxml")));
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/UpdateCustomer.fxml")));
             AnchorPane window = loader.load();
 
             Stage stage = new Stage();
@@ -105,7 +110,7 @@ public class ScheduleSystem extends Application {
     public static void openAddAppointment(){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Objects.requireNonNull(ScheduleSystem.class.getResource("/view/AddAppointment.fxml")));
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/AddAppointment.fxml")));
             AnchorPane window = loader.load();
 
             Stage stage = new Stage();
@@ -126,7 +131,7 @@ public class ScheduleSystem extends Application {
     public static void openUpdateAppointment(Appointment updateApp){
         try{
             FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Objects.requireNonNull(ScheduleSystem.class.getResource("/view/UpdateAppointment.fxml")));
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/UpdateAppointment.fxml")));
             AnchorPane window = loader.load();
 
             Stage stage = new Stage();
@@ -144,4 +149,15 @@ public class ScheduleSystem extends Application {
         }
     }
 
+    public static ZonedDateTime convertToZDT(Timestamp stamp){
+        LocalDateTime ldt = stamp.toLocalDateTime();
+        ZonedDateTime zdt = ldt.atZone(mainZid);
+        return zdt;
+    }
+
+    public static Timestamp convertToTimestamp(ZonedDateTime zdt){
+        LocalDateTime ldt = zdt.toLocalDateTime();
+        Timestamp ts = Timestamp.valueOf(ldt);
+        return ts;
+    }
 }

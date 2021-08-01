@@ -186,8 +186,8 @@ public class CustomerData {
             query.executeQuery("INSERT INTO customers SET Customer_ID='" + customer.getCustId() + "', Customer_Name='" +
                     customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
                     customer.getCustPostal() + "', Phone='" + customer.getCustPhone() + "', Create_Date=" + LocalDateTime.now() +
-                    ", Created_By='" + User.getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
-                    User.getUsername() + "', Division_ID=" + customer.getStateId());
+                    ", Created_By='" + UserData.getActiveUser().getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
+                    UserData.getActiveUser().getUsername() + "', Division_ID=" + customer.getStateId());
             return true;
         }
         catch (SQLException e) {
