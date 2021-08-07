@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="anchor_MainScreen" prefHeight="511.0" prefWidth="895.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainScreenController">
+<AnchorPane fx:id="anchor_MainScreen" prefHeight="511.0" prefWidth="895.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.MainScreenController">
    <children>
       <TabPane prefHeight="511.0" prefWidth="810.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
           <tabs>
@@ -52,7 +52,7 @@
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_DeleteApp" layoutX="599.0" layoutY="428.0" mnemonicParsing="false" text="Remove Appointment" AnchorPane.bottomAnchor="24.0">
+                        <Button fx:id="button_DeleteApp" layoutX="599.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleDeleteAppointment" text="Remove Appointment" AnchorPane.bottomAnchor="24.0">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -89,7 +89,7 @@
                               <Font size="14.0" />
                            </font>
                         </Button>
-                        <Button fx:id="button_DeleteCust" layoutX="614.0" layoutY="427.0" mnemonicParsing="false" text="Remove Customer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="614.0">
+                        <Button fx:id="button_DeleteCust" layoutX="614.0" layoutY="427.0" mnemonicParsing="false" onAction="#handleDeleteCustomer" text="Remove Customer" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="614.0">
                            <font>
                               <Font size="14.0" />
                            </font>

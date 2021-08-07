@@ -138,16 +138,43 @@ public class MainScreenController {
     }
 
     @FXML
+    void handleDeleteCustomer(){
+        if(isValidSelection(2)){
+            Customer deleteCust = table_Customer.getSelectionModel().getSelectedItem();
+            if(deleteCust != null){
+                if(AppointmentData.checkCustApp(deleteCust.getCustId())){
+                    Alert hasApp = new Alert(Alert.AlertType.ERROR);
+                    hasApp.setTitle("Error");
+                    hasApp.setHeaderText("Customer Has Existing Appointments.");
+                    hasApp.setContentText("All existing appointments for the selected customer must be removed prior to removal of the customer data.");
+                    hasApp.showAndWait();
+                }
+            }
+        }
+    }
+
+    @FXML
     void handleAddAppointment(){
         SchedulingSystem.SchedulingSystem.openAddAppointment();
     }
 
     @FXML
     void handleUpdateAppointment(){
-        if(isValidSelection(1)){
+        if(isValidSelection(3)){
             Appointment updateApp = table_Appointment.getSelectionModel().getSelectedItem();
             if(updateApp != null){
                 SchedulingSystem.SchedulingSystem.openUpdateAppointment(updateApp);
+            }
+        }
+    }
+
+    @FXML
+    void handleDeleteAppointment(){
+        if(isValidSelection(4)){
+            Appointment deleteApp = table_Appointment.getSelectionModel().getSelectedItem();
+            if(deleteApp != null){
+                AppointmentData.deleteAppointment(deleteApp.getAppId());
+                toggleWeekMonth();
             }
         }
     }

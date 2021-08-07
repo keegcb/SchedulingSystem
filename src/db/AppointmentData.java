@@ -121,6 +121,20 @@ public class AppointmentData {
         return null;
     }
 
+    public static boolean checkCustApp(int userId){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE User_ID='" + userId + "'");
+            if(result.next()){
+                query.close();
+                return true;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return false;
+    }
+
     public static void addAppointment(Appointment appointment){
         try{
             Statement query = Database.getConnection().createStatement();
@@ -139,6 +153,17 @@ public class AppointmentData {
         }
     }
 
+    public static boolean deleteAppointment(int id){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            query.executeQuery("DELETE FROM appointments WHERE Appointment_ID ='" + id + "'");
+            return true;
+        }catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+        }
+        return false;
+    }
+
     public static int getContactId(String contact){
         try{
             Statement query = Database.getConnection().createStatement();
@@ -153,6 +178,26 @@ public class AppointmentData {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static ObservableList<String> totalByType(){
+        ObservableList<String> typeMonthResult = null;
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT Type, MONTHNAME(Start) as 'Month', COUNT(*) as 'Total' " +
+                    "FROM appointments GROUP BY Type, MONTH(Start)");
+            while(result.next()){
+                String resultLine = String.format("%1$-55s %2$-60s %3$d \n",
+                        result.getString("Month"), result.getString("Type"), result.getString("Total"));
+                typeMonthResult.add(resultLine);
+            }
+            query.close();
+            return typeMonthResult;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+        }
+        return null;
     }
 
 }
