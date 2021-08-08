@@ -13,7 +13,6 @@ import java.time.ZonedDateTime;
 public class AppointmentData {
 
 
-    //TODO figure out how to do date comparison in SQL query portion
     public static ObservableList<Appointment> getAppsByWeek() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -180,6 +179,7 @@ public class AppointmentData {
         return -1;
     }
 
+    /*
     public static ObservableList<String> totalByType(){
         ObservableList<String> typeMonthResult = null;
         try{
@@ -187,7 +187,7 @@ public class AppointmentData {
             ResultSet result = query.executeQuery("SELECT Type, MONTHNAME(Start) as 'Month', COUNT(*) as 'Total' " +
                     "FROM appointments GROUP BY Type, MONTH(Start)");
             while(result.next()){
-                String resultLine = String.format("%1$-55s %2$-60s %3$d \n",
+                String resultLine = String.format("%1$-60s %2$-60s %3$20s \n",
                         result.getString("Month"), result.getString("Type"), result.getString("Total"));
                 typeMonthResult.add(resultLine);
             }
@@ -199,5 +199,18 @@ public class AppointmentData {
         }
         return null;
     }
+
+    public static ObservableList<String> appByContact(){
+        ObservableList<String> contactAppResult = null;
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("");
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+        }
+        return
+    }
+    */
 
 }

@@ -29,7 +29,7 @@ public class SchedulingSystem extends Application {
         mainStage = primaryStage;
         mainStage.setTitle("Appointment Scheduling System");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((Objects.requireNonNull(getClass().getResource("/src/view/MainScreen.fxml"))));
+        loader.setLocation((getClass().getResource("/view/MainScreen.fxml")));
         AnchorPane mainWindow = loader.load();
         Scene mainScene = new Scene(mainWindow);
         mainStage.setScene(mainScene);

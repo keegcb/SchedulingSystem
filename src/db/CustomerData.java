@@ -20,7 +20,8 @@ public class CustomerData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM customers " +
-                    "JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID");
+                    "JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID " +
+                    "JOIN countries ON first_level_divisions.Country_ID = countries.Country_ID");
             while (result.next()){
                 int id = result.getInt("Customer_ID");
                 String name = result.getString("Customer_Name");
