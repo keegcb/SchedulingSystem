@@ -99,7 +99,12 @@
           </Tab>
           <Tab fx:id="tab_Reports" text="Reports">
             <content>
-               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ComboBox fx:id="combo_AppType" layoutX="50.0" layoutY="66.0" prefWidth="150.0" promptText="Appointment Type" />
+                        <ComboBox fx:id="combo_Month" layoutX="50.0" layoutY="139.0" prefWidth="150.0" promptText="Month" />
+                        <Button layoutX="99.0" layoutY="229.0" mnemonicParsing="false" text="Report" />
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>

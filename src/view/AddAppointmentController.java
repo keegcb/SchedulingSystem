@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Contact;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -33,7 +34,7 @@ public class AddAppointmentController {
     @FXML
     private ComboBox<LocalTime> combo_ETime;
     @FXML
-    private ComboBox<String> combo_Contact;
+    private ComboBox<Contact> combo_Contact;
     @FXML
     private ComboBox<String> combo_Customer;
     @FXML
@@ -51,6 +52,8 @@ public class AddAppointmentController {
 
     private static final ObservableList<LocalTime> timeList = FXCollections.observableArrayList();
 
+    private static ObservableList<Contact> contactList = FXCollections.observableArrayList();
+
 
     @FXML
     public void initialize(){
@@ -62,6 +65,11 @@ public class AddAppointmentController {
         }
         combo_STime.setItems(timeList);
         combo_ETime.setItems(timeList);
+
+        combo_Type.setItems(MainScreenController.getTypeList());
+
+        contactList = AppointmentData.allContacts();
+        combo_Contact.setItems(contactList);
     }
 
     @FXML
@@ -74,7 +82,7 @@ public class AddAppointmentController {
             String type = combo_Type.getValue();
             Timestamp tLSD = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
             Timestamp tLED = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
-            String contact = combo_Contact.getValue();
+            String contact = combo_Contact.getValue().getContactName();
             String customer = combo_Customer.getValue();
 
 

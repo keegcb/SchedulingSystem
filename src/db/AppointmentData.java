@@ -4,6 +4,7 @@ import java.sql.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
+import model.Contact;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -179,37 +180,77 @@ public class AppointmentData {
         return -1;
     }
 
-    /*
-    public static ObservableList<String> totalByType(){
-        ObservableList<String> typeMonthResult = null;
-        try{
+    public static ObservableList<Contact> allContacts(){
+        ObservableList<Contact> contactList = null;
+        Contact con;
+        try {
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Type, MONTHNAME(Start) as 'Month', COUNT(*) as 'Total' " +
-                    "FROM appointments GROUP BY Type, MONTH(Start)");
-            while(result.next()){
-                String resultLine = String.format("%1$-60s %2$-60s %3$20s \n",
-                        result.getString("Month"), result.getString("Type"), result.getString("Total"));
-                typeMonthResult.add(resultLine);
+            ResultSet result = query.executeQuery("SELECT * FROM contacts");
+            while (result.next()){
+                int id = result.getInt("Contact_ID");
+                String name = result.getString("Contact_Name");
+                String email = result.getString("Email");
+
+                con = new Contact(name, email);
+                con.setContactId(id);
+                contactList.add(con);
             }
             query.close();
-            return typeMonthResult;
+            return contactList;
+        }
+        catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+    public static ObservableList<Appointment> appByContactMonth(Contact con, int month){
+        ObservableList<Appointment> resultAppList = null;
+        Appointment app;
+
+        try {
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE Contact_ID='" + con.getContactId()
+                    + "' AND Start=MONTH('" + month + "')");
+            while (result.next()) {
+                int id = result.getInt("Appointment_ID");
+                String title = result.getString("Title");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
+                String type = result.getString("Type");
+                Timestamp sdate = result.getTimestamp("Start");
+                Timestamp edate = result.getTimestamp("End");
+                String contact = result.getString("Contact_Name");
+                String customer = result.getString("Customer_Name");
+
+                app = new Appointment(id, title, description, location, type, sdate, edate, contact);
+                app.setAppCustomer(customer);
+                resultAppList.add(app);
+            }
+            query.close();
+            return resultAppList;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+    /*
+    public static ObservableList<String> allTypes(){
+        ObservableList<String> typeList = null;
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT DISTINCT Type FROM appointments");
+            while (result.next()){
+                typeList.add(String.valueOf(result.getType()));
+            }
+            return typeList;
         }
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
         }
         return null;
-    }
-
-    public static ObservableList<String> appByContact(){
-        ObservableList<String> contactAppResult = null;
-        try{
-            Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("");
-        }
-        catch (SQLException e){
-            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
-        }
-        return
     }
     */
 

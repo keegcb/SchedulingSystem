@@ -77,11 +77,19 @@ public class MainScreenController {
     private Button button_DeleteCust;
     @FXML
     private Tab tab_Reports;
+    @FXML
+    private ComboBox combo_AppType;
+    @FXML
+    private ComboBox combo_Month;
 
     private static boolean validSelect;
 
     private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
+    private static ObservableList<String> typeList = FXCollections.observableArrayList("Introduction", "Planning Session", "Brainstorm",
+            "Status Report", "Wrap-Up", "Deliverables", "8D", "De-Briefing");
+    private static ObservableList<String> monthList = FXCollections.observableArrayList("January", "February", "March",
+            "April", "May", "June", "July", "August", "September", "October", "November", "December");
 
     @FXML
     public void initialize(){
@@ -111,6 +119,11 @@ public class MainScreenController {
         col_CustState.setCellValueFactory(new PropertyValueFactory<>("custState"));
         col_CustCountry.setCellValueFactory(new PropertyValueFactory<>("custCountry"));
         table_Customer.setItems(CustomerData.getAllCustomers());
+
+
+        combo_AppType.setItems(typeList);
+        combo_Month.setItems(monthList);
+
     }
 
     public void toggleWeekMonth(){
@@ -179,6 +192,14 @@ public class MainScreenController {
         }
     }
 
+    @FXML
+    void handleReportContactMonth(){
+        if(isValidSelection(5)){
+            String month = (String) combo_Month.getSelectionModel().getSelectedItem();
+            //TODO figure out how to use month as ENUM or just compare the strings to set int variable for use in SQL query
+        }
+    }
+
     private boolean isValidSelection(int option){
         switch (option){
             case 1 -> {
@@ -233,8 +254,24 @@ public class MainScreenController {
                     validSelect = false;
                 }
             }
+            case 5 -> {
+                if((combo_Month.getSelectionModel() != null) && (combo_AppType.getSelectionModel() != null)){
+                    validSelect = true;
+                } else {
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle("Warning");
+                    notValid.setHeaderText("Parameters Not Selected.");
+                    notValid.setContentText("Please select a Month and appointment Type from the dropdown.");
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
         }
         return validSelect;
+    }
+
+    public static ObservableList<String> getTypeList(){
+        return typeList;
     }
 
 
