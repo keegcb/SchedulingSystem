@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import model.Appointment;
+import model.Contact;
 import model.Customer;
 
 public class MainScreenController {
@@ -81,6 +82,8 @@ public class MainScreenController {
     private ComboBox combo_AppType;
     @FXML
     private ComboBox combo_Month;
+    @FXML
+    private ComboBox combo_Contact;
 
     private static boolean validSelect;
 
@@ -88,8 +91,30 @@ public class MainScreenController {
     private ObservableList<Customer> customerList = FXCollections.observableArrayList();
     private static ObservableList<String> typeList = FXCollections.observableArrayList("Introduction", "Planning Session", "Brainstorm",
             "Status Report", "Wrap-Up", "Deliverables", "8D", "De-Briefing");
-    private static ObservableList<String> monthList = FXCollections.observableArrayList("January", "February", "March",
-            "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+    public enum Month {
+        JANUARY("January"),
+        FEBRUARY("February"),
+        MARCH("March"),
+        APRIL("April"),
+        MAY("May"),
+        JUNE("June"),
+        AUGUST("August"),
+        SEPTEMBER("September"),
+        OCTOBER("October"),
+        NOVEMBER("November"),
+        DECEMBER("December");
+
+        private String month;
+
+        Month(String month){
+            this.month = month;
+        }
+
+        public String toString(){
+            return month;
+        }
+    }
 
     @FXML
     public void initialize(){
@@ -122,8 +147,9 @@ public class MainScreenController {
 
 
         combo_AppType.setItems(typeList);
-        combo_Month.setItems(monthList);
+        combo_Month.getItems().setAll(Month.values());
 
+        combo_Contact.setItems(AppointmentData.allContacts());
     }
 
     public void toggleWeekMonth(){
@@ -193,10 +219,23 @@ public class MainScreenController {
     }
 
     @FXML
-    void handleReportContactMonth(){
+    void handleReportTypeMonth(){
         if(isValidSelection(5)){
-            String month = (String) combo_Month.getSelectionModel().getSelectedItem();
-            //TODO figure out how to use month as ENUM or just compare the strings to set int variable for use in SQL query
+            String type = (String) combo_AppType.getSelectionModel().getSelectedItem();
+            int nMonth = combo_Month.getSelectionModel().getSelectedIndex()+1;
+
+//TODO create a table to populate with appropriate information for the type/month query
+            System.out.println(AppointmentData.appByTypeMonth(type, nMonth));
+        }
+    }
+
+    @FXML
+    void handleReportAppContact(){
+        if(isValidSelection(6)){
+            Contact contact = (Contact) combo_Contact.getSelectionModel().getSelectedItem();
+            SchedulingSystem.SchedulingSystem.openReport(contact);
+//TODO create table to populate with appropriate information for the contact/app query
+            System.out.println(AppointmentData.getAppByContact(contact));
         }
     }
 
@@ -262,6 +301,18 @@ public class MainScreenController {
                     notValid.setTitle("Warning");
                     notValid.setHeaderText("Parameters Not Selected.");
                     notValid.setContentText("Please select a Month and appointment Type from the dropdown.");
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
+            case 6 -> {
+                if((combo_Contact.getSelectionModel() != null)){
+                    validSelect = true;
+                } else {
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle("Warning");
+                    notValid.setHeaderText("Parameters Not Selected.");
+                    notValid.setContentText("Please select a Contact from the dropdown.");
                     notValid.showAndWait();
                     validSelect = false;
                 }

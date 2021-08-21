@@ -8,6 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Contact;
 import model.Customer;
 import view.*;
 
@@ -144,6 +145,28 @@ public class SchedulingSystem extends Application {
             UpdateAppointmentController stageControl = loader.getController();
             stageControl.createUpdateAppointment(stage);
             stage.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void openReport(Contact selContact){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/Reports.fxml")));
+            AnchorPane window = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Appointments For Select Contact");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(mainStage);
+
+            Scene scene = new Scene(window);
+            stage.setScene(scene);
+            ReportsController stageControl = loader.getController();
+            stageControl.ReportsController(stage);
+            stage.showAndWait();
+            ReportsController.setFields(selContact);
         } catch (IOException e) {
             e.printStackTrace();
         }

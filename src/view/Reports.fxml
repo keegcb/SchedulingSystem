@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="252.0" prefWidth="789.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.ReportsController">
+   <children>
+      <TableView fx:id="table_Report" layoutX="241.0" layoutY="26.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn fx:id="col_AppId" prefWidth="75.0" text="Appointment ID" />
+          <TableColumn fx:id="col_Title" prefWidth="75.0" text="Title" />
+            <TableColumn fx:id="col_Type" prefWidth="75.0" text="Type" />
+            <TableColumn fx:id="col_Description" prefWidth="75.0" text="Description" />
+            <TableColumn fx:id="col_Start" prefWidth="75.0" text="Start" />
+            <TableColumn fx:id="col_End" prefWidth="75.0" text="End" />
+            <TableColumn fx:id="col_CustId" prefWidth="75.0" text="Customer ID" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>

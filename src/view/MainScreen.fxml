@@ -103,7 +103,9 @@
                      <children>
                         <ComboBox fx:id="combo_AppType" layoutX="50.0" layoutY="66.0" prefWidth="150.0" promptText="Appointment Type" />
                         <ComboBox fx:id="combo_Month" layoutX="50.0" layoutY="139.0" prefWidth="150.0" promptText="Month" />
-                        <Button layoutX="99.0" layoutY="229.0" mnemonicParsing="false" text="Report" />
+                        <Button layoutX="99.0" layoutY="229.0" mnemonicParsing="false" onAction="#handleReportTypeMonth" text="Report" />
+                        <ComboBox fx:id="combo_Contact" layoutX="373.0" layoutY="139.0" prefWidth="150.0" promptText="Select Contact" />
+                        <Button layoutX="422.0" layoutY="229.0" mnemonicParsing="false" onAction="#handleReportAppContact" text="Report" />
                      </children></AnchorPane>
             </content>
           </Tab>
