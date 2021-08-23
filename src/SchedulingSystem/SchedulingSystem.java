@@ -165,8 +165,9 @@ public class SchedulingSystem extends Application {
             stage.setScene(scene);
             ReportsController stageControl = loader.getController();
             stageControl.ReportsController(stage);
+            stageControl.setFields(selContact);
             stage.showAndWait();
-            ReportsController.setFields(selContact);
+            //TODO figure out how to populate the new stage after initialization
         } catch (IOException e) {
             e.printStackTrace();
         }

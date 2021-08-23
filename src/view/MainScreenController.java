@@ -45,7 +45,7 @@ public class MainScreenController {
     @FXML
     private TableColumn<Appointment, String> col_AppEnd;
     @FXML
-    private TableColumn<Appointment, String> col_AppCust;
+    private TableColumn<Appointment, Integer> col_AppCust;
     @FXML
     private Button button_AddApp;
     @FXML
@@ -131,7 +131,7 @@ public class MainScreenController {
         col_AppType.setCellValueFactory(new PropertyValueFactory<>("appType"));
         col_AppStart.setCellValueFactory(new PropertyValueFactory<>("zdtStart"));
         col_AppEnd.setCellValueFactory(new PropertyValueFactory<>("zdtEnd"));
-        col_AppCust.setCellValueFactory(new PropertyValueFactory<>("appCust"));
+        col_AppCust.setCellValueFactory(new PropertyValueFactory<>("appCustId"));
         table_Appointment.setItems(AppointmentData.getAppsByWeek());
 
         //toggleWeekMonth();
@@ -225,7 +225,6 @@ public class MainScreenController {
             int nMonth = combo_Month.getSelectionModel().getSelectedIndex()+1;
 
 //TODO create a table to populate with appropriate information for the type/month query
-            System.out.println(AppointmentData.appByTypeMonth(type, nMonth));
         }
     }
 
@@ -234,8 +233,6 @@ public class MainScreenController {
         if(isValidSelection(6)){
             Contact contact = (Contact) combo_Contact.getSelectionModel().getSelectedItem();
             SchedulingSystem.SchedulingSystem.openReport(contact);
-//TODO create table to populate with appropriate information for the contact/app query
-            System.out.println(AppointmentData.getAppByContact(contact));
         }
     }
 

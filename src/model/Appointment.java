@@ -14,6 +14,7 @@ public class Appointment {
     private Timestamp appEnd;
     private String appContact;
     private String appCustomer;
+    private int appCustId;
 
     private ZonedDateTime zdtStart;
     private ZonedDateTime zdtEnd;
@@ -116,5 +117,13 @@ public class Appointment {
 
     public void setZdtEnd(ZonedDateTime zdtEnd) {
         this.zdtEnd = zdtEnd;
+    }
+
+    public int getAppCustId() {
+        return appCustId;
+    }
+
+    public void setAppCustId(int appCustId) {
+        this.appCustId = appCustId;
     }
 }

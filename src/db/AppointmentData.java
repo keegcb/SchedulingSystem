@@ -77,10 +77,10 @@ public class AppointmentData {
                 Timestamp sdate = result.getTimestamp("Start");
                 Timestamp edate = result.getTimestamp("End");
                 String contact = result.getString("Contact_Name");
-                String customer = result.getString("Customer_Name");
+                int customer = result.getInt("Customer_ID");
 
                 app = new Appointment(id, title, description, location, type, sdate, edate, contact);
-                app.setAppCustomer(customer);
+                app.setAppCustId(customer);
                 appList.add(app);
             }
             query.close();
@@ -209,7 +209,8 @@ public class AppointmentData {
         Appointment app;
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE Contact_ID='" + con.getContactId() + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM appointments " +
+                    "JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE appointments.Contact_ID=" + con.getContactId());
             while(result.next()){
                 int id = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
@@ -219,10 +220,10 @@ public class AppointmentData {
                 Timestamp sdate = result.getTimestamp("Start");
                 Timestamp edate = result.getTimestamp("End");
                 String contact = result.getString("Contact_Name");
-                String customer = result.getString("Customer_Name");
+                int customer = result.getInt("Customer_ID");
 
                 app = new Appointment(id, title, description, location, type, sdate, edate, contact);
-                app.setAppCustomer(customer);
+                app.setAppCustId(customer);
                 appList.add(app);
             }
             query.close();
@@ -234,6 +235,14 @@ public class AppointmentData {
     }
 
     public static int appByTypeMonth(String selType, int month){
+        //TODO figure out how to identify a specific month for a timestamp agnostic of year
+        /*
+        LocalDateTime sldt = LocalDateTime.now();
+        LocalDateTime eldt = LocalDateTime.now().plusWeeks(1);
+        Timestamp start = Timestamp.valueOf(sldt);
+        Timestamp end = Timestamp.valueOf(eldt);
+        */
+
         int count;
 
         try {

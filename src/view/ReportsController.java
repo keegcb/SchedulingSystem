@@ -11,7 +11,7 @@ import model.Contact;
 public class ReportsController {
 
     @FXML
-    private static TableView<Appointment> table_Report;
+    private TableView<Appointment> table_Report;
     @FXML
     private TableColumn<Appointment, Integer> col_AppId;
     @FXML
@@ -39,12 +39,12 @@ public class ReportsController {
         col_Description.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
         col_Start.setCellValueFactory(new PropertyValueFactory<>("zdtStart"));
         col_End.setCellValueFactory(new PropertyValueFactory<>("zdtEnd"));
-        col_CustId.setCellValueFactory(new PropertyValueFactory<>("appCust"));
+        col_CustId.setCellValueFactory(new PropertyValueFactory<>("appCustId"));
 
 
     }
 
-    public static void setFields(Contact contact){
+    public void setFields(Contact contact){
         table_Report.setItems(AppointmentData.getAppByContact(contact));
     }
 
