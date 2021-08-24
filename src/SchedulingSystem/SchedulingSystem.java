@@ -102,6 +102,7 @@ public class SchedulingSystem extends Application {
             stage.setScene(scene);
             UpdateCustomerController stageControl = loader.getController();
             stageControl.createUpdateCustomer(stage);
+            stageControl.setFields(updateCust);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
@@ -144,6 +145,7 @@ public class SchedulingSystem extends Application {
             stage.setScene(scene);
             UpdateAppointmentController stageControl = loader.getController();
             stageControl.createUpdateAppointment(stage);
+            stageControl.setFields(updateApp);
             stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();

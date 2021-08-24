@@ -1,16 +1,20 @@
 package view;
 
 import db.AppointmentData;
+import db.CustomerData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
+import model.Contact;
+import model.Customer;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class UpdateAppointmentController {
 
@@ -33,9 +37,9 @@ public class UpdateAppointmentController {
     @FXML
     private ComboBox<LocalTime> combo_ETime;
     @FXML
-    private ComboBox<String> combo_Contact;
+    private ComboBox<Contact> combo_Contact;
     @FXML
-    private ComboBox<String> combo_Customer;
+    private ComboBox<Customer> combo_Customer;
     @FXML
     private TextField text_CustId;
     @FXML
@@ -66,11 +70,33 @@ public class UpdateAppointmentController {
     }
 
     public void setFields(Appointment appointment){
+        Contact appContact = AppointmentData.getContact(appointment.getAppContactId());
+        Customer appCustomer = CustomerData.getCustomerById(appointment.getAppCustId());
+
         text_AppId.setText(Integer.toString(appointment.getAppId()));
         text_Title.setText(appointment.getAppTitle());
         text_Description.setText(appointment.getAppDescription());
         text_Location.setText(appointment.getAppLocation());
-
+        for(int i=0; i < combo_Type.getItems().size(); i++){
+            if(Objects.equals(combo_Type.getSelectionModel().getSelectedItem(), appointment.getAppType())){
+                combo_Type.getSelectionModel().select(i);
+            }
+        }
+        for(int i=0; i < combo_Contact.getItems().size(); i++){
+            Contact comContact = combo_Contact.getSelectionModel().getSelectedItem();
+            assert appContact != null;
+            if (comContact.getContactId() == appContact.getContactId()){
+                combo_Contact.getSelectionModel().select(i);
+            }
+        }
+        for(int i=0; i < combo_Customer.getItems().size(); i++){
+            Customer comCustomer = combo_Customer.getSelectionModel().getSelectedItem();
+            assert appCustomer != null;
+            if (comCustomer.getCustId() == appCustomer.getCustId()){
+                combo_Customer.getSelectionModel().select(i);
+            }
+        }
+        //TODO populate date picker with appointments date & time combo with appointment time
     }
 
     private void handleSaveAppointment(){
@@ -82,12 +108,18 @@ public class UpdateAppointmentController {
             String type = combo_Type.getValue();
             Timestamp tLSD = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
             Timestamp tLED = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
-            String contact = combo_Contact.getValue();
-            String customer = combo_Customer.getValue();
+            Contact contact = combo_Contact.getSelectionModel().getSelectedItem();
+            Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
+            int conId = contact.getContactId();
+            int custId = customer.getCustId();
+            String conName = contact.getContactName();
+            String custName = customer.getCustName();
 
 
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, contact);
-            appointment.setAppCustomer(customer);
+            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, conName);
+            appointment.setAppContactId(conId);
+            appointment.setAppCustId(custId);
+            appointment.setAppCustomer(custName);
 
             AppointmentData.addAppointment(appointment);
         }

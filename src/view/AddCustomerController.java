@@ -6,7 +6,9 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.Country;
 import model.Customer;
+import model.Division;
 
 public class AddCustomerController {
 
@@ -17,9 +19,9 @@ public class AddCustomerController {
     @FXML
     private TextField text_Address;
     @FXML
-    private ComboBox<String> combo_Country;
+    private ComboBox<Country> combo_Country;
     @FXML
-    private ComboBox<String> combo_State;
+    private ComboBox<Division> combo_State;
     @FXML
     private TextField text_Postal;
     @FXML
@@ -27,10 +29,8 @@ public class AddCustomerController {
     @FXML
     private Button button_AddCustomer;
 
-    ObservableList<String> country = FXCollections.observableArrayList();
-    ObservableList<String> state = FXCollections.observableArrayList();
-
-    private int addCustId;
+    private ObservableList<Country> countryList = FXCollections.observableArrayList();
+    private ObservableList<Division> divList = FXCollections.observableArrayList();
 
     private Stage custStage;
 
@@ -40,10 +40,10 @@ public class AddCustomerController {
 
     @FXML
     public void initialize(){
-        country = CustomerData.getAllCountries();
-        combo_Country.setItems(country);
-        state = CustomerData.getAllDivisions();
-        combo_State.setItems(state);
+        countryList = CustomerData.getAllCountries();
+        combo_Country.setItems(countryList);
+        divList = CustomerData.getAllDivisions();
+        combo_State.setItems(divList);
     }
 
     @FXML
@@ -54,15 +54,13 @@ public class AddCustomerController {
             String phone = text_Phone.getText();
             String address = text_Address.getText();
             String postal = text_Postal.getText();
-            String state = combo_State.getSelectionModel().getSelectedItem();
-            String country = combo_Country.getSelectionModel().getSelectedItem();
-            int stateId = CustomerData.getCustStateId(state);
-            int countryId = CustomerData.getCustCountryId(stateId);
+            Division state = combo_State.getSelectionModel().getSelectedItem();
+            Country country = combo_Country.getSelectionModel().getSelectedItem();
+            int stateId = state.getDivId();
+            int countryId = country.getCid();
             Customer customer = new Customer(id, name, address, postal, phone);
             customer.setStateId(stateId);
-            customer.setCustState(state);
             customer.setCountryId(countryId);
-            customer.setCustCountry(country);
 
             CustomerData.customerList.add(customer);
             CustomerData.addCustomer(customer);
@@ -71,18 +69,21 @@ public class AddCustomerController {
 
     @FXML
     private void handleCountrySelection(){
-        String cSelect = combo_Country.getSelectionModel().getSelectedItem();
-        state = CustomerData.getDivisionByCountry(cSelect);
-        combo_State.setItems(state);
+        ObservableList<Division> tempDivList;
+
+        Country cSelect = combo_Country.getSelectionModel().getSelectedItem();
+        tempDivList = CustomerData.getDivisionByCountry(cSelect);
+        combo_State.setItems(tempDivList);
     }
 
     @FXML
     private void handleDivisionSelection(){
-        String dSelect = combo_State.getSelectionModel().getSelectedItem();
-        String cName = CustomerData.getCountryByDivision(dSelect);
-        for(String n : combo_Country.getItems()){
-            if(n.equals(cName)){
-                combo_Country.setValue(cName);
+        Division dSelect = combo_State.getSelectionModel().getSelectedItem();
+        Country country = CustomerData.getCountryByDivision(dSelect);
+        for(int i=0; i < combo_Country.getItems().size(); i++){
+            Country cLC = combo_Country.getItems().get(i);
+            if(cLC.getCid() == country.getCid()){
+                combo_Country.getSelectionModel().select(i);
             }
         }
     }

@@ -164,6 +164,30 @@ public class AppointmentData {
         return false;
     }
 
+    public static Contact getContact(int conId){
+        Contact contact;
+
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT Contact_ID FROM contact WHERE Contact_Name='" +
+                    conId + "'");
+            int id = result.getInt("Contact_ID");
+            String name = result.getString("Contact_Name");
+            String email = result.getString("Email");
+
+            contact = new Contact(name, email);
+            contact.setContactId(id);
+
+            query.close();
+            return contact;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static int getContactId(String contact){
         try{
             Statement query = Database.getConnection().createStatement();

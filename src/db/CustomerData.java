@@ -5,14 +5,14 @@ import java.time.LocalDateTime;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import model.Country;
 import model.Customer;
+import model.Division;
 import model.User;
 
 public class CustomerData {
 
     public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    public static ObservableList<String> countryList = FXCollections.observableArrayList();
-    public static ObservableList<String> divisionList = FXCollections.observableArrayList();
 
     public static ObservableList<Customer> getAllCustomers(){
         ObservableList<Customer> custList = FXCollections.observableArrayList();
@@ -49,15 +49,24 @@ public class CustomerData {
         }
     }
 
-    public Customer getCustomerById(int id) {
+    public static Customer getCustomerById(int id) {
+        Customer customer;
+
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM customers WHERE Customer_ID = '" + id +"'");
             if(result.next()){
-                Customer qCust = new Customer();
-                qCust.setCustName(result.getString("Customer_Name"));
+                int custId = result.getInt("Customer_ID");
+                String custName = result.getString("Customer_Name");
+                String address = result.getString("Address");
+                String postal = result.getString("Postal_Code");
+                String phone = result.getString("Phone");
+                int custDivId = result.getInt("Division_ID");
+
+                customer = new Customer(custId, custName, address, postal, phone);
+                customer.setStateId(custDivId);
                 query.close();
-                return qCust;
+                return customer;
             }
         }
         catch (SQLException e){
@@ -79,44 +88,60 @@ public class CustomerData {
         return -1;
     }
 
-    public static int getCustStateId(String division){
+    public static Division getCustDiv(int divId){
+        Division division;
+
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Division_ID FROM first_level_divisions WHERE Division = '" + division + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE Division_ID = '" + divId + "'");
             int divisionId = result.getInt("Division_ID");
+            String divName = result.getString("Division");
+            int divCountryId = result.getInt("Country_ID");
+
+            division = new Division(divisionId, divName, divCountryId);
             query.close();
-            return divisionId;
+            return division;
         }
         catch(SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
         }
-        return -1;
+        return null;
     }
 
-    public static int getCustCountryId(int divisionId){
+    public static Country getCustCountry(int cId){
+        Country country;
+
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Country_ID FROM countries " +
-                    "JOIN first_level_divisions ON countries.Country_ID = first_level_divisions.Country_ID " +
-                    "WHERE Division_ID = '" + divisionId + "'");
-            int countryId = result.getInt("Division_ID");
+            ResultSet result = query.executeQuery("SELECT * FROM countries " +
+                    "WHERE Country_ID = '" + cId + "'");
+            int countryId = result.getInt("Country_ID");
+            String countryName = result.getString("Country");
+
+            country = new Country(countryId, countryName);
             query.close();
-            return countryId;
+            return country;
         }
         catch (SQLException e){
             System.out.println("The following SQL Exception has occurred:\n" + e.getMessage());
         }
-        return -1;
+        return null;
     }
 
-    public static ObservableList<String> getAllCountries(){
+    public static ObservableList<Country> getAllCountries(){
+        ObservableList<Country> countryList = FXCollections.observableArrayList();
+        Country country;
+
         try {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Country FROM countries");
             while(result.next()){
+                int countryId = result.getInt("Country_ID");
                 String countryName = result.getString("Country");
 
-                countryList.add(countryName);
+                country = new Country(countryId, countryName);
+
+                countryList.add(country);
             }
             query.close();
             return countryList;
@@ -127,14 +152,21 @@ public class CustomerData {
         return null;
     }
 
-    public static ObservableList<String> getAllDivisions(){
+    public static ObservableList<Division> getAllDivisions(){
+        ObservableList<Division> divisionList = FXCollections.observableArrayList();
+        Division division;
+
         try {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Division FROM first_level_divisions");
             while(result.next()){
+                int divisionId = result.getInt("Division_ID");
                 String divisionName = result.getString("Division");
+                int divCountryId = result.getInt("Country_ID");
 
-                divisionList.add(divisionName);
+                division = new Division(divisionId, divisionName, divCountryId);
+
+                divisionList.add(division);
             }
             query.close();
             return divisionList;
@@ -145,15 +177,21 @@ public class CustomerData {
         return null;
     }
 
-    public static String getCountryByDivision(String divName){
+    public static Country getCountryByDivision(Division division){
+        Country country;
+
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Country FROM countries" +
                     "JOIN first_level_divisions ON country.Country_ID = first_level_divisions.Country_ID " +
-                    "WHERE Division = '" + divName + "'");
+                    "WHERE Division = '" + division.getDivCountryId() + "'");
+            int countryId = result.getInt("Country_ID");
             String countryName = result.getString("Country");
+
+            country = new Country(countryId, countryName);
+
             query.close();
-            return countryName;
+            return country;
         }
         catch(SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
@@ -161,16 +199,22 @@ public class CustomerData {
         return null;
     }
 
-    public static ObservableList<String> getDivisionByCountry(String cName){
+    public static ObservableList<Division> getDivisionByCountry(Country country){
+        ObservableList<Division> divisionList = FXCollections.observableArrayList();
+        Division division;
+
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Division FROM first_level_divisions" +
                     "JOIN country ON first_level_divisions.Country_ID = country.Country_ID " +
-                    "WHERE Country = '" + cName + "'");
+                    "WHERE Country_ID = '" + country.getCid() + "'");
             while(result.next()){
+                int divisionId = result.getInt("Division_ID");
                 String divisionName = result.getString("Division");
+                int divCountryId = result.getInt("Country_ID");
 
-                divisionList.add(divisionName);
+                division = new Division(divisionId, divisionName, divCountryId);
+                divisionList.add(division);
             }
             query.close();
             return divisionList;
