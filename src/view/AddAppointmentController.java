@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+import model.Customer;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ public class AddAppointmentController {
     @FXML
     private ComboBox<Contact> combo_Contact;
     @FXML
-    private ComboBox<String> combo_Customer;
+    private ComboBox<Customer> combo_Customer;
     @FXML
     private TextField text_CustId;
     @FXML
@@ -48,17 +49,16 @@ public class AddAppointmentController {
 
     private Stage appStage;
 
-    public void createAddAppointment(Stage appStage){
-        this.appStage = appStage;
-    }
+    public void createAddAppointment(Stage stage){ this.appStage = stage; }
 
     private static final ObservableList<LocalTime> timeList = FXCollections.observableArrayList();
-
     private static ObservableList<Contact> contactList = FXCollections.observableArrayList();
+    private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
 
     @FXML
     public void initialize(){
+        //text_AppId.setText(Integer.toString(AppointmentData.getNextAppId()));
         LocalTime start = LocalTime.of(0, 0);
         LocalTime end = LocalTime.of(23, 59);
         while(start.isBefore(end.plusSeconds(1))){
@@ -72,6 +72,7 @@ public class AddAppointmentController {
 
         contactList = AppointmentData.allContacts();
         combo_Contact.setItems(contactList);
+        combo_Customer.setItems(customerList);
     }
 
     @FXML
@@ -84,12 +85,12 @@ public class AddAppointmentController {
             String type = combo_Type.getValue();
             Timestamp tLSD = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
             Timestamp tLED = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
-            String contact = combo_Contact.getValue().getContactName();
-            String customer = combo_Customer.getValue();
+            Contact contact = combo_Contact.getSelectionModel().getSelectedItem();
+            Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
 
 
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, contact);
-            appointment.setAppCustomer(customer);
+            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type,
+                    tLSD, tLED, contact.getContactId(), customer.getCustId());
 
             AppointmentData.addAppointment(appointment);
         }

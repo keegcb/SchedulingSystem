@@ -20,7 +20,8 @@ public class Appointment {
     private ZonedDateTime zdtStart;
     private ZonedDateTime zdtEnd;
 
-    public Appointment(int id, String title, String description, String location, String type, Timestamp start, Timestamp end, String contact){
+    public Appointment(int id, String title, String description, String location, String type,
+                       Timestamp start, Timestamp end, int customerId, int contactId){
         appId = id;
         appTitle = title;
         appDescription = description;
@@ -28,7 +29,8 @@ public class Appointment {
         appType = type;
         appStart = start;
         appEnd = end;
-        appContact = contact;
+        appCustId = customerId;
+        appContactId = contactId;
 
         zdtStart = SchedulingSystem.SchedulingSystem.convertToZDT(start);
         zdtEnd = SchedulingSystem.SchedulingSystem.convertToZDT(end);

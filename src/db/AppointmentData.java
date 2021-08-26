@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Appointment;
 import model.Contact;
+import model.Customer;
 
 import java.sql.ResultSet;
 import java.time.LocalDate;
@@ -40,9 +41,21 @@ public class AppointmentData {
                 Timestamp edate = result.getTimestamp("End");
                 String contact = result.getString("Contact_Name");
                 String customer = result.getString("Customer_Name");
+                int contactId = result.getInt("Contact_ID");
+                int customerId = result.getInt("Customer_ID");
 
-                app = new Appointment(id, title, description, location, type, sdate, edate, contact);
+                app = new Appointment();
+                app.setAppId(id);
+                app.setAppTitle(title);
+                app.setAppDescription(description);
+                app.setAppLocation(location);
+                app.setAppType(type);
+                app.setAppStart(sdate);
+                app.setAppEnd(edate);
+                app.setAppContact(contact);
                 app.setAppCustomer(customer);
+                app.setAppContactId(contactId);
+                app.setAppCustId(customerId);
                 appList.add(app);
             }
             query.close();
@@ -76,10 +89,22 @@ public class AppointmentData {
                 Timestamp sdate = result.getTimestamp("Start");
                 Timestamp edate = result.getTimestamp("End");
                 String contact = result.getString("Contact_Name");
-                int customer = result.getInt("Customer_ID");
+                String customer = result.getString("Customer_Name");
+                int contactId = result.getInt("Contact_ID");
+                int customerId = result.getInt("Customer_ID");
 
-                app = new Appointment(id, title, description, location, type, sdate, edate, contact);
-                app.setAppCustId(customer);
+                app = new Appointment();
+                app.setAppId(id);
+                app.setAppTitle(title);
+                app.setAppDescription(description);
+                app.setAppLocation(location);
+                app.setAppType(type);
+                app.setAppStart(sdate);
+                app.setAppEnd(edate);
+                app.setAppContact(contact);
+                app.setAppCustomer(customer);
+                app.setAppContactId(contactId);
+                app.setAppCustId(customerId);
                 appList.add(app);
             }
             query.close();
@@ -107,9 +132,21 @@ public class AppointmentData {
                 Timestamp edate = result.getTimestamp("End");
                 String contact = result.getString("Contact_Name");
                 String customer = result.getString("Customer_Name");
+                int contactId = result.getInt("Contact_ID");
+                int customerId = result.getInt("Customer_ID");
 
-                app = new Appointment(id, title, description, location, type, sdate, edate, contact);
+                app = new Appointment();
+                app.setAppId(id);
+                app.setAppTitle(title);
+                app.setAppDescription(description);
+                app.setAppLocation(location);
+                app.setAppType(type);
+                app.setAppStart(sdate);
+                app.setAppEnd(edate);
+                app.setAppContact(contact);
                 app.setAppCustomer(customer);
+                app.setAppContactId(contactId);
+                app.setAppCustId(customerId);
                 appList.add(app);
             }
             query.close();
@@ -134,6 +171,23 @@ public class AppointmentData {
         return false;
     }
 
+    public static int getNextAppId(){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT MAX(Appointment_ID) " +
+                    "AS Last_ID FROM appointments");
+
+            int appId;
+            appId = result.getInt("Last_ID");
+            query.close();
+            return ++appId;
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
     public static void addAppointment(Appointment appointment){
         try{
             Statement query = Database.getConnection().createStatement();
@@ -150,6 +204,20 @@ public class AppointmentData {
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
         }
+    }
+
+//TODO Finish query to prevent overlapping meetings
+    public static boolean appOverlap(Customer customer, Timestamp start, Timestamp end){
+        try {
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE Customer_ID='" + customer.getCustId()
+                    + "' AND Start <'" + start + "' AND End >'" + start + "");
+        }
+        catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     public static boolean deleteAppointment(int id){
@@ -188,11 +256,14 @@ public class AppointmentData {
     }
 
     public static int getContactId(String contact){
+        int id = 0;
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Contact_ID FROM contact WHERE Contact_Name='" +
                     contact + "'");
-            int id = result.getInt("Contact_ID");
+            while(result.next()){
+                id = result.getInt("Contact_ID");
+            }
             query.close();
             return id;
         }
@@ -233,7 +304,8 @@ public class AppointmentData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM appointments " +
-                    "JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID WHERE appointments.Contact_ID=" + con.getContactId());
+                    "JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID " +
+                    "WHERE appointments.Contact_ID=" + con.getContactId());
             while(result.next()){
                 int id = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
@@ -243,10 +315,20 @@ public class AppointmentData {
                 Timestamp sdate = result.getTimestamp("Start");
                 Timestamp edate = result.getTimestamp("End");
                 String contact = result.getString("Contact_Name");
-                int customer = result.getInt("Customer_ID");
+                int contactId = result.getInt("Contact_ID");
+                int customerId = result.getInt("Customer_ID");
 
-                app = new Appointment(id, title, description, location, type, sdate, edate, contact);
-                app.setAppCustId(customer);
+                app = new Appointment();
+                app.setAppId(id);
+                app.setAppTitle(title);
+                app.setAppDescription(description);
+                app.setAppLocation(location);
+                app.setAppType(type);
+                app.setAppStart(sdate);
+                app.setAppEnd(edate);
+                app.setAppContact(contact);
+                app.setAppContactId(contactId);
+                app.setAppCustId(customerId);
                 appList.add(app);
             }
             query.close();
@@ -259,13 +341,14 @@ public class AppointmentData {
 
     public static int appByTypeMonth(String selType, Timestamp sMonth, Timestamp eMonth){
         int count;
-//TODO fix query so it stops failing when report is ran (verified query string works in MySQL workbench)
+
         try {
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT COUNT(Appointment_ID) FROM appointments WHERE Type='" + selType
+            ResultSet result = query.executeQuery("SELECT COUNT(Appointment_ID) " +
+                    "AS Total FROM appointments WHERE Type='" + selType
                     + "' AND Start >='" + sMonth + "' AND Start <='" + eMonth + "'");
 
-            count = result.getInt("COUNT(Appointment_ID)");
+            count = result.getInt("Total");
             query.close();
             return count;
         }

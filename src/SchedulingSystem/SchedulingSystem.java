@@ -113,18 +113,18 @@ public class SchedulingSystem extends Application {
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/AddAppointment.fxml")));
-            AnchorPane window = loader.load();
+            AnchorPane appWindow = loader.load();
 
-            Stage stage = new Stage();
-            stage.setTitle("Add Appointment");
-            stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(mainStage);
+            Stage addAppStage = new Stage();
+            addAppStage.setTitle("Add Appointment");
+            addAppStage.initModality(Modality.NONE);
+            addAppStage.initOwner(mainStage);
 
-            Scene scene = new Scene(window);
-            stage.setScene(scene);
+            Scene addAppScene = new Scene(appWindow);
+            addAppStage.setScene(addAppScene);
             AddAppointmentController stageControl = loader.getController();
-            stageControl.createAddAppointment(stage);
-            stage.showAndWait();
+            stageControl.createAddAppointment(addAppStage);
+            addAppStage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

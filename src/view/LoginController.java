@@ -65,7 +65,6 @@ public class LoginController {
         String pass = text_Password.getText();
         if(UserData.login(user, pass)){
             loginStage.close();
-
         }
 
     }

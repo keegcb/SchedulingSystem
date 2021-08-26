@@ -142,7 +142,7 @@ public class MainScreenController {
         col_AppCust.setCellValueFactory(new PropertyValueFactory<>("appCustId"));
         table_Appointment.setItems(AppointmentData.getAppsByWeek());
 
-        //toggleWeekMonth();
+        toggleWeekMonth();
 
         col_CustId.setCellValueFactory(new PropertyValueFactory<>("custId"));
         col_CustName.setCellValueFactory(new PropertyValueFactory<>("custName"));
