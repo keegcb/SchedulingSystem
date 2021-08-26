@@ -106,6 +106,7 @@
                         <Button layoutX="99.0" layoutY="229.0" mnemonicParsing="false" onAction="#handleReportTypeMonth" text="Report" />
                         <ComboBox fx:id="combo_Contact" layoutX="373.0" layoutY="139.0" prefWidth="150.0" promptText="Select Contact" />
                         <Button layoutX="422.0" layoutY="229.0" mnemonicParsing="false" onAction="#handleReportAppContact" text="Report" />
+                        <Label fx:id="label_TypeMonth" layoutX="111.0" layoutY="299.0" />
                      </children></AnchorPane>
             </content>
           </Tab>

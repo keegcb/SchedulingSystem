@@ -12,6 +12,11 @@ import model.Appointment;
 import model.Contact;
 import model.Customer;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+
 public class MainScreenController {
 
     private ObservableList<Appointment> displayAppointment = FXCollections.observableArrayList();
@@ -79,11 +84,13 @@ public class MainScreenController {
     @FXML
     private Tab tab_Reports;
     @FXML
-    private ComboBox combo_AppType;
+    private ComboBox<String> combo_AppType;
     @FXML
     private ComboBox combo_Month;
     @FXML
-    private ComboBox combo_Contact;
+    private ComboBox<Contact> combo_Contact;
+    @FXML
+    private Label label_TypeMonth;
 
     private static boolean validSelect;
 
@@ -99,6 +106,7 @@ public class MainScreenController {
         APRIL("April"),
         MAY("May"),
         JUNE("June"),
+        JULY("July"),
         AUGUST("August"),
         SEPTEMBER("September"),
         OCTOBER("October"),
@@ -166,6 +174,7 @@ public class MainScreenController {
         SchedulingSystem.SchedulingSystem.openAddCustomer();
     }
 
+    //TODO fix update button so update screen can be opened
     @FXML
     void handleUpdateCustomer(){
         if(isValidSelection(1)){
@@ -175,7 +184,7 @@ public class MainScreenController {
             }
         }
     }
-
+//TODO add code to remove the customer from the SQL database as well
     @FXML
     void handleDeleteCustomer(){
         if(isValidSelection(2)){
@@ -207,6 +216,7 @@ public class MainScreenController {
         }
     }
 
+    //TODO add code to remove the appointment from the SQL database as well
     @FXML
     void handleDeleteAppointment(){
         if(isValidSelection(4)){
@@ -224,7 +234,12 @@ public class MainScreenController {
             String type = (String) combo_AppType.getSelectionModel().getSelectedItem();
             int nMonth = combo_Month.getSelectionModel().getSelectedIndex()+1;
 
-//TODO create a table to populate with appropriate information for the type/month query
+            LocalDateTime date = LocalDateTime.of(LocalDate.now().getYear(), nMonth, 1,0,0);
+            Timestamp mStart = Timestamp.valueOf(date);
+            Timestamp mEnd = Timestamp.valueOf(date.plusMonths(1));
+
+            int result = AppointmentData.appByTypeMonth(type, mStart, mEnd);
+            label_TypeMonth.setText(String.valueOf(result));
         }
     }
 

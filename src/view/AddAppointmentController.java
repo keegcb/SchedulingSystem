@@ -12,6 +12,8 @@ import model.Contact;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class AddAppointmentController {
 
@@ -94,72 +96,74 @@ public class AddAppointmentController {
     }
 
     public boolean validAppointment(){
+        ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
+
         boolean valid = true;
         boolean dates = true;
         boolean times = true;
         String errorMessage = "";
 
         if(text_Title.getText().isEmpty()){
-            errorMessage += "* Title field is not populated\n";
+            errorMessage += rb.getString("aTitle") + "\n";
             valid = false;
         }
         if(text_Description.getText().isEmpty()){
-            errorMessage += "* Description is required to create appointment\n";
+            errorMessage += rb.getString("description") + "\n";
             valid = false;
         }
         if(text_Location.getText().isEmpty()){
-            errorMessage += "* Location has not been designated\n";
+            errorMessage += rb.getString("location") + "\n";
             valid = false;
         }
         if(date_Start.getValue() == null){
-            errorMessage += "* Starting date was not selected\n";
+            errorMessage += rb.getString("start") + "\n";
             dates = false;
             valid = false;
         }
         if(date_End.getValue() == null){
-            errorMessage += "* End date was not selected\n";
+            errorMessage += rb.getString("end") + "\n";
             dates = false;
             valid = false;
         }
         if(combo_STime.getValue() == null){
-            errorMessage += "* Start time must be selected\n";
+            errorMessage += rb.getString("sTime") + "\n";
             times = false;
             valid = false;
         }
         if(combo_ETime.getValue() == null){
-            errorMessage += "* End time must be selected\n";
+            errorMessage += rb.getString("eTime") + "\n";
             times = false;
             valid = false;
         }
         if(dates){
             if(date_Start.getValue().isAfter(date_End.getValue())){
-                errorMessage += "* Selected start date cannot be after the selected end date\n";
+                errorMessage += rb.getString("dates") + "\n";
                 valid = false;
             }
             if(times){
                 if((date_Start.getValue().equals(date_End.getValue()) && (combo_STime.getValue().isAfter(combo_ETime.getValue())))){
-                    errorMessage += "* Selected start time cannot be after the selected end time\n";
+                    errorMessage += rb.getString("aTimes") + "\n";
                     valid = false;
                 }
             }
         }
         if(combo_Type.getSelectionModel().getSelectedIndex() == -1){
-            errorMessage += "* Type of appointment was not selected\n";
+            errorMessage += rb.getString("aType") + "\n";
             valid = false;
         }
         if(combo_Contact.getSelectionModel().getSelectedIndex() == -1){
-            errorMessage += "* Contact was not selected\n";
+            errorMessage += rb.getString("aContact") + "\n";
             valid = false;
         }
         if(combo_Customer.getSelectionModel().getSelectedIndex() == -1){
-            errorMessage += "* Customer was not selected\n";
+            errorMessage += rb.getString("aCustomer") + "\n";
             valid = false;
         }
         if (!valid) {
             Alert fieldError = new Alert(Alert.AlertType.ERROR);
-            fieldError.setTitle("Error");
-            fieldError.setHeaderText("Errors occurred when attempting to create the Appointment.\n" +
-                    "Please address the following issues and try again:");
+            fieldError.setTitle(rb.getString("error"));
+            fieldError.setHeaderText(rb.getString("eHeader1") + "\n" +
+                    rb.getString("eHeader2"));
             fieldError.setContentText(errorMessage);
             fieldError.showAndWait();
         }

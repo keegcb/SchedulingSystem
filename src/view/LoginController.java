@@ -14,6 +14,8 @@ import javafx.stage.WindowEvent;
 
 import java.io.IOException;
 import java.time.ZoneId;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class LoginController {
 
@@ -25,6 +27,14 @@ public class LoginController {
     private Button button_Login;
     @FXML
     private Label label_UserZone;
+    @FXML
+    private Label label_Login;
+    @FXML
+    private Label label_Username;
+    @FXML
+    private Label label_Password;
+    @FXML
+    private Label label_Location;
 
     private Stage loginStage;
 
@@ -33,9 +43,17 @@ public class LoginController {
     }
 
     public void initialize(){
+        ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
+
         ZoneId zid = ZoneId.systemDefault();
         String zone = zid.getId();
         label_UserZone.setText(zone);
+
+        button_Login.setText(rb.getString("login"));
+        label_Login.setText(rb.getString("login"));
+        label_Username.setText(rb.getString("username"));
+        label_Password.setText(rb.getString("password"));
+        label_Location.setText(rb.getString("location"));
     }
 
     @FXML

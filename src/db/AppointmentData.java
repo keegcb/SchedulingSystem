@@ -60,7 +60,6 @@ public class AppointmentData {
         LocalDate start = LocalDate.now();
         LocalDate end = LocalDate.now().plusMonths(1);
         try {
-            //Add JOIN statements to query to get Contact & Customer info
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery(
                     "SELECT * FROM appointments " +
@@ -258,21 +257,13 @@ public class AppointmentData {
         return null;
     }
 
-    public static int appByTypeMonth(String selType, int month){
-        //TODO figure out how to identify a specific month for a timestamp agnostic of year
-        /*
-        LocalDateTime sldt = LocalDateTime.now();
-        LocalDateTime eldt = LocalDateTime.now().plusWeeks(1);
-        Timestamp start = Timestamp.valueOf(sldt);
-        Timestamp end = Timestamp.valueOf(eldt);
-        */
-
+    public static int appByTypeMonth(String selType, Timestamp sMonth, Timestamp eMonth){
         int count;
-
+//TODO fix query so it stops failing when report is ran (verified query string works in MySQL workbench)
         try {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT COUNT(Appointment_ID) FROM appointments WHERE Type='" + selType
-                    + "' AND Start=MONTH('" + month + "')");
+                    + "' AND Start >='" + sMonth + "' AND Start <='" + eMonth + "'");
 
             count = result.getInt("COUNT(Appointment_ID)");
             query.close();

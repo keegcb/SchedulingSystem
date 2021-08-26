@@ -10,6 +10,9 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 public class AddCustomerController {
 
     @FXML
@@ -89,15 +92,17 @@ public class AddCustomerController {
     }
 
     public boolean validCustomer(){
+        ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
+
         boolean valid = true;
         String errorMessage = "";
 
         if(text_CustName.getText().isEmpty()){
-            errorMessage += "* Name field is not populated\n";
+            errorMessage += rb.getString("name") + "\n";
             valid = false;
         }
         if(text_Phone.getText().isEmpty()){
-            errorMessage += "* Phone number is not populated\n";
+            errorMessage += rb.getString("phone") + "\n";
             valid = false;
         }
         else {
@@ -106,22 +111,21 @@ public class AddCustomerController {
                 int num = Integer.parseInt(phone);
                 //verify if there is certain number format required
                 if (num != -1 && phone.length() != 10){
-                    errorMessage += "* Phone number must be 10 numbers in length\n";
+                    errorMessage += rb.getString("num10") + "\n";
                     valid = false;
                 }
             } catch (NumberFormatException e) {
-                System.out.println("Phone Number contains non-integer characters.");
                 e.getMessage();
-                errorMessage += "* Phone number contains non-number characters\n";
+                errorMessage += rb.getString("nonNumPhone") + "\n";
                 valid = false;
             }
         }
         if(text_Address.getText().isEmpty()){
-            errorMessage += "* Address field is not populated\n";
+            errorMessage += rb.getString("address") + "\n";
             valid = false;
         }
         if (text_Postal.getText().isEmpty()){
-            errorMessage += "* Postal code is not populated\n";
+            errorMessage += rb.getString("postal") + "\n";
             valid = false;
         }
         else {
@@ -129,26 +133,25 @@ public class AddCustomerController {
                 String post = text_Postal.getText();
                 int num = Integer.parseInt(post);
             } catch (NumberFormatException e){
-                System.out.println("Postal Code contains non-integer characters");
                 e.getMessage();
-                errorMessage += "* Postal Code contains non-number characters\n";
+                errorMessage += rb.getString("nonNumPostal") + "\n";
                 valid = false;
             }
         }
         if(combo_State.getSelectionModel().isEmpty()){
-            errorMessage += "* State has not been selected\n";
+            errorMessage += rb.getString("division") + "\n";
             valid = false;
         }
         if(combo_Country.getSelectionModel().isEmpty()){
-            errorMessage += "* Country has not been selected\n";
+            errorMessage += rb.getString("country") + "\n";
             valid = false;
         }
 
         if (!valid) {
             Alert fieldError = new Alert(Alert.AlertType.ERROR);
-            fieldError.setTitle("Error");
-            fieldError.setHeaderText("Errors occurred when attempting to create the Customer.\n" +
-                    "Please address the following issues and try again:");
+            fieldError.setTitle(rb.getString("error"));
+            fieldError.setHeaderText(rb.getString("eHeader1") + "\n" +
+                    rb.getString("eHeader2"));
             fieldError.setContentText(errorMessage);
             fieldError.showAndWait();
         }
