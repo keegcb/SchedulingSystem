@@ -206,18 +206,35 @@ public class AppointmentData {
         }
     }
 
-//TODO Finish query to prevent overlapping meetings
-    public static boolean appOverlap(Customer customer, Timestamp start, Timestamp end){
+    public static ObservableList<Appointment> getAppsByCustomer(Customer customer){
+        ObservableList<Appointment> appList = FXCollections.observableArrayList();
+        Appointment app;
+
         try {
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE Customer_ID='" + customer.getCustId()
-                    + "' AND Start <'" + start + "' AND End >'" + start + "");
+            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE Customer_ID='" +
+                    customer.getCustId() + "'");
+            while (result.next()){
+                int id = result.getInt("Appointment_ID");
+                String title = result.getString("Title");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
+                String type = result.getString("Type");
+                Timestamp sdate = result.getTimestamp("Start");
+                Timestamp edate = result.getTimestamp("End");
+                int customerId = result.getInt("Customer_ID");
+                int contactId = result.getInt("Contact_ID");
+
+                app = new Appointment(id, title, description, location, type, sdate, edate, customerId, contactId);
+                appList.add(app);
+            }
+            query.close();
+            return appList;
         }
         catch (SQLException e){
             e.printStackTrace();
         }
-
-        return false;
+        return null;
     }
 
     public static boolean deleteAppointment(int id){
