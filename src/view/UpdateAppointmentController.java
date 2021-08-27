@@ -114,21 +114,30 @@ public class UpdateAppointmentController {
             Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
             int conId = contact.getContactId();
             int custId = customer.getCustId();
-            String conName = contact.getContactName();
-            String custName = customer.getCustName();
 
-
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, conName);
-            appointment.setAppContactId(conId);
-            appointment.setAppCustId(custId);
-            appointment.setAppCustomer(custName);
-
+            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, custId, conId);
             AppointmentData.addAppointment(appointment);
         }
+    }
+    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
+        ObservableList<Appointment> appList = appointments;
+        Timestamp selStart = sTime;
+        Timestamp selEnd = eTime;
+
+        for(Appointment app : appList){
+            Timestamp start = app.getAppStart();
+            Timestamp end = app.getAppEnd();
+            if(!selEnd.before(start) && selStart.after(end)){
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean validAppointment(){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
+        Timestamp tLSD = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
+        Timestamp tLED = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
 
         boolean valid = true;
         boolean dates = true;
@@ -178,6 +187,10 @@ public class UpdateAppointmentController {
                     valid = false;
                 }
             }
+        }
+        if(overlapping(tLSD, tLED, AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem()))){
+            errorMessage += rb.getString("overlap") + "\n";
+            valid = false;
         }
         if(combo_Type.getSelectionModel().getSelectedIndex() == -1){
             errorMessage += rb.getString("aType") + "\n";

@@ -172,15 +172,17 @@ public class AppointmentData {
     }
 
     public static int getNextAppId(){
+        int appId;
+
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT MAX(Appointment_ID) " +
                     "AS Last_ID FROM appointments");
 
-            int appId;
             appId = result.getInt("Last_ID");
+            appId++;
             query.close();
-            return ++appId;
+            return appId;
         }
         catch (SQLException e){
             e.printStackTrace();

@@ -22,6 +22,11 @@ public class Customer {
 
     public Customer() {}
 
+    @Override
+    public String toString(){
+        return (custName);
+    }
+
     public int getCustId(){
         return custId;
     }
