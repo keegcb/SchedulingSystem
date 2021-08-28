@@ -54,7 +54,7 @@ public class CustomerData {
 
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM customers WHERE Customer_ID = '" + id +"'");
+            ResultSet result = query.executeQuery("SELECT * FROM customers WHERE Customer_ID = " + id);
             if(result.next()){
                 int custId = result.getInt("Customer_ID");
                 String custName = result.getString("Customer_Name");
@@ -95,7 +95,7 @@ public class CustomerData {
 
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE Division_ID = '" + divId + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE Division_ID = " + divId);
             if(result.next()){
                 int divisionId = result.getInt("Division_ID");
                 String divName = result.getString("Division");
@@ -118,7 +118,7 @@ public class CustomerData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM countries " +
-                    "WHERE Country_ID = '" + cId + "'");
+                    "WHERE Country_ID = " + cId);
             if(result.next()){
                 int countryId = result.getInt("Country_ID");
                 String countryName = result.getString("Country");
@@ -233,7 +233,7 @@ public class CustomerData {
     public static boolean addCustomer(Customer customer){
         try{
             Statement query = Database.getConnection().createStatement();
-            query.executeQuery("INSERT INTO customers SET Customer_ID='" + customer.getCustId() + "', Customer_Name='" +
+            query.executeQuery("INSERT INTO customers SET Customer_Name='" +
                     customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
                     customer.getCustPostal() + "', Phone='" + customer.getCustPhone() + "', Create_Date= NOW(), " +
                     ", Created_By='" + UserData.getActiveUser().getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
@@ -249,7 +249,7 @@ public class CustomerData {
     public static boolean updateCustomer(Customer customer){
         try{
             Statement query = Database.getConnection().createStatement();
-            query.executeQuery("UPDATE customers SET Customer_ID='" + customer.getCustId() + "', Customer_Name='" +
+            query.executeQuery("UPDATE customers SET Customer_ID=" + customer.getCustId() + ", Customer_Name='" +
                     customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
                     customer.getCustPostal() + "', Phone='" + customer.getCustPhone() +
                     "', Last_Update= NOW(), Last_Updated_By='" + UserData.getActiveUser().getUsername() +

@@ -1,9 +1,9 @@
 package model;
 
+import view.SchedulingSystem;
+
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 
 public class Appointment {
 
@@ -34,8 +34,8 @@ public class Appointment {
         appCustId = customerId;
         appContactId = contactId;
 
-        zdtStart = SchedulingSystem.SchedulingSystem.convertToZDT(start);
-        zdtEnd = SchedulingSystem.SchedulingSystem.convertToZDT(end);
+        zdtStart = SchedulingSystem.convertToZDT(start);
+        zdtEnd = SchedulingSystem.convertToZDT(end);
     }
 
     public Appointment(){}
@@ -116,9 +116,11 @@ public class Appointment {
 
     public void setAppCustomer(String appCustomer) { this.appCustomer = appCustomer;}
 
-    public ZonedDateTime getZdtStart() {
-        return zdtStart;
+    public LocalDate getAppDate() {
+        return zdtStart.toLocalDate();
     }
+
+    public LocalTime getAppTime(){return zdtStart.toLocalTime();}
 
     public void setZdtStart(ZonedDateTime zdtStart) {
         this.zdtStart = zdtStart;

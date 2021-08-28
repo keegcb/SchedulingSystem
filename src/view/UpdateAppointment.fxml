@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="557.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UpdateAppointmentController">
+<AnchorPane prefHeight="557.0" prefWidth="536.0" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UpdateAppointmentController">
     <children>
         <Label layoutX="30.0" layoutY="26.0" text="Update Appointment" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="253.0" AnchorPane.topAnchor="30.0">
             <font>
@@ -74,7 +74,7 @@
             </font>
         </Label>
         <ComboBox fx:id="combo_Contact" layoutX="162.0" layoutY="376.0" prefWidth="150.0" AnchorPane.bottomAnchor="156.0" AnchorPane.leftAnchor="141.0" AnchorPane.rightAnchor="142.0" />
-        <ComboBox fx:id="combo_Customer" layoutX="117.0" layoutY="414.0" prefHeight="25.0" prefWidth="191.0" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="166.0" />
+        <ComboBox fx:id="combo_Customer" layoutX="117.0" layoutY="414.0" onAction="#populateCustomerId" prefHeight="25.0" prefWidth="191.0" AnchorPane.bottomAnchor="118.0" AnchorPane.leftAnchor="117.0" AnchorPane.rightAnchor="166.0" />
         <Label layoutX="347.0" layoutY="414.0" text="Id:" AnchorPane.rightAnchor="100.0">
             <font>
                 <Font size="16.0" />
@@ -87,7 +87,7 @@
             </font>
         </Label>
         <TextField fx:id="text_UserId" disable="true" layoutX="237.0" layoutY="454.0" prefHeight="25.0" prefWidth="54.0" AnchorPane.bottomAnchor="78.0" AnchorPane.leftAnchor="237.0" AnchorPane.rightAnchor="183.0" />
-        <Button fx:id="button_UpdateApp" layoutX="167.0" layoutY="503.0" mnemonicParsing="false" text="Update Appointment" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="168.0" />
+        <Button fx:id="button_UpdateApp" layoutX="167.0" layoutY="503.0" mnemonicParsing="false" onAction="#handleUpdateAppointment" text="Update Appointment" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="167.0" AnchorPane.rightAnchor="168.0" />
         <ComboBox fx:id="combo_STime" layoutX="326.0" layoutY="288.0" prefHeight="25.0" prefWidth="116.0" promptText="HH : mm" AnchorPane.bottomAnchor="244.0" AnchorPane.rightAnchor="94.0" />
         <ComboBox fx:id="combo_ETime" layoutX="326.0" layoutY="330.0" prefHeight="25.0" prefWidth="116.0" promptText="HH : mm" AnchorPane.bottomAnchor="202.0" AnchorPane.rightAnchor="94.0" />
     </children>

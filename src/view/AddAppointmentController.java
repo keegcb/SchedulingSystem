@@ -2,6 +2,7 @@ package view;
 
 import db.AppointmentData;
 import db.CustomerData;
+import db.UserData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +15,7 @@ import model.Customer;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 public class AddAppointmentController {
@@ -51,16 +53,13 @@ public class AddAppointmentController {
 
     public void createAddAppointment(Stage stage){ this.appStage = stage; }
 
-    private static ObservableList<Contact> contactList = FXCollections.observableArrayList();
-    private static ObservableList<Customer> customerList = FXCollections.observableArrayList();
-
 
     @FXML
     public void initialize(){
         text_AppId.setText(Integer.toString(AppointmentData.getNextAppId()));
 
         LocalTime start = LocalTime.of(0, 10);
-        LocalTime end = LocalTime.of(23, 59);
+        LocalTime end = LocalTime.of(23, 50);
         while(start.isBefore(end)){
             combo_STime.getItems().add(start);
             combo_ETime.getItems().add(start);
@@ -71,10 +70,12 @@ public class AddAppointmentController {
 
         combo_Type.setItems(MainScreenController.getTypeList());
 
-        contactList = AppointmentData.allContacts();
-        customerList = CustomerData.getAllCustomers();
+        ObservableList<Contact> contactList = AppointmentData.allContacts();
+        ObservableList<Customer> customerList = CustomerData.getAllCustomers();
         combo_Contact.setItems(contactList);
         combo_Customer.setItems(customerList);
+
+        text_UserId.setText(Integer.toString(UserData.getActiveUser().getUserId()));
     }
 
     @FXML
@@ -93,20 +94,26 @@ public class AddAppointmentController {
 
             Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type,
                     tLSD, tLED, contact.getContactId(), customer.getCustId());
+            appointment.setZoneStart(tLSD);
+            appointment.setZoneEnd(tLED);
 
             AppointmentData.addAppointment(appointment);
+            appStage.close();
         }
     }
 
-    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
-        ObservableList<Appointment> appList = appointments;
-        Timestamp selStart = sTime;
-        Timestamp selEnd = eTime;
+    @FXML
+    private void populateCustomerId(){
+        Customer selCustomer = combo_Customer.getSelectionModel().getSelectedItem();
+        int id = selCustomer.getCustId();
+        text_CustId.setText(Integer.toString(id));
+    }
 
-        for(Appointment app : appList){
+    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
+        for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
-            if(!selEnd.before(start) && !selStart.after(end)){
+            if(!eTime.before(start) && !sTime.after(end)){
                 return true;
             }
         }
@@ -184,7 +191,7 @@ public class AddAppointmentController {
                 }
             }
         }
-        if(overlapping(tLSD, tLED, AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem()))){
+        if(overlapping(tLSD, tLED, Objects.requireNonNull(AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem())))){
             errorMessage += rb.getString("overlap") + "\n";
             valid = false;
         }

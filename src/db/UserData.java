@@ -15,14 +15,14 @@ public class UserData {
     }
 
     public static boolean login(String username, String password) {
-        /*
+
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM users WHERE User_Name='" + username + "', AND Password='" +
-            password + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM users WHERE users.User_Name='" + username +
+                    "' AND users.Password='" + password + "'");
             if(result.next()){
                 activeUser = new User();
-                activeUser.setUserId(result.getInteger("User_ID"));
+                activeUser.setUserId(result.getInt("User_ID"));
                 activeUser.setUsername(result.getString("User_Name"));
                 activeUser.setPassword(result.getString("Password"));
                 query.close();
@@ -32,8 +32,6 @@ public class UserData {
             e.printStackTrace();
         }
         return false;
-         */
-        return true;
     }
 
 }

@@ -1,19 +1,22 @@
 package view;
 
+import db.AppointmentData;
 import db.UserData;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import model.Appointment;
+import model.User;
 
 import java.io.IOException;
-import java.time.ZoneId;
+import java.sql.Timestamp;
+import java.time.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -65,7 +68,47 @@ public class LoginController {
         String pass = text_Password.getText();
         if(UserData.login(user, pass)){
             loginStage.close();
+            appointment15();
         }
-
     }
+
+    public void appointment15(){
+        ObservableList<Appointment> userApps = FXCollections.observableArrayList();
+
+        Timestamp current = Timestamp.valueOf(LocalDateTime.now());
+        LocalDateTime ldt = current.toLocalDateTime();
+        ldt = ldt.plusMinutes(16);
+        Timestamp next15 = Timestamp.valueOf(ldt);
+
+        User user = UserData.getActiveUser();
+        userApps = AppointmentData.getAppsByUser(user.getUserId());
+        Appointment temp = null;
+        boolean upcoming = false;
+        if(userApps != null){
+            for(Appointment a : userApps){
+                if(a.getAppStart().after(current) && a.getAppStart().before(next15)){
+                    temp = a;
+                    upcoming = true;
+                } else {
+                    upcoming =false;
+                }
+            }
+            if(upcoming){
+                Alert notice15 = new Alert(Alert.AlertType.INFORMATION);
+                notice15.setTitle("Upcoming Appointment");
+                notice15.setHeaderText("Appointment will start in the next 15 minutes");
+                notice15.setContentText("Appointment ID: " + temp.getAppId() +
+                        "\nDate: " + temp.getAppDate() +
+                        "\nTime: " + temp.getAppTime());
+                notice15.showAndWait();
+            } else {
+                Alert noUpcoming = new Alert(Alert.AlertType.INFORMATION);
+                noUpcoming.setTitle("Upcoming Appointment");
+                noUpcoming.setHeaderText("No upcoming appointments");
+                noUpcoming.setContentText("You have no appointments scheduled to start in the next 15 minutes");
+                noUpcoming.showAndWait();
+            }
+        }
+    }
+
 }

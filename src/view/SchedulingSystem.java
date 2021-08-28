@@ -1,4 +1,4 @@
-package SchedulingSystem;
+package view;
 
 import db.Database;
 import javafx.application.Application;
@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
-import view.*;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -30,7 +29,7 @@ public class SchedulingSystem extends Application {
         mainStage = primaryStage;
         mainStage.setTitle("Appointment Scheduling System");
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation((getClass().getResource("/view/MainScreen.fxml")));
+        loader.setLocation(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
         AnchorPane mainWindow = loader.load();
         Scene mainScene = new Scene(mainWindow);
         mainStage.setScene(mainScene);
@@ -45,7 +44,7 @@ public class SchedulingSystem extends Application {
         Database.endConnection();
     }
 
-    public static void openLogin(){
+    public void openLogin(){
         try{
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/Login.fxml")));
@@ -117,7 +116,7 @@ public class SchedulingSystem extends Application {
 
             Stage addAppStage = new Stage();
             addAppStage.setTitle("Add Appointment");
-            addAppStage.initModality(Modality.NONE);
+            addAppStage.initModality(Modality.WINDOW_MODAL);
             addAppStage.initOwner(mainStage);
 
             Scene addAppScene = new Scene(appWindow);

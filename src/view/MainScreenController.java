@@ -13,10 +13,7 @@ import model.Contact;
 import model.Customer;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Month;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -50,9 +47,9 @@ public class MainScreenController {
     @FXML
     private TableColumn<Appointment, String> col_AppType;
     @FXML
-    private TableColumn<Appointment, ZonedDateTime> col_AppStart;
+    private TableColumn<Appointment, Timestamp> col_AppStart;
     @FXML
-    private TableColumn<Appointment, ZonedDateTime> col_AppEnd;
+    private TableColumn<Appointment, Timestamp> col_AppEnd;
     @FXML
     private TableColumn<Appointment, Integer> col_AppCust;
     @FXML
@@ -141,8 +138,8 @@ public class MainScreenController {
         col_AppLocation.setCellValueFactory(new PropertyValueFactory<>("appLocation"));
         col_AppContact.setCellValueFactory(new PropertyValueFactory<>("appContact"));
         col_AppType.setCellValueFactory(new PropertyValueFactory<>("appType"));
-        col_AppStart.setCellValueFactory(new PropertyValueFactory<>("zdtStart"));
-        col_AppEnd.setCellValueFactory(new PropertyValueFactory<>("zdtEnd"));
+        col_AppStart.setCellValueFactory(new PropertyValueFactory<>("appStart"));
+        col_AppEnd.setCellValueFactory(new PropertyValueFactory<>("appEnd"));
         col_AppCust.setCellValueFactory(new PropertyValueFactory<>("appCustId"));
         table_Appointment.setItems(AppointmentData.getAppsByWeek());
 
@@ -175,7 +172,7 @@ public class MainScreenController {
 
     @FXML
     void handleAddCustomer(){
-        SchedulingSystem.SchedulingSystem.openAddCustomer();
+        SchedulingSystem.openAddCustomer();
     }
 
     //TODO fix update button so update screen can be opened
@@ -184,7 +181,7 @@ public class MainScreenController {
         if(isValidSelection(1)){
             Customer updateCust = table_Customer.getSelectionModel().getSelectedItem();
             if(updateCust != null){
-                SchedulingSystem.SchedulingSystem.openUpdateCustomer(updateCust);
+                SchedulingSystem.openUpdateCustomer(updateCust);
             }
         }
     }
@@ -200,6 +197,23 @@ public class MainScreenController {
                     hasApp.setHeaderText("Customer Has Existing Appointments.");
                     hasApp.setContentText("All existing appointments for the selected customer must be removed prior to removal of the customer data.");
                     hasApp.showAndWait();
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Notice");
+                    alert.setHeaderText("Confirm Delete");
+                    alert.setContentText("You are about to delete selected customer:\n" +
+                            deleteCust.getCustName());
+                    Optional<ButtonType> select = alert.showAndWait();
+                    if(select.get() == ButtonType.OK){
+                        if(CustomerData.deleteCustomer(deleteCust.getCustId())){
+                            Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                            deleted.setHeaderText("Customer Deleted");
+                            deleted.setContentText(deleteCust.getCustName() +
+                                    " has been successfully removed from the database.");
+                            deleted.showAndWait();
+                        }
+                    }
+
                 }
             }
         }
@@ -207,7 +221,7 @@ public class MainScreenController {
 
     @FXML
     void handleAddAppointment(){
-        SchedulingSystem.SchedulingSystem.openAddAppointment();
+        SchedulingSystem.openAddAppointment();
     }
 
     @FXML
@@ -215,7 +229,7 @@ public class MainScreenController {
         if(isValidSelection(3)){
             Appointment updateApp = table_Appointment.getSelectionModel().getSelectedItem();
             if(updateApp != null){
-                SchedulingSystem.SchedulingSystem.openUpdateAppointment(updateApp);
+                SchedulingSystem.openUpdateAppointment(updateApp);
             }
         }
     }
@@ -232,7 +246,13 @@ public class MainScreenController {
                 delApp.setContentText(rb.getString("delConfirm"));
                 Optional<ButtonType> select = delApp.showAndWait();
                 if(select.get() == ButtonType.OK){
-                    AppointmentData.deleteAppointment(deleteApp.getAppId());
+                    if(AppointmentData.deleteAppointment(deleteApp.getAppId())){
+                        Alert deleted = new Alert(Alert.AlertType.CONFIRMATION);
+                        deleted.setTitle("Deleted");
+                        deleted.setHeaderText("Appointment Deleted");
+                        deleted.setContentText("Appointment with ID: " + deleteApp.getAppId() + " has been successfully removed from the datebase.");
+                        deleted.showAndWait();
+                    }
                     toggleWeekMonth();
                 }
             }
@@ -258,8 +278,24 @@ public class MainScreenController {
     void handleReportAppContact(){
         if(isValidSelection(6)){
             Contact contact = (Contact) combo_Contact.getSelectionModel().getSelectedItem();
-            SchedulingSystem.SchedulingSystem.openReport(contact);
+            SchedulingSystem.openReport(contact);
         }
+    }
+
+    public boolean existingAppointments(Customer customer){
+        ObservableList<Appointment> appList = FXCollections.observableArrayList();
+
+        Timestamp current = Timestamp.valueOf(LocalDateTime.now());
+
+        appList = AppointmentData.getAppsByCustomer(customer);
+        if(appList != null){
+            for(Appointment a : appList){
+                if(a.getAppStart().after(current)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     private boolean isValidSelection(int option){
@@ -280,7 +316,16 @@ public class MainScreenController {
             case 2 -> {
                 Customer deleteAttempt = table_Customer.getSelectionModel().getSelectedItem();
                 if(deleteAttempt != null){
-                    validSelect = true;
+                    if(!existingAppointments(deleteAttempt)){
+                        validSelect = true;
+                    } else {
+                        Alert existApp = new Alert(Alert.AlertType.INFORMATION);
+                        existApp.setTitle("Attention");
+                        existApp.setHeaderText("Existing Customer Appointment");
+                        existApp.setContentText("All existing future appointments for the customer must be deleted before the customer can be removed.");
+                        existApp.showAndWait();
+                        validSelect = false;
+                    }
                 } else {
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
                     notValid.setTitle("Warning");

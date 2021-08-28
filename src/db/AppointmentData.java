@@ -10,6 +10,7 @@ import model.Customer;
 import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class AppointmentData {
@@ -18,11 +19,12 @@ public class AppointmentData {
     public static ObservableList<Appointment> getAppsByWeek() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
-        LocalDateTime sldt = LocalDateTime.now();
-        LocalDateTime eldt = LocalDateTime.now().plusWeeks(1);
 
-        Timestamp start = Timestamp.valueOf(sldt);
-        Timestamp end = Timestamp.valueOf(eldt);
+        ZonedDateTime szdt = LocalDateTime.now().atZone(ZoneId.systemDefault());
+        ZonedDateTime ezdt = LocalDateTime.now().plusWeeks(1).atZone(ZoneId.systemDefault());
+
+        Timestamp start = Timestamp.valueOf(szdt.toLocalDateTime());
+        Timestamp end = Timestamp.valueOf(ezdt.toLocalDateTime());
         try {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery(
@@ -52,6 +54,8 @@ public class AppointmentData {
                 app.setAppType(type);
                 app.setAppStart(sdate);
                 app.setAppEnd(edate);
+                app.setZoneStart(sdate);
+                app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppCustomer(customer);
                 app.setAppContactId(contactId);
@@ -118,12 +122,12 @@ public class AppointmentData {
         }
     }
 
-    public static ObservableList<Appointment> getAppByUser(int userId){
+    public static ObservableList<Appointment> getAppsByUser(int userId){
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE User_ID='" + userId + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE User_ID=" + userId);
             while(result.next()){
                 int id = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
@@ -132,8 +136,6 @@ public class AppointmentData {
                 String type = result.getString("Type");
                 Timestamp sdate = result.getTimestamp("Start");
                 Timestamp edate = result.getTimestamp("End");
-                String contact = result.getString("Contact_Name");
-                String customer = result.getString("Customer_Name");
                 int contactId = result.getInt("Contact_ID");
                 int customerId = result.getInt("Customer_ID");
 
@@ -145,8 +147,8 @@ public class AppointmentData {
                 app.setAppType(type);
                 app.setAppStart(sdate);
                 app.setAppEnd(edate);
-                app.setAppContact(contact);
-                app.setAppCustomer(customer);
+                app.setZoneStart(sdate);
+                app.setZoneEnd(edate);
                 app.setAppContactId(contactId);
                 app.setAppCustId(customerId);
                 appList.add(app);
@@ -194,17 +196,18 @@ public class AppointmentData {
     }
 
     public static boolean addAppointment(Appointment appointment){
+        String sql = "INSERT INTO appointments SET Title='"
+                + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
+                appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + appointment.getAppStart() +
+                "', End='" + appointment.getAppEnd() + "', Create_Date= NOW(), Created_By='" +
+                UserData.getActiveUser().getUsername() + "', Last_Update= NOW(), Last_Updated_By='" +
+                UserData.getActiveUser().getUsername() + "', Customer_ID=" +
+                appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
+                ", Contact_ID=" + appointment.getAppContactId();
+
         try{
-            Statement query = Database.getConnection().createStatement();
-            query.executeQuery("INSERT INTO appointments SET Appointment_ID =" + appointment.getAppId() + ", Title='"
-                    + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
-                    appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + appointment.getAppStart() +
-                    "', End='" + appointment.getAppEnd() + "', Create_Date= NOW(), Created_By='" +
-                    UserData.getActiveUser().getUsername() + "', Last_Update= NOW(), Last_Updated_By='" +
-                    UserData.getActiveUser().getUsername() + "', Customer_ID=" +
-                    CustomerData.getCustomerByName(appointment.getAppCustomer()) + ", User_ID=" + UserData.getActiveUser().getUserId() +
-                    ", Contact_ID=" + getContactId(appointment.getAppContact()));
-            query.close();
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
             return true;
         }
         catch (SQLException e){
@@ -254,6 +257,8 @@ public class AppointmentData {
                 int contactId = result.getInt("Contact_ID");
 
                 app = new Appointment(id, title, description, location, type, sdate, edate, customerId, contactId);
+                app.setZoneStart(sdate);
+                app.setZoneEnd(edate);
                 appList.add(app);
             }
             query.close();
@@ -268,7 +273,8 @@ public class AppointmentData {
     public static boolean deleteAppointment(int id){
         try{
             Statement query = Database.getConnection().createStatement();
-            query.executeQuery("DELETE FROM appointments WHERE Appointment_ID ='" + id + "'");
+            ResultSet result = query.executeQuery("DELETE FROM appointments WHERE Appointment_ID ='" + id + "'");
+            query.close();
             return true;
         }catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
@@ -373,6 +379,8 @@ public class AppointmentData {
                 app.setAppType(type);
                 app.setAppStart(sdate);
                 app.setAppEnd(edate);
+                app.setZoneStart(sdate);
+                app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppContactId(contactId);
                 app.setAppCustId(customerId);

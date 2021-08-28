@@ -87,7 +87,6 @@ public class AddCustomerController {
             }
         }
         combo_State.setValue(dSelect);
-
     }
 
     public boolean validCustomer(){

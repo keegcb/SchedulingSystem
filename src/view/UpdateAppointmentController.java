@@ -2,6 +2,7 @@ package view;
 
 import db.AppointmentData;
 import db.CustomerData;
+import db.UserData;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,8 +13,7 @@ import model.Contact;
 import model.Customer;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -59,16 +59,26 @@ public class UpdateAppointmentController {
 
     @FXML
     public void initialize(){
-        LocalTime start = LocalTime.of(0, 0);
-        LocalTime end = LocalTime.of(23, 59);
-        while(start.isBefore(end.plusSeconds(1))){
-            timeList.add(start);
-            start = start.plusMinutes(5);
+        text_AppId.setText(Integer.toString(AppointmentData.getNextAppId()));
+
+        LocalTime start = LocalTime.of(0, 10);
+        LocalTime end = LocalTime.of(23, 50);
+        while(start.isBefore(end)){
+            combo_STime.getItems().add(start);
+            combo_ETime.getItems().add(start);
+            start = start.plusMinutes(10);
         }
-        combo_STime.setItems(timeList);
-        combo_ETime.setItems(timeList);
+        combo_STime.getSelectionModel().select(LocalTime.of(8, 0));
+        combo_ETime.getSelectionModel().select(LocalTime.NOON);
 
+        combo_Type.setItems(MainScreenController.getTypeList());
 
+        ObservableList<Contact> contactList = AppointmentData.allContacts();
+        ObservableList<Customer> customerList = CustomerData.getAllCustomers();
+        combo_Contact.setItems(contactList);
+        combo_Customer.setItems(customerList);
+
+        text_UserId.setText(Integer.toString(UserData.getActiveUser().getUserId()));
     }
 
     public void setFields(Appointment appointment){
@@ -101,7 +111,8 @@ public class UpdateAppointmentController {
         //TODO populate date picker with appointments date & time combo with appointment time
     }
 
-    private void handleSaveAppointment(){
+    @FXML
+    private void handleUpdateAppointment(){
         if(validAppointment()){
             String id = text_AppId.getText();
             String title = text_Title.getText();
@@ -112,26 +123,50 @@ public class UpdateAppointmentController {
             Timestamp tLED = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
             Contact contact = combo_Contact.getSelectionModel().getSelectedItem();
             Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
-            int conId = contact.getContactId();
-            int custId = customer.getCustId();
 
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type, tLSD, tLED, custId, conId);
+
+            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type,
+                    tLSD, tLED, contact.getContactId(), customer.getCustId());
+            appointment.setZoneStart(tLSD);
+            appointment.setZoneEnd(tLED);
+
             AppointmentData.addAppointment(appointment);
         }
     }
-    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
-        ObservableList<Appointment> appList = appointments;
-        Timestamp selStart = sTime;
-        Timestamp selEnd = eTime;
 
-        for(Appointment app : appList){
+    @FXML
+    private void populateCustomerId(){
+        Customer selCustomer = combo_Customer.getSelectionModel().getSelectedItem();
+        int id = selCustomer.getCustId();
+        text_CustId.setText(Integer.toString(id));
+    }
+
+    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
+        for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
-            if(!selEnd.before(start) && selStart.after(end)){
+            if(!eTime.before(start) && !sTime.after(end)){
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean outsideHours(Timestamp sTime, Timestamp eTime){
+        ZonedDateTime selStart = sTime.toLocalDateTime().atZone(ZoneId.systemDefault());
+        ZonedDateTime selEnd = eTime.toLocalDateTime().atZone(ZoneId.systemDefault());
+
+        LocalDate ldStart = selStart.toLocalDate();
+        LocalDate ldEnd = selEnd.toLocalDate();
+
+
+        LocalTime sHour = LocalTime.of(8, 0);
+        LocalTime eHour = LocalTime.of(22, 0);
+
+        ZonedDateTime bStart = LocalDateTime.of(ldStart, sHour).atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime bEnd = LocalDateTime.of(ldEnd, eHour).atZone(ZoneId.of("America/New_York"));
+
+        return selStart.isBefore(bStart) || selEnd.isAfter(bEnd);
     }
 
     public boolean validAppointment(){
@@ -188,7 +223,7 @@ public class UpdateAppointmentController {
                 }
             }
         }
-        if(overlapping(tLSD, tLED, AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem()))){
+        if(overlapping(tLSD, tLED, Objects.requireNonNull(AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem())))){
             errorMessage += rb.getString("overlap") + "\n";
             valid = false;
         }
@@ -211,6 +246,16 @@ public class UpdateAppointmentController {
                     rb.getString("eHeader2"));
             fieldError.setContentText(errorMessage);
             fieldError.showAndWait();
+        }
+        if(valid){
+            Timestamp tempS = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
+            Timestamp tempE = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
+            if(outsideHours(tempS, tempE)){
+                Alert businessHours = new Alert(Alert.AlertType.INFORMATION);
+                businessHours.setHeaderText(rb.getString("outside"));
+                businessHours.setContentText(rb.getString("hours1") + rb.getString("hours2"));
+                businessHours.showAndWait();
+            }
         }
         return valid;
     }
