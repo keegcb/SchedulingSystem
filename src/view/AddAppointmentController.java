@@ -12,8 +12,7 @@ import model.Contact;
 import model.Customer;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -107,11 +106,28 @@ public class AddAppointmentController {
         for(Appointment app : appList){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
-            if(!selEnd.before(start) && selStart.after(end)){
+            if(!selEnd.before(start) && !selStart.after(end)){
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean outsideHours(Timestamp sTime, Timestamp eTime){
+        ZonedDateTime selStart = sTime.toLocalDateTime().atZone(ZoneId.systemDefault());
+        ZonedDateTime selEnd = eTime.toLocalDateTime().atZone(ZoneId.systemDefault());
+
+        LocalDate ldStart = selStart.toLocalDate();
+        LocalDate ldEnd = selEnd.toLocalDate();
+
+
+        LocalTime sHour = LocalTime.of(8, 0);
+        LocalTime eHour = LocalTime.of(22, 0);
+
+        ZonedDateTime bStart = LocalDateTime.of(ldStart, sHour).atZone(ZoneId.of("America/New_York"));
+        ZonedDateTime bEnd = LocalDateTime.of(ldEnd, eHour).atZone(ZoneId.of("America/New_York"));
+
+        return selStart.isBefore(bStart) || selEnd.isAfter(bEnd);
     }
 
     public boolean validAppointment(){
@@ -191,6 +207,16 @@ public class AddAppointmentController {
                     rb.getString("eHeader2"));
             fieldError.setContentText(errorMessage);
             fieldError.showAndWait();
+        }
+        if(valid){
+            Timestamp tempS = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
+            Timestamp tempE = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
+            if(outsideHours(tempS, tempE)){
+                Alert businessHours = new Alert(Alert.AlertType.INFORMATION);
+                businessHours.setHeaderText(rb.getString("outside"));
+                businessHours.setContentText(rb.getString("hours1") + rb.getString("hours2"));
+                businessHours.showAndWait();
+            }
         }
         return valid;
     }

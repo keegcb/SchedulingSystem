@@ -1,6 +1,8 @@
 package model;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 public class Appointment {
@@ -62,9 +64,13 @@ public class Appointment {
         return appStart;
     }
 
+    public ZonedDateTime getZoneStart(){return zdtStart;}
+
     public Timestamp getAppEnd(){
         return appEnd;
     }
+
+    public ZonedDateTime getZoneEnd(){return zdtEnd;}
 
     public String getAppContact(){
         return appContact;
@@ -96,9 +102,13 @@ public class Appointment {
         this.appStart = appStart;
     }
 
+    public void setZoneStart(Timestamp start){this.zdtStart = start.toLocalDateTime().atZone(ZoneId.systemDefault());}
+
     public void setAppEnd(Timestamp appEnd) {
         this.appEnd = appEnd;
     }
+
+    public void setZoneEnd(Timestamp end){this.zdtEnd = end.toLocalDateTime().atZone(ZoneId.systemDefault());}
 
     public void setAppContact(String appContact) {
         this.appContact = appContact;

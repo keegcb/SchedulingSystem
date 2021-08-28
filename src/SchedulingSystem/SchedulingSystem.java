@@ -177,8 +177,7 @@ public class SchedulingSystem extends Application {
 
     public static ZonedDateTime convertToZDT(Timestamp stamp){
         LocalDateTime ldt = stamp.toLocalDateTime();
-        ZonedDateTime zdt = ldt.atZone(mainZid);
-        return zdt;
+        return ldt.atZone(ZoneId.systemDefault());
     }
 
     public static Timestamp convertToTimestamp(ZonedDateTime zdt){

@@ -16,6 +16,10 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZonedDateTime;
+import java.util.Locale;
+import java.util.Optional;
+import java.util.ResourceBundle;
 
 public class MainScreenController {
 
@@ -46,9 +50,9 @@ public class MainScreenController {
     @FXML
     private TableColumn<Appointment, String> col_AppType;
     @FXML
-    private TableColumn<Appointment, String> col_AppStart;
+    private TableColumn<Appointment, ZonedDateTime> col_AppStart;
     @FXML
-    private TableColumn<Appointment, String> col_AppEnd;
+    private TableColumn<Appointment, ZonedDateTime> col_AppEnd;
     @FXML
     private TableColumn<Appointment, Integer> col_AppCust;
     @FXML
@@ -216,14 +220,21 @@ public class MainScreenController {
         }
     }
 
-    //TODO add code to remove the appointment from the SQL database as well
     @FXML
     void handleDeleteAppointment(){
         if(isValidSelection(4)){
             Appointment deleteApp = table_Appointment.getSelectionModel().getSelectedItem();
             if(deleteApp != null){
-                AppointmentData.deleteAppointment(deleteApp.getAppId());
-                toggleWeekMonth();
+                ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
+                Alert delApp = new Alert(Alert.AlertType.CONFIRMATION);
+                delApp.setTitle(rb.getString("warning"));
+                delApp.setHeaderText(rb.getString("delete"));
+                delApp.setContentText(rb.getString("delConfirm"));
+                Optional<ButtonType> select = delApp.showAndWait();
+                if(select.get() == ButtonType.OK){
+                    AppointmentData.deleteAppointment(deleteApp.getAppId());
+                    toggleWeekMonth();
+                }
             }
         }
     }

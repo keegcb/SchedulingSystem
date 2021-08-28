@@ -101,14 +101,14 @@ public class UpdateCustomerController {
         ObservableList<Division> tempDivList;
 
         Country cSelect = combo_Country.getSelectionModel().getSelectedItem();
-        tempDivList = CustomerData.getDivisionByCountry(cSelect);
+        tempDivList = CustomerData.getDivisionByCountry(cSelect.getCid());
         combo_State.setItems(tempDivList);
     }
 
     @FXML
     private void handleDivisionSelection(){
         Division dSelect = combo_State.getSelectionModel().getSelectedItem();
-        Country country = CustomerData.getCountryByDivision(dSelect);
+        Country country = CustomerData.getCountryByDivision(dSelect.getDivCountryId());
         for(int i=0; i < combo_Country.getItems().size(); i++){
             Country cLC = combo_Country.getItems().get(i);
             if(cLC.getCid() == country.getCid()){

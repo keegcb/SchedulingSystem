@@ -100,7 +100,9 @@ public class AppointmentData {
                 app.setAppLocation(location);
                 app.setAppType(type);
                 app.setAppStart(sdate);
+                app.setZoneStart(sdate);
                 app.setAppEnd(edate);
+                app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppCustomer(customer);
                 app.setAppContactId(contactId);
@@ -178,11 +180,12 @@ public class AppointmentData {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT MAX(Appointment_ID) " +
                     "AS Last_ID FROM appointments");
-
-            appId = result.getInt("Last_ID");
-            appId++;
-            query.close();
-            return appId;
+            if(result.next()){
+                appId = result.getInt("Last_ID");
+                appId++;
+                query.close();
+                return appId;
+            }
         }
         catch (SQLException e){
             e.printStackTrace();
@@ -190,22 +193,45 @@ public class AppointmentData {
         return -1;
     }
 
-    public static void addAppointment(Appointment appointment){
+    public static boolean addAppointment(Appointment appointment){
         try{
             Statement query = Database.getConnection().createStatement();
-            query.executeQuery("INSERT INTO appointments SET Appointment_ID ='" + appointment.getAppId() + "', Title='"
+            query.executeQuery("INSERT INTO appointments SET Appointment_ID =" + appointment.getAppId() + ", Title='"
                     + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
                     appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + appointment.getAppStart() +
-                    "', End='" + appointment.getAppEnd() + "', Create_Date='" + Database.createTimestamp() +
-                    "', Created_By='" + UserData.getActiveUser().getUsername() + "', Last_Update='" + Database.createTimestamp() +
-                    "', Last_Updated_By='" + UserData.getActiveUser().getUsername() + "' Customer_ID='" +
-                    CustomerData.getCustomerByName(appointment.getAppCustomer()) + "', User_ID='" + UserData.getActiveUser().getUserId() +
-                    "', Contact_ID='" + getContactId(appointment.getAppContact()) + "'");
+                    "', End='" + appointment.getAppEnd() + "', Create_Date= NOW(), Created_By='" +
+                    UserData.getActiveUser().getUsername() + "', Last_Update= NOW(), Last_Updated_By='" +
+                    UserData.getActiveUser().getUsername() + "', Customer_ID=" +
+                    CustomerData.getCustomerByName(appointment.getAppCustomer()) + ", User_ID=" + UserData.getActiveUser().getUserId() +
+                    ", Contact_ID=" + getContactId(appointment.getAppContact()));
             query.close();
+            return true;
         }
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
         }
+        return false;
+    }
+
+    public static boolean updateAppointment(Appointment appointment){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            query.executeQuery("UPDATE appointments SET Appointment_ID =" + appointment.getAppId() + ", Title='"
+                    + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
+                    appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + appointment.getAppStart() +
+                    "', End='" + appointment.getAppEnd() + "', Last_Update= NOW(), Last_Updated_By='" +
+                    UserData.getActiveUser().getUsername() + "', Customer_ID=" +
+                    CustomerData.getCustomerByName(appointment.getAppCustomer()) + ", User_ID=" + UserData.getActiveUser().getUserId() +
+                    ", Contact_ID=" + getContactId(appointment.getAppContact()));
+            query.close();
+            return true;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public static ObservableList<Appointment> getAppsByCustomer(Customer customer){
@@ -257,15 +283,17 @@ public class AppointmentData {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Contact_ID FROM contact WHERE Contact_Name='" +
                     conId + "'");
-            int id = result.getInt("Contact_ID");
-            String name = result.getString("Contact_Name");
-            String email = result.getString("Email");
+            if(result.next()){
+                int id = result.getInt("Contact_ID");
+                String name = result.getString("Contact_Name");
+                String email = result.getString("Email");
 
-            contact = new Contact(name, email);
-            contact.setContactId(id);
+                contact = new Contact(name, email);
+                contact.setContactId(id);
 
-            query.close();
-            return contact;
+                query.close();
+                return contact;
+            }
         }
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
@@ -366,10 +394,11 @@ public class AppointmentData {
             ResultSet result = query.executeQuery("SELECT COUNT(Appointment_ID) " +
                     "AS Total FROM appointments WHERE Type='" + selType
                     + "' AND Start >='" + sMonth + "' AND Start <='" + eMonth + "'");
-
-            count = result.getInt("Total");
-            query.close();
-            return count;
+            if(result.next()){
+                count = result.getInt("Total");
+                query.close();
+                return count;
+            }
         }
         catch (SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());

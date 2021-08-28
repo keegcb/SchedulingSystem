@@ -79,8 +79,10 @@ public class CustomerData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT Customer_ID FROM customers WHERE Customer_Name = '" + name +"'");
-            int custId = result.getInt("Customer_ID");
-            return custId;
+            if(result.next()){
+                int custId = result.getInt("Customer_ID");
+                return custId;
+            }
         }
         catch (SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
@@ -94,13 +96,15 @@ public class CustomerData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE Division_ID = '" + divId + "'");
-            int divisionId = result.getInt("Division_ID");
-            String divName = result.getString("Division");
-            int divCountryId = result.getInt("Country_ID");
+            if(result.next()){
+                int divisionId = result.getInt("Division_ID");
+                String divName = result.getString("Division");
+                int divCountryId = result.getInt("Country_ID");
 
-            division = new Division(divisionId, divName, divCountryId);
-            query.close();
-            return division;
+                division = new Division(divisionId, divName, divCountryId);
+                query.close();
+                return division;
+            }
         }
         catch(SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
@@ -115,12 +119,14 @@ public class CustomerData {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM countries " +
                     "WHERE Country_ID = '" + cId + "'");
-            int countryId = result.getInt("Country_ID");
-            String countryName = result.getString("Country");
+            if(result.next()){
+                int countryId = result.getInt("Country_ID");
+                String countryName = result.getString("Country");
 
-            country = new Country(countryId, countryName);
-            query.close();
-            return country;
+                country = new Country(countryId, countryName);
+                query.close();
+                return country;
+            }
         }
         catch (SQLException e){
             System.out.println("The following SQL Exception has occurred:\n" + e.getMessage());
@@ -134,7 +140,7 @@ public class CustomerData {
 
         try {
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Country FROM countries");
+            ResultSet result = query.executeQuery("SELECT * FROM countries");
             while(result.next()){
                 int countryId = result.getInt("Country_ID");
                 String countryName = result.getString("Country");
@@ -158,11 +164,11 @@ public class CustomerData {
 
         try {
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Division FROM first_level_divisions");
+            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions");
             while(result.next()){
                 int divisionId = result.getInt("Division_ID");
                 String divisionName = result.getString("Division");
-                int divCountryId = result.getInt("Country_ID");
+                int divCountryId = result.getInt("COUNTRY_ID");
 
                 division = new Division(divisionId, divisionName, divCountryId);
 
@@ -177,21 +183,22 @@ public class CustomerData {
         return null;
     }
 
-    public static Country getCountryByDivision(Division division){
+    public static Country getCountryByDivision(int cId){
         Country country;
 
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Country FROM countries" +
-                    "JOIN first_level_divisions ON country.Country_ID = first_level_divisions.Country_ID " +
-                    "WHERE Division = '" + division.getDivCountryId() + "'");
-            int countryId = result.getInt("Country_ID");
-            String countryName = result.getString("Country");
+            ResultSet result = query.executeQuery("SELECT DISTINCT countries.Country_ID, countries.Country FROM countries " +
+                    "JOIN first_level_divisions ON countries.Country_ID = first_level_divisions.COUNTRY_ID " +
+                    "WHERE countries.Country_ID = " + cId);
+            if(result.next()){
+                int countryId = result.getInt("Country_ID");
+                String countryName = result.getString("Country");
 
-            country = new Country(countryId, countryName);
-
-            query.close();
-            return country;
+                country = new Country(countryId, countryName);
+                query.close();
+                return country;
+            }
         }
         catch(SQLException e){
             System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
@@ -199,19 +206,17 @@ public class CustomerData {
         return null;
     }
 
-    public static ObservableList<Division> getDivisionByCountry(Country country){
+    public static ObservableList<Division> getDivisionByCountry(int id){
         ObservableList<Division> divisionList = FXCollections.observableArrayList();
         Division division;
 
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Division FROM first_level_divisions" +
-                    "JOIN country ON first_level_divisions.Country_ID = country.Country_ID " +
-                    "WHERE Country_ID = '" + country.getCid() + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE COUNTRY_ID=" + id);
             while(result.next()){
                 int divisionId = result.getInt("Division_ID");
                 String divisionName = result.getString("Division");
-                int divCountryId = result.getInt("Country_ID");
+                int divCountryId = result.getInt("COUNTRY_ID");
 
                 division = new Division(divisionId, divisionName, divCountryId);
                 divisionList.add(division);
@@ -230,9 +235,26 @@ public class CustomerData {
             Statement query = Database.getConnection().createStatement();
             query.executeQuery("INSERT INTO customers SET Customer_ID='" + customer.getCustId() + "', Customer_Name='" +
                     customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
-                    customer.getCustPostal() + "', Phone='" + customer.getCustPhone() + "', Create_Date=" + LocalDateTime.now() +
+                    customer.getCustPostal() + "', Phone='" + customer.getCustPhone() + "', Create_Date= NOW(), " +
                     ", Created_By='" + UserData.getActiveUser().getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
                     UserData.getActiveUser().getUsername() + "', Division_ID=" + customer.getStateId());
+            return true;
+        }
+        catch (SQLException e) {
+            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+        }
+        return false;
+    }
+
+    public static boolean updateCustomer(Customer customer){
+        try{
+            Statement query = Database.getConnection().createStatement();
+            query.executeQuery("UPDATE customers SET Customer_ID='" + customer.getCustId() + "', Customer_Name='" +
+                    customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
+                    customer.getCustPostal() + "', Phone='" + customer.getCustPhone() +
+                    "', Last_Update= NOW(), Last_Updated_By='" + UserData.getActiveUser().getUsername() +
+                    "', Division_ID=" + customer.getStateId() +
+                    " WHERE Customer_ID=" + customer.getCustId());
             return true;
         }
         catch (SQLException e) {

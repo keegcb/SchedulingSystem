@@ -72,23 +72,22 @@ public class AddCustomerController {
 
     @FXML
     private void handleCountrySelection(){
-        ObservableList<Division> tempDivList;
-
         Country cSelect = combo_Country.getSelectionModel().getSelectedItem();
-        tempDivList = CustomerData.getDivisionByCountry(cSelect);
-        combo_State.setItems(tempDivList);
+        divList = CustomerData.getDivisionByCountry(cSelect.getCid());
+        combo_State.setItems(divList);
     }
 
     @FXML
     private void handleDivisionSelection(){
         Division dSelect = combo_State.getSelectionModel().getSelectedItem();
-        Country country = CustomerData.getCountryByDivision(dSelect);
-        for(int i=0; i < combo_Country.getItems().size(); i++){
-            Country cLC = combo_Country.getItems().get(i);
-            if(cLC.getCid() == country.getCid()){
-                combo_Country.getSelectionModel().select(i);
+        Country country = CustomerData.getCountryByDivision(dSelect.getDivCountryId());
+        for(Country c : combo_Country.getItems()){
+            if(country.getCid() == c.getCid()){
+                combo_Country.setValue(c);
             }
         }
+        combo_State.setValue(dSelect);
+
     }
 
     public boolean validCustomer(){
@@ -146,7 +145,6 @@ public class AddCustomerController {
             errorMessage += rb.getString("country") + "\n";
             valid = false;
         }
-
         if (!valid) {
             Alert fieldError = new Alert(Alert.AlertType.ERROR);
             fieldError.setTitle(rb.getString("error"));
