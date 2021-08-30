@@ -29,8 +29,6 @@ public class AddCustomerController {
     private TextField text_Postal;
     @FXML
     private TextField text_Phone;
-    @FXML
-    private Button button_AddCustomer;
 
     private ObservableList<Country> countryList = FXCollections.observableArrayList();
     private ObservableList<Division> divList = FXCollections.observableArrayList();
@@ -43,6 +41,7 @@ public class AddCustomerController {
 
     @FXML
     public void initialize(){
+        text_CustId.setText(Integer.toString(CustomerData.getNextCustId()));
         countryList = CustomerData.getAllCountries();
         combo_Country.setItems(countryList);
         divList = CustomerData.getAllDivisions();
@@ -66,7 +65,9 @@ public class AddCustomerController {
             customer.setCountryId(countryId);
 
             CustomerData.customerList.add(customer);
-            CustomerData.addCustomer(customer);
+            if(CustomerData.addCustomer(customer)){
+                custStage.close();
+            }
         }
     }
 
@@ -103,21 +104,6 @@ public class AddCustomerController {
             errorMessage += rb.getString("phone") + "\n";
             valid = false;
         }
-        else {
-            try{
-                String phone = text_Phone.getText();
-                int num = Integer.parseInt(phone);
-                //verify if there is certain number format required
-                if (num != -1 && phone.length() != 10){
-                    errorMessage += rb.getString("num10") + "\n";
-                    valid = false;
-                }
-            } catch (NumberFormatException e) {
-                e.getMessage();
-                errorMessage += rb.getString("nonNumPhone") + "\n";
-                valid = false;
-            }
-        }
         if(text_Address.getText().isEmpty()){
             errorMessage += rb.getString("address") + "\n";
             valid = false;
@@ -125,16 +111,6 @@ public class AddCustomerController {
         if (text_Postal.getText().isEmpty()){
             errorMessage += rb.getString("postal") + "\n";
             valid = false;
-        }
-        else {
-            try {
-                String post = text_Postal.getText();
-                int num = Integer.parseInt(post);
-            } catch (NumberFormatException e){
-                e.getMessage();
-                errorMessage += rb.getString("nonNumPostal") + "\n";
-                valid = false;
-            }
         }
         if(combo_State.getSelectionModel().isEmpty()){
             errorMessage += rb.getString("division") + "\n";

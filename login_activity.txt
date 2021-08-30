@@ -1,0 +1,34 @@
+Aug 29, 2021 5:32:13 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-08-29T17:32:13.791814100
+Aug 29, 2021 5:35:49 PM view.LoginController loginActivity
+INFO: User null logged in 2021-08-29T17:35:49.868739900
+Aug 29, 2021 5:35:58 PM view.LoginController loginActivity
+INFO: User null logged in 2021-08-29T17:35:58.773858200
+Aug 29, 2021 5:41:24 PM view.LoginController loginActivity
+INFO: User null logged in 2021-08-29T17:41:24.209768
+Aug 29, 2021 5:41:36 PM view.LoginController loginActivity
+INFO: User null logged in 2021-08-29T17:41:36.886519
+Aug 29, 2021 5:44:22 PM view.LoginController loginActivity
+INFO: User null logged in 2021-08-29T17:44:22.538872300
+Aug 29, 2021 5:46:15 PM view.LoginController loginActivity
+INFO: User test logged in 2021-08-29T17:46:15.440808900
+Aug 29, 2021 5:50:58 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T17:50:58.754754700
+Aug 29, 2021 5:55:46 PM view.LoginController loginActivity
+INFO: User null successfully logged in 2021-08-29T17:55:46.280986100
+Aug 29, 2021 5:55:56 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T17:55:56.750882900
+Aug 29, 2021 6:09:08 PM view.LoginController loginActivity
+INFO: User null successfully logged in 2021-08-29T18:09:08.390075300
+Aug 29, 2021 6:13:14 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T18:13:14.235216
+Aug 29, 2021 6:19:09 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T18:19:09.832870900
+Aug 29, 2021 6:42:28 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T18:42:28.101320600
+Aug 29, 2021 6:43:03 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T18:43:03.445315700
+Aug 29, 2021 6:51:46 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T18:51:46.111506100
+Aug 29, 2021 7:12:25 PM view.LoginController loginActivity
+INFO: User test successfully logged in 2021-08-29T19:12:25.816514700

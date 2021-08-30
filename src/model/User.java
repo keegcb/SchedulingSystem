@@ -1,8 +1,5 @@
 package model;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.concurrent.TimeUnit;
 
 public class User {
 
@@ -22,17 +19,10 @@ public class User {
 
     public void setUserId(int id){userId = id; }
 
-    public void setUsername(String username) {
-        username = username;
+    public void setUsername(String name) {
+        username = name;
     }
 
-    public void setPassword(String password){password = password;}
+    public void setPassword(String pass){password = pass;}
 
-    public boolean app15(Timestamp appTime){
-        LocalDateTime now = LocalDateTime.now();
-        Timestamp current = Timestamp.valueOf(now);
-        Timestamp tmpTime = current;
-        tmpTime.setTime(current.getTime() + TimeUnit.MINUTES.toMillis(1901));
-        return current.before(appTime) && tmpTime.after(appTime);
-    }
 }

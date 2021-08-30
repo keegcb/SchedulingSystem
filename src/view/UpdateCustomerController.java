@@ -29,8 +29,6 @@ public class UpdateCustomerController {
     private TextField text_Postal;
     @FXML
     private TextField text_Phone;
-    @FXML
-    private Button button_UpdateCust;
 
     private ObservableList<Country> countryList = FXCollections.observableArrayList();
     private ObservableList<Division> divList = FXCollections.observableArrayList();
@@ -58,18 +56,16 @@ public class UpdateCustomerController {
         text_Address.setText(customer.getCustAddress());
         text_Postal.setText(customer.getCustPostal());
 
-        for(int i=0; i < combo_Country.getItems().size(); i++){
-            Country cLC = combo_Country.getItems().get(i);
+        for(Country c : combo_Country.getItems()){
             assert country != null;
-            if(cLC.getCid() == country.getCid()){
-                combo_Country.getSelectionModel().select(i);
+            if(c.getCid() == country.getCid()){
+                combo_Country.setValue(c);
             }
         }
-        for(int i=0; i < combo_State.getItems().size(); i++){
-            Division cLD = combo_State.getItems().get(i);
+        for(Division state : combo_State.getItems()){
             assert division != null;
-            if(cLD.getDivId() == division.getDivId()){
-                combo_State.getSelectionModel().select(i);
+            if(state.getDivId() == division.getDivId()){
+                combo_State.getSelectionModel().select(state);
             }
         }
 
@@ -92,7 +88,9 @@ public class UpdateCustomerController {
             customer.setCountryId(countryId);
 
             CustomerData.customerList.add(customer);
-            CustomerData.addCustomer(customer);
+            if(CustomerData.updateCustomer(customer)){
+//TODO Add message for warning about update & updating
+            }
         }
     }
 
@@ -129,21 +127,6 @@ public class UpdateCustomerController {
             errorMessage += rb.getString("phone") + "\n";
             valid = false;
         }
-        else {
-            try{
-                String phone = text_Phone.getText();
-                int num = Integer.parseInt(phone);
-                //verify if there is certain number format required
-                if (num != -1 && phone.length() != 10){
-                    errorMessage += rb.getString("num10") + "\n";
-                    valid = false;
-                }
-            } catch (NumberFormatException e) {
-                e.getMessage();
-                errorMessage += rb.getString("nonNumPhone") + "\n";
-                valid = false;
-            }
-        }
         if(text_Address.getText().isEmpty()){
             errorMessage += rb.getString("address") + "\n";
             valid = false;
@@ -151,16 +134,6 @@ public class UpdateCustomerController {
         if (text_Postal.getText().isEmpty()){
             errorMessage += rb.getString("postal") + "\n";
             valid = false;
-        }
-        else {
-            try {
-                String post = text_Postal.getText();
-                int num = Integer.parseInt(post);
-            } catch (NumberFormatException e){
-                e.getMessage();
-                errorMessage += rb.getString("nonNumPostal") + "\n";
-                valid = false;
-            }
         }
         if(combo_State.getSelectionModel().isEmpty()){
             errorMessage += rb.getString("division") + "\n";

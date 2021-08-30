@@ -218,16 +218,18 @@ public class AppointmentData {
     }
 
     public static boolean updateAppointment(Appointment appointment){
+        String sql = "UPDATE appointments SET Title='" + appointment.getAppTitle() +
+                "', Description ='" + appointment.getAppDescription() + "', Location='" +
+                appointment.getAppLocation() + "', Type='" + appointment.getAppType() +
+                "', Start='" + appointment.getAppStart() +
+                "', End='" + appointment.getAppEnd() + "', Last_Update= NOW(), Last_Updated_By='" +
+                UserData.getActiveUser().getUsername() + "', Customer_ID=" +
+                appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
+                ", Contact_ID=" + appointment.getAppContactId();
         try{
-            Statement query = Database.getConnection().createStatement();
-            query.executeQuery("UPDATE appointments SET Appointment_ID =" + appointment.getAppId() + ", Title='"
-                    + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
-                    appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + appointment.getAppStart() +
-                    "', End='" + appointment.getAppEnd() + "', Last_Update= NOW(), Last_Updated_By='" +
-                    UserData.getActiveUser().getUsername() + "', Customer_ID=" +
-                    CustomerData.getCustomerByName(appointment.getAppCustomer()) + ", User_ID=" + UserData.getActiveUser().getUserId() +
-                    ", Contact_ID=" + getContactId(appointment.getAppContact()));
-            query.close();
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
             return true;
         }
         catch (SQLException e){
@@ -271,10 +273,11 @@ public class AppointmentData {
     }
 
     public static boolean deleteAppointment(int id){
+        String sql = "DELETE FROM appointments WHERE Appointment_ID ='" + id;
         try{
-            Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("DELETE FROM appointments WHERE Appointment_ID ='" + id + "'");
-            query.close();
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
             return true;
         }catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
@@ -282,13 +285,12 @@ public class AppointmentData {
         return false;
     }
 
-    public static Contact getContact(int conId){
+    public static Contact getContact(String conName){
         Contact contact;
 
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Contact_ID FROM contact WHERE Contact_Name='" +
-                    conId + "'");
+            ResultSet result = query.executeQuery("SELECT * FROM contacts WHERE Contact_Name='" + conName + "'");
             if(result.next()){
                 int id = result.getInt("Contact_ID");
                 String name = result.getString("Contact_Name");
@@ -414,57 +416,5 @@ public class AppointmentData {
         }
         return -1;
     }
-
-    //TODO Fix query so month can be searched
-    /*
-    public static ObservableList<Appointment> appByTypeMonth(String selType, int month){
-        ObservableList<Appointment> resultAppList = null;
-        Appointment app;
-
-        try {
-            Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM appointments WHERE Type='" + selType
-                    + "' AND Start=MONTH('" + month + "')");
-            while (result.next()) {
-                int id = result.getInt("Appointment_ID");
-                String title = result.getString("Title");
-                String description = result.getString("Description");
-                String location = result.getString("Location");
-                String type = result.getString("Type");
-                Timestamp sdate = result.getTimestamp("Start");
-                Timestamp edate = result.getTimestamp("End");
-                String contact = result.getString("Contact_Name");
-                String customer = result.getString("Customer_Name");
-
-                app = new Appointment(id, title, description, location, type, sdate, edate, contact);
-                app.setAppCustomer(customer);
-                resultAppList.add(app);
-            }
-            query.close();
-            return resultAppList;
-        }
-        catch (SQLException e){
-            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
-    }
-    /*
-    public static ObservableList<String> allTypes(){
-        ObservableList<String> typeList = null;
-        try{
-            Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT DISTINCT Type FROM appointments");
-            while (result.next()){
-                typeList.add(String.valueOf(result.getType()));
-            }
-            return typeList;
-        }
-        catch (SQLException e){
-            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
-        }
-        return null;
-    }
-    */
 
 }

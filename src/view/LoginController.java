@@ -19,6 +19,10 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class LoginController {
 
@@ -60,20 +64,21 @@ public class LoginController {
     }
 
     @FXML
-    private AnchorPane rootPane;
-
-    @FXML
-    public void handleLogin() throws IOException {
+    public void handleLogin(){
         String user = text_Username.getText();
         String pass = text_Password.getText();
-        if(UserData.login(user, pass)){
+
+        boolean validUser = UserData.login(user, pass);
+        User currentUser = UserData.getActiveUser();
+        loginActivity(currentUser);
+        if(validUser){
             loginStage.close();
             appointment15();
         }
     }
 
     public void appointment15(){
-        ObservableList<Appointment> userApps = FXCollections.observableArrayList();
+        ObservableList<Appointment> userApps;
 
         Timestamp current = Timestamp.valueOf(LocalDateTime.now());
         LocalDateTime ldt = current.toLocalDateTime();
@@ -108,6 +113,27 @@ public class LoginController {
                 noUpcoming.setContentText("You have no appointments scheduled to start in the next 15 minutes");
                 noUpcoming.showAndWait();
             }
+        }
+    }
+
+    private void loginActivity(User user){
+        Logger userLog = Logger.getLogger("login_activity.txt");
+        userLog.setLevel(Level.INFO);
+        try{
+            FileHandler logFile = new FileHandler("login_activity.txt", true);
+            SimpleFormatter format = new SimpleFormatter();
+            logFile.setFormatter(format);
+            userLog.addHandler(logFile);
+        }
+        catch (Exception e){
+            System.out.println("Error occurred while starting Login Activity file: \n" + e);
+            e.printStackTrace();
+        }
+
+        if (user != null){
+            userLog.log(Level.INFO, "User " + user.getUsername() + " successfully logged in " + LocalDateTime.now());
+        } else {
+            userLog.log(Level.INFO, "Login attempt by invalid user " + LocalDateTime.now());
         }
     }
 

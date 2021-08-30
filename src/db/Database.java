@@ -49,8 +49,4 @@ public class Database {
         }
     }
 
-    public static Timestamp createTimestamp(){
-        return Timestamp.valueOf(LocalDateTime.now());
-    }
-
 }

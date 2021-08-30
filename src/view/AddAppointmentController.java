@@ -46,8 +46,6 @@ public class AddAppointmentController {
     private TextField text_CustId;
     @FXML
     private TextField text_UserId;
-    @FXML
-    private Button button_AddApp;
 
     private Stage appStage;
 
@@ -219,6 +217,7 @@ public class AddAppointmentController {
             Timestamp tempS = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
             Timestamp tempE = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
             if(outsideHours(tempS, tempE)){
+                valid = false;
                 Alert businessHours = new Alert(Alert.AlertType.INFORMATION);
                 businessHours.setHeaderText(rb.getString("outside"));
                 businessHours.setContentText(rb.getString("hours1") + rb.getString("hours2"));

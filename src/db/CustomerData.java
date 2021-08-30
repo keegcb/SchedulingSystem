@@ -75,17 +75,22 @@ public class CustomerData {
         return null;
     }
 
-    public static int getCustomerByName(String name) {
+    public static int getNextCustId(){
+        int customerId;
+
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT Customer_ID FROM customers WHERE Customer_Name = '" + name +"'");
+            ResultSet result = query.executeQuery("SELECT MAX(Customer_ID) " +
+                    "AS Last_ID FROM customers");
             if(result.next()){
-                int custId = result.getInt("Customer_ID");
-                return custId;
+                customerId = result.getInt("Last_ID");
+                customerId++;
+                query.close();
+                return customerId;
             }
         }
         catch (SQLException e){
-            System.out.println("The following SQL Exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
         }
         return -1;
     }
@@ -95,7 +100,7 @@ public class CustomerData {
 
         try{
             Statement query = Database.getConnection().createStatement();
-            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE Division_ID = " + divId);
+            ResultSet result = query.executeQuery("SELECT * FROM first_level_divisions WHERE Division_ID=" + divId);
             if(result.next()){
                 int divisionId = result.getInt("Division_ID");
                 String divName = result.getString("Division");
@@ -118,7 +123,7 @@ public class CustomerData {
         try{
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery("SELECT * FROM countries " +
-                    "WHERE Country_ID = " + cId);
+                    "WHERE Country_ID=" + cId);
             if(result.next()){
                 int countryId = result.getInt("Country_ID");
                 String countryName = result.getString("Country");
@@ -231,13 +236,16 @@ public class CustomerData {
     }
 
     public static boolean addCustomer(Customer customer){
+        String sql = "INSERT INTO customers SET Customer_Name='" +
+                customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
+                customer.getCustPostal() + "', Phone='" + customer.getCustPhone() +
+                "', Create_Date= NOW(), Created_By='" + UserData.getActiveUser().getUsername() +
+                "', Last_Update=NOW(), Last_Updated_By='" +
+                UserData.getActiveUser().getUsername() + "', Division_ID=" + customer.getStateId();
         try{
-            Statement query = Database.getConnection().createStatement();
-            query.executeQuery("INSERT INTO customers SET Customer_Name='" +
-                    customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
-                    customer.getCustPostal() + "', Phone='" + customer.getCustPhone() + "', Create_Date= NOW(), " +
-                    ", Created_By='" + UserData.getActiveUser().getUsername() + "', Last_Update=" + LocalDateTime.now() + ", Last_Updated_By='" +
-                    UserData.getActiveUser().getUsername() + "', Division_ID=" + customer.getStateId());
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
             return true;
         }
         catch (SQLException e) {
@@ -247,14 +255,16 @@ public class CustomerData {
     }
 
     public static boolean updateCustomer(Customer customer){
+        String sql = "UPDATE customers SET Customer_Name='" + customer.getCustName() +
+                "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
+                customer.getCustPostal() + "', Phone='" + customer.getCustPhone() +
+                "', Last_Update= NOW(), Last_Updated_By='" + UserData.getActiveUser().getUsername() +
+                "', Division_ID=" + customer.getStateId() +
+                " WHERE Customer_ID=" + customer.getCustId();
         try{
-            Statement query = Database.getConnection().createStatement();
-            query.executeQuery("UPDATE customers SET Customer_ID=" + customer.getCustId() + ", Customer_Name='" +
-                    customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
-                    customer.getCustPostal() + "', Phone='" + customer.getCustPhone() +
-                    "', Last_Update= NOW(), Last_Updated_By='" + UserData.getActiveUser().getUsername() +
-                    "', Division_ID=" + customer.getStateId() +
-                    " WHERE Customer_ID=" + customer.getCustId());
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
             return true;
         }
         catch (SQLException e) {
@@ -264,9 +274,11 @@ public class CustomerData {
     }
 
     public static boolean deleteCustomer(int id){
+        String sql = "DELETE FROM customers WHERE Customer_ID=" + id;
         try{
-            Statement query = Database.getConnection().createStatement();
-            query.executeQuery("DELETE FROM customer WHERE Customer_ID=" + id);
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
             return true;
         }
         catch (SQLException e){

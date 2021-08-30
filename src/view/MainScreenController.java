@@ -175,7 +175,6 @@ public class MainScreenController {
         SchedulingSystem.openAddCustomer();
     }
 
-    //TODO fix update button so update screen can be opened
     @FXML
     void handleUpdateCustomer(){
         if(isValidSelection(1)){
@@ -283,7 +282,7 @@ public class MainScreenController {
     }
 
     public boolean existingAppointments(Customer customer){
-        ObservableList<Appointment> appList = FXCollections.observableArrayList();
+        ObservableList<Appointment> appList;
 
         Timestamp current = Timestamp.valueOf(LocalDateTime.now());
 

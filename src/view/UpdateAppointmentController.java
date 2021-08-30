@@ -46,8 +46,6 @@ public class UpdateAppointmentController {
     private TextField text_CustId;
     @FXML
     private TextField text_UserId;
-    @FXML
-    private Button button_UpdateApp;
 
     private Stage appStage;
 
@@ -59,8 +57,6 @@ public class UpdateAppointmentController {
 
     @FXML
     public void initialize(){
-        text_AppId.setText(Integer.toString(AppointmentData.getNextAppId()));
-
         LocalTime start = LocalTime.of(0, 10);
         LocalTime end = LocalTime.of(23, 50);
         while(start.isBefore(end)){
@@ -82,33 +78,39 @@ public class UpdateAppointmentController {
     }
 
     public void setFields(Appointment appointment){
-        Contact appContact = AppointmentData.getContact(appointment.getAppContactId());
+        Contact appContact = AppointmentData.getContact(appointment.getAppContact());
         Customer appCustomer = CustomerData.getCustomerById(appointment.getAppCustId());
+        assert appContact != null;
+        assert appCustomer != null;
 
         text_AppId.setText(Integer.toString(appointment.getAppId()));
         text_Title.setText(appointment.getAppTitle());
         text_Description.setText(appointment.getAppDescription());
         text_Location.setText(appointment.getAppLocation());
-        for(int i=0; i < combo_Type.getItems().size(); i++){
-            if(Objects.equals(combo_Type.getSelectionModel().getSelectedItem(), appointment.getAppType())){
-                combo_Type.getSelectionModel().select(i);
+        combo_Type.setValue(appointment.getAppType());
+        for(Contact contact : combo_Contact.getItems()){
+            if (contact.getContactId() == appContact.getContactId()){
+                combo_Contact.setValue(contact);
             }
         }
-        for(int i=0; i < combo_Contact.getItems().size(); i++){
-            Contact comContact = combo_Contact.getSelectionModel().getSelectedItem();
-            assert appContact != null;
-            if (comContact.getContactId() == appContact.getContactId()){
-                combo_Contact.getSelectionModel().select(i);
+        for(Customer customer : combo_Customer.getItems()){
+            if (customer.getCustId() == appCustomer.getCustId()){
+                combo_Customer.setValue(customer);
             }
         }
-        for(int i=0; i < combo_Customer.getItems().size(); i++){
-            Customer comCustomer = combo_Customer.getSelectionModel().getSelectedItem();
-            assert appCustomer != null;
-            if (comCustomer.getCustId() == appCustomer.getCustId()){
-                combo_Customer.getSelectionModel().select(i);
-            }
-        }
-        //TODO populate date picker with appointments date & time combo with appointment time
+        text_CustId.setText(Integer.toString(appCustomer.getCustId()));
+        Timestamp start = appointment.getAppStart();
+        Timestamp end = appointment.getAppEnd();
+        LocalDateTime sLDT = start.toLocalDateTime();
+        LocalDateTime eLDT = end.toLocalDateTime();
+        LocalDate sld = sLDT.toLocalDate();
+        LocalTime slt = sLDT.toLocalTime();
+        LocalDate eld = eLDT.toLocalDate();
+        LocalTime elt = eLDT.toLocalTime();
+        date_Start.setValue(sld);
+        combo_STime.setValue(slt);
+        date_End.setValue(eld);
+        combo_ETime.setValue(elt);
     }
 
     @FXML
@@ -131,6 +133,7 @@ public class UpdateAppointmentController {
             appointment.setZoneEnd(tLED);
 
             AppointmentData.addAppointment(appointment);
+            appStage.close();
         }
     }
 
@@ -251,6 +254,7 @@ public class UpdateAppointmentController {
             Timestamp tempS = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
             Timestamp tempE = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
             if(outsideHours(tempS, tempE)){
+                valid = false;
                 Alert businessHours = new Alert(Alert.AlertType.INFORMATION);
                 businessHours.setHeaderText(rb.getString("outside"));
                 businessHours.setContentText(rb.getString("hours1") + rb.getString("hours2"));
