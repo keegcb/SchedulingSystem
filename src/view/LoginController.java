@@ -78,6 +78,7 @@ public class LoginController {
     }
 
     public void appointment15(){
+        ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
         ObservableList<Appointment> userApps;
 
         Timestamp current = Timestamp.valueOf(LocalDateTime.now());
@@ -100,23 +101,25 @@ public class LoginController {
             }
             if(upcoming){
                 Alert notice15 = new Alert(Alert.AlertType.INFORMATION);
-                notice15.setTitle("Upcoming Appointment");
-                notice15.setHeaderText("Appointment will start in the next 15 minutes");
-                notice15.setContentText("Appointment ID: " + temp.getAppId() +
-                        "\nDate: " + temp.getAppDate() +
-                        "\nTime: " + temp.getAppTime());
+                notice15.setTitle(rb.getString("upcoming"));
+                notice15.setHeaderText(rb.getString("15min"));
+                notice15.setContentText(rb.getString("appId") + " " + temp.getAppId() +
+                        "\n" + rb.getString("date") + " " + temp.getAppDate() +
+                        "\n" + rb.getString("time") + " " + temp.getAppTime());
                 notice15.showAndWait();
             } else {
                 Alert noUpcoming = new Alert(Alert.AlertType.INFORMATION);
-                noUpcoming.setTitle("Upcoming Appointment");
-                noUpcoming.setHeaderText("No upcoming appointments");
-                noUpcoming.setContentText("You have no appointments scheduled to start in the next 15 minutes");
+                noUpcoming.setTitle(rb.getString("upcoming"));
+                noUpcoming.setHeaderText(rb.getString("noUpcoming"));
+                noUpcoming.setContentText(rb.getString("no15"));
                 noUpcoming.showAndWait();
             }
         }
     }
 
     private void loginActivity(User user){
+        ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
+
         Logger userLog = Logger.getLogger("login_activity.txt");
         userLog.setLevel(Level.INFO);
         try{
@@ -131,9 +134,9 @@ public class LoginController {
         }
 
         if (user != null){
-            userLog.log(Level.INFO, "User " + user.getUsername() + " successfully logged in " + LocalDateTime.now());
+            userLog.log(Level.INFO, user.getUsername() + " " + rb.getString("successLogin") + " " + LocalDateTime.now());
         } else {
-            userLog.log(Level.INFO, "Login attempt by invalid user " + LocalDateTime.now());
+            userLog.log(Level.INFO, rb.getString("invalid") + " " + LocalDateTime.now());
         }
     }
 

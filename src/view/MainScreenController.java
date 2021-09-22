@@ -184,7 +184,7 @@ public class MainScreenController {
             }
         }
     }
-//TODO add code to remove the customer from the SQL database as well
+
     @FXML
     void handleDeleteCustomer(){
         if(isValidSelection(2)){
@@ -247,9 +247,9 @@ public class MainScreenController {
                 if(select.get() == ButtonType.OK){
                     if(AppointmentData.deleteAppointment(deleteApp.getAppId())){
                         Alert deleted = new Alert(Alert.AlertType.CONFIRMATION);
-                        deleted.setTitle("Deleted");
-                        deleted.setHeaderText("Appointment Deleted");
-                        deleted.setContentText("Appointment with ID: " + deleteApp.getAppId() + " has been successfully removed from the datebase.");
+                        deleted.setTitle(rb.getString("attention"));
+                        deleted.setHeaderText(rb.getString("delete"));
+                        deleted.setContentText(rb.getString("appId") + " " + deleteApp.getAppId() + " " + rb.getString("delSuccess"));
                         deleted.showAndWait();
                     }
                     toggleWeekMonth();
@@ -304,10 +304,11 @@ public class MainScreenController {
                 if(updateAttempt != null){
                     validSelect = true;
                 } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
-                    notValid.setTitle("Warning");
-                    notValid.setHeaderText("Customer Not Selected.");
-                    notValid.setContentText("Please select from the list, the customer intended to be updated.");
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("select"));
                     notValid.showAndWait();
                     validSelect = false;
                 }
@@ -318,18 +319,20 @@ public class MainScreenController {
                     if(!existingAppointments(deleteAttempt)){
                         validSelect = true;
                     } else {
+                        ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
                         Alert existApp = new Alert(Alert.AlertType.INFORMATION);
-                        existApp.setTitle("Attention");
-                        existApp.setHeaderText("Existing Customer Appointment");
-                        existApp.setContentText("All existing future appointments for the customer must be deleted before the customer can be removed.");
+                        existApp.setTitle(rb.getString("attention"));
+                        existApp.setHeaderText(rb.getString("conflict"));
+                        existApp.setContentText(rb.getString("existing"));
                         existApp.showAndWait();
                         validSelect = false;
                     }
                 } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
-                    notValid.setTitle("Warning");
-                    notValid.setHeaderText("Customer Not Selected.");
-                    notValid.setContentText("Please select from the list, the customer intended for removal.");
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("select"));
                     notValid.showAndWait();
                     validSelect = false;
                 }
@@ -339,10 +342,11 @@ public class MainScreenController {
                 if(updateAttempt != null){
                     validSelect = true;
                 } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
-                    notValid.setTitle("Warning");
-                    notValid.setHeaderText("Appointment Not Selected.");
-                    notValid.setContentText("Please select from the list, the appointment intended to be updated.");
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("update"));
                     notValid.showAndWait();
                     validSelect = false;
                 }
@@ -352,10 +356,11 @@ public class MainScreenController {
                 if(deleteAttempt != null){
                     validSelect = true;
                 } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
-                    notValid.setTitle("Warning");
-                    notValid.setHeaderText("Appointment Not Selected.");
-                    notValid.setContentText("Please select from the list, the appointment intended for removal.");
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("remove"));
                     notValid.showAndWait();
                     validSelect = false;
                 }
@@ -364,10 +369,11 @@ public class MainScreenController {
                 if((combo_Month.getSelectionModel() != null) && (combo_AppType.getSelectionModel() != null)){
                     validSelect = true;
                 } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
-                    notValid.setTitle("Warning");
-                    notValid.setHeaderText("Parameters Not Selected.");
-                    notValid.setContentText("Please select a Month and appointment Type from the dropdown.");
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("month"));
                     notValid.showAndWait();
                     validSelect = false;
                 }
@@ -376,10 +382,11 @@ public class MainScreenController {
                 if((combo_Contact.getSelectionModel() != null)){
                     validSelect = true;
                 } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);
-                    notValid.setTitle("Warning");
-                    notValid.setHeaderText("Parameters Not Selected.");
-                    notValid.setContentText("Please select a Contact from the dropdown.");
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("contact"));
                     notValid.showAndWait();
                     validSelect = false;
                 }
