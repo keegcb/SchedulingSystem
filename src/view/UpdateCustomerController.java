@@ -11,6 +11,7 @@ import model.Customer;
 import model.Division;
 
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UpdateCustomerController {
@@ -87,10 +88,21 @@ public class UpdateCustomerController {
             customer.setStateId(stateId);
             customer.setCountryId(countryId);
 
-            CustomerData.customerList.add(customer);
-            if(CustomerData.updateCustomer(customer)){
-//TODO Add message for warning about update & updating
+            ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText(rb.getString("confirmUp"));
+            alert.setContentText(rb.getString("upCustomer") + " " + customer.getCustName() +
+                    "\n" + rb.getString("proceed"));
+            Optional<ButtonType> select = alert.showAndWait();
+            if(select.get() == ButtonType.OK){
+                if(CustomerData.updateCustomer(customer)){
+                    Alert updated = new Alert(Alert.AlertType.INFORMATION);
+                    updated.setHeaderText(rb.getString("confirmUp"));
+                    updated.setContentText(customer.getCustName() + " " + rb.getString("successUp"));
+                    updated.showAndWait();
+                }
             }
+            custStage.close();
         }
     }
 

@@ -127,24 +127,25 @@ public class UpdateAppointmentController {
             Contact contact = combo_Contact.getSelectionModel().getSelectedItem();
             Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
 
-
             Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type,
                     tLSD, tLED, contact.getContactId(), customer.getCustId());
             appointment.setZoneStart(tLSD);
             appointment.setZoneEnd(tLED);
 
+            ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText("Confirm Update");
-            alert.setContentText("You are about to update selected appointment:" + " " + appointment.getAppTitle() + "\n" +
-                    "Would you like to proceed with this change?");
+            alert.setHeaderText(rb.getString("confirmUp"));
+            alert.setContentText(rb.getString("updateApp") + " " + appointment.getAppTitle() + "\n" +
+                    rb.getString("change"));
             Optional<ButtonType> select = alert.showAndWait();
             if(select.get() == ButtonType.OK){
-                Alert deleted = new Alert(Alert.AlertType.INFORMATION);
-                alert.setHeaderText("Confirm Delete");
-                alert.setContentText(appointment.getAppTitle() + " " + "has been successfully deleted.");
-                deleted.showAndWait();
+                if (AppointmentData.updateAppointment(appointment)) {
+                    Alert update = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(rb.getString("confirmUp"));
+                    alert.setContentText(appointment.getAppTitle() + " " + rb.getString("upSuccess"));
+                    update.showAndWait();
+                }
             }
-            AppointmentData.addAppointment(appointment);
             appStage.close();
         }
     }
