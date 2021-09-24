@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class UpdateAppointmentController {
@@ -132,6 +133,17 @@ public class UpdateAppointmentController {
             appointment.setZoneStart(tLSD);
             appointment.setZoneEnd(tLED);
 
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText("Confirm Update");
+            alert.setContentText("You are about to update selected appointment:" + " " + appointment.getAppTitle() + "\n" +
+                    "Would you like to proceed with this change?");
+            Optional<ButtonType> select = alert.showAndWait();
+            if(select.get() == ButtonType.OK){
+                Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Confirm Delete");
+                alert.setContentText(appointment.getAppTitle() + " " + "has been successfully deleted.");
+                deleted.showAndWait();
+            }
             AppointmentData.addAppointment(appointment);
             appStage.close();
         }

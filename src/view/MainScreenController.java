@@ -187,28 +187,30 @@ public class MainScreenController {
 
     @FXML
     void handleDeleteCustomer(){
+        ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
+
         if(isValidSelection(2)){
             Customer deleteCust = table_Customer.getSelectionModel().getSelectedItem();
             if(deleteCust != null){
                 if(AppointmentData.checkCustApp(deleteCust.getCustId())){
                     Alert hasApp = new Alert(Alert.AlertType.ERROR);
-                    hasApp.setTitle("Error");
-                    hasApp.setHeaderText("Customer Has Existing Appointments.");
-                    hasApp.setContentText("All existing appointments for the selected customer must be removed prior to removal of the customer data.");
+                    hasApp.setTitle(rb.getString("error"));
+                    hasApp.setHeaderText(rb.getString("hasApp"));
+                    hasApp.setContentText(rb.getString("removeApps"));
                     hasApp.showAndWait();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Notice");
-                    alert.setHeaderText("Confirm Delete");
-                    alert.setContentText("You are about to delete selected customer:\n" +
+                    alert.setTitle(rb.getString("warning"));
+                    alert.setHeaderText(rb.getString("confirm"));
+                    alert.setContentText(rb.getString("delCustomer") + "\n" +
                             deleteCust.getCustName());
                     Optional<ButtonType> select = alert.showAndWait();
                     if(select.get() == ButtonType.OK){
                         if(CustomerData.deleteCustomer(deleteCust.getCustId())){
                             Alert deleted = new Alert(Alert.AlertType.INFORMATION);
-                            deleted.setHeaderText("Customer Deleted");
+                            deleted.setHeaderText(rb.getString("confirm"));
                             deleted.setContentText(deleteCust.getCustName() +
-                                    " has been successfully removed from the database.");
+                                    " " + rb.getString("delSuccess"));
                             deleted.showAndWait();
                         }
                     }
