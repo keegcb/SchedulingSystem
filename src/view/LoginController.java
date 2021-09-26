@@ -74,6 +74,8 @@ public class LoginController {
         if(validUser){
             loginStage.close();
             appointment15();
+        } else {
+            //TODO add error message for incorrect login creds
         }
     }
 

@@ -32,3 +32,19 @@ Aug 29, 2021 6:51:46 PM view.LoginController loginActivity
 INFO: User test successfully logged in 2021-08-29T18:51:46.111506100
 Aug 29, 2021 7:12:25 PM view.LoginController loginActivity
 INFO: User test successfully logged in 2021-08-29T19:12:25.816514700
+Sep 25, 2021 7:33:48 PM view.LoginController loginActivity
+INFO: null successfully logged in 2021-09-25T19:33:48.354215800
+Sep 25, 2021 7:33:48 PM view.LoginController loginActivity
+INFO: null successfully logged in 2021-09-25T19:33:48.935617900
+Sep 25, 2021 7:33:51 PM view.LoginController loginActivity
+INFO: null successfully logged in 2021-09-25T19:33:51.588888100
+Sep 25, 2021 7:33:57 PM view.LoginController loginActivity
+INFO: null successfully logged in 2021-09-25T19:33:57.617432900
+Sep 25, 2021 7:34:02 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-09-25T19:34:02.717614600
+Sep 25, 2021 7:40:44 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-09-25T19:40:44.145935
+Sep 25, 2021 7:52:59 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-09-25T19:52:59.935720200
+Sep 25, 2021 8:22:04 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-09-25T20:22:04.262453

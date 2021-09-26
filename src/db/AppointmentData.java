@@ -15,6 +15,52 @@ import java.time.ZonedDateTime;
 
 public class AppointmentData {
 
+    public static ObservableList<Appointment> getAllApps() {
+        ObservableList<Appointment> appList = FXCollections.observableArrayList();
+        Appointment app;
+        try {
+            Statement query = Database.getConnection().createStatement();
+            ResultSet result = query.executeQuery(
+                    "SELECT * FROM appointments " +
+                            "JOIN customers ON appointments.Customer_ID = customers.Customer_ID " +
+                            "JOIN contacts ON appointments.Contact_ID = customers.Contact_ID");
+            while(result.next()){
+                int id = result.getInt("Appointment_ID");
+                String title = result.getString("Title");
+                String description = result.getString("Description");
+                String location = result.getString("Location");
+                String type = result.getString("Type");
+                Timestamp sdate = result.getTimestamp("Start");
+                Timestamp edate = result.getTimestamp("End");
+                String contact = result.getString("Contact_Name");
+                String customer = result.getString("Customer_Name");
+                int contactId = result.getInt("Contact_ID");
+                int customerId = result.getInt("Customer_ID");
+
+                app = new Appointment();
+                app.setAppId(id);
+                app.setAppTitle(title);
+                app.setAppDescription(description);
+                app.setAppLocation(location);
+                app.setAppType(type);
+                app.setAppStart(sdate);
+                app.setZoneStart(sdate);
+                app.setAppEnd(edate);
+                app.setZoneEnd(edate);
+                app.setAppContact(contact);
+                app.setAppCustomer(customer);
+                app.setAppContactId(contactId);
+                app.setAppCustId(customerId);
+                appList.add(app);
+            }
+            query.close();
+            return appList;
+        }
+        catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            return null;
+        }
+    }
 
     public static ObservableList<Appointment> getAppsByWeek() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();

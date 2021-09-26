@@ -2,6 +2,7 @@ package view;
 
 import db.Database;
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -9,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
+import model.Country;
 import model.Customer;
 
 import java.io.IOException;
@@ -168,7 +170,28 @@ public class SchedulingSystem extends Application {
             stageControl.ReportsController(stage);
             stageControl.setFields(selContact);
             stage.showAndWait();
-            //TODO figure out how to populate the new stage after initialization
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void openCountryReport(Country country){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Objects.requireNonNull(SchedulingSystem.class.getResource("/view/Reports.fxml")));
+            AnchorPane window = loader.load();
+
+            Stage stage = new Stage();
+            stage.setTitle("Appointments For Select Contact");
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(mainStage);
+
+            Scene scene = new Scene(window);
+            stage.setScene(scene);
+            ReportsController stageControl = loader.getController();
+            stageControl.ReportsController(stage);
+            stageControl.setFields(country);
+            stage.showAndWait();
         } catch (IOException e) {
             e.printStackTrace();
         }

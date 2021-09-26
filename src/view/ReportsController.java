@@ -1,12 +1,13 @@
 package view;
 
 import db.AppointmentData;
+import db.CustomerData;
+import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import model.Appointment;
-import model.Contact;
+import model.*;
 
 public class ReportsController {
 
@@ -48,4 +49,21 @@ public class ReportsController {
         table_Report.setItems(AppointmentData.getAppByContact(contact));
     }
 
+    public void setFields(Country country){
+        ObservableList<Customer> allCustomers = CustomerData.getAllCustomers();
+        assert allCustomers != null;
+//Lambda expression that creates customer list of customers from selected country
+        ObservableList<Appointment> countryApps = null;
+        ObservableList<Appointment> tempApps = null;
+        ObservableList<Customer> customerByCountry = allCustomers.filtered(t -> t.getCountryId() == country.getCid());
+        for(Customer c : customerByCountry){
+            System.out.println(c);
+            tempApps = AppointmentData.getAppsByCustomer(c);
+            assert tempApps != null;
+            for(Appointment a : tempApps){
+                countryApps.add(a);
+            }
+        }
+        table_Report.setItems(countryApps);
+    }
 }

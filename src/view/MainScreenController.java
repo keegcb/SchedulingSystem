@@ -8,9 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
-import model.Appointment;
-import model.Contact;
-import model.Customer;
+import model.*;
 
 import java.sql.Timestamp;
 import java.time.*;
@@ -92,6 +90,9 @@ public class MainScreenController {
     private ComboBox<Contact> combo_Contact;
     @FXML
     private Label label_TypeMonth;
+    @FXML
+    private ComboBox<Country> combo_Country;
+
 
     private static boolean validSelect;
 
@@ -159,6 +160,7 @@ public class MainScreenController {
         combo_Month.getItems().setAll(Month.values());
 
         combo_Contact.setItems(AppointmentData.allContacts());
+        combo_Country.setItems(CustomerData.getAllCountries());
     }
 
     public void toggleWeekMonth(){
@@ -283,6 +285,14 @@ public class MainScreenController {
         }
     }
 
+    @FXML
+    void handleReportAppCountry(){
+        if(isValidSelection(7)){
+            Country cSelect = combo_Country.getSelectionModel().getSelectedItem();
+            SchedulingSystem.openCountryReport(cSelect);
+        }
+    }
+
     public boolean existingAppointments(Customer customer){
         ObservableList<Appointment> appList;
 
@@ -389,6 +399,19 @@ public class MainScreenController {
                     notValid.setTitle(rb.getString("warning"));
                     notValid.setHeaderText(rb.getString("parameter"));
                     notValid.setContentText(rb.getString("contact"));
+                    notValid.showAndWait();
+                    validSelect = false;
+                }
+            }
+            case 7 -> {
+                if(combo_Country.getSelectionModel() != null){
+                    validSelect = true;
+                } else {
+                    ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
+                    Alert notValid = new Alert(Alert.AlertType.WARNING);
+                    notValid.setTitle(rb.getString("warning"));
+                    notValid.setHeaderText(rb.getString("parameter"));
+                    notValid.setContentText(rb.getString("select"));
                     notValid.showAndWait();
                     validSelect = false;
                 }

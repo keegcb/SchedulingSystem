@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 import model.Country;
 import model.Customer;
 import model.Division;
@@ -46,6 +47,15 @@ public class AddCustomerController {
         combo_Country.setItems(countryList);
         divList = CustomerData.getAllDivisions();
         combo_State.setItems(divList);
+//Lambda expression amends Division names in combo box with the Country in front
+        Callback<ListView<Division>, ListCell<Division>> factory = lv -> new ListCell<Division>(){
+            @Override
+            protected void updateItem(Division div, boolean empty){
+                super.updateItem(div, empty);
+                setText(empty ? "NOTHING" : (CustomerData.getCountryByDivision(div.getDivCountryId()) + ": " + div.getDivName()));
+            }
+        };
+        combo_State.setCellFactory(factory);
     }
 
     @FXML

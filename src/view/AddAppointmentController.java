@@ -3,7 +3,6 @@ package view;
 import db.AppointmentData;
 import db.CustomerData;
 import db.UserData;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -111,7 +110,7 @@ public class AddAppointmentController {
         for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
-            if(!eTime.before(start) && !sTime.after(end)){
+            if(!eTime.before(start) || !sTime.after(end)){
                 return true;
             }
         }

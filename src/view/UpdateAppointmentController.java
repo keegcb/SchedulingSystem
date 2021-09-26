@@ -3,7 +3,6 @@ package view;
 import db.AppointmentData;
 import db.CustomerData;
 import db.UserData;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -53,8 +52,6 @@ public class UpdateAppointmentController {
     public void createUpdateAppointment(Stage appStage){
         this.appStage = appStage;
     }
-
-    ObservableList<LocalTime> timeList = FXCollections.observableArrayList();
 
     @FXML
     public void initialize(){
