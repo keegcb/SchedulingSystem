@@ -144,6 +144,7 @@ public class UpdateAppointmentController {
                 }
             }
             appStage.close();
+            SchedulingSystem.openMainScreen();
         }
     }
 
@@ -158,6 +159,7 @@ public class UpdateAppointmentController {
         for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
+//TODO make sure appointment can be scheduled the start of an hour if there is one that ends that same time
             if(!eTime.before(start) && !sTime.after(end)){
                 return true;
             }

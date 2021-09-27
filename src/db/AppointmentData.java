@@ -120,8 +120,12 @@ public class AppointmentData {
     public static ObservableList<Appointment> getAppsByMonth() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
-        LocalDate start = LocalDate.now();
-        LocalDate end = LocalDate.now().plusMonths(1);
+
+        ZonedDateTime szdt = LocalDateTime.now().atZone(ZoneId.systemDefault());
+        ZonedDateTime ezdt = LocalDateTime.now().plusMonths(1).atZone(ZoneId.systemDefault());
+
+        Timestamp start = Timestamp.valueOf(szdt.toLocalDateTime());
+        Timestamp end = Timestamp.valueOf(ezdt.toLocalDateTime());
         try {
             Statement query = Database.getConnection().createStatement();
             ResultSet result = query.executeQuery(
@@ -254,6 +258,7 @@ public class AppointmentData {
         try{
             PreparedStatement ps = Database.getConnection().prepareStatement(sql);
             ps.executeUpdate();
+            ps.close();
             return true;
         }
         catch (SQLException e){
@@ -319,7 +324,7 @@ public class AppointmentData {
     }
 
     public static boolean deleteAppointment(int id){
-        String sql = "DELETE FROM appointments WHERE Appointment_ID ='" + id;
+        String sql = "DELETE FROM appointments WHERE Appointment_ID =" + id;
         try{
             PreparedStatement ps = Database.getConnection().prepareStatement(sql);
             ps.executeUpdate();

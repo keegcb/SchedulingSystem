@@ -59,9 +59,11 @@ public class ReportsController {
         for(Customer c : customerByCountry){
             System.out.println(c);
             tempApps = AppointmentData.getAppsByCustomer(c);
-            assert tempApps != null;
-            for(Appointment a : tempApps){
-                countryApps.add(a);
+            if(countryApps == null){
+                countryApps = tempApps;
+            } else {
+                assert tempApps != null;
+                countryApps.addAll(tempApps);
             }
         }
         table_Report.setItems(countryApps);

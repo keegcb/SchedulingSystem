@@ -96,6 +96,7 @@ public class AddAppointmentController {
 
             AppointmentData.addAppointment(appointment);
             appStage.close();
+            SchedulingSystem.openMainScreen();
         }
     }
 
@@ -110,7 +111,7 @@ public class AddAppointmentController {
         for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
-            if(!eTime.before(start) || !sTime.after(end)){
+            if(!eTime.before(start) && !sTime.after(end)){
                 return true;
             }
         }

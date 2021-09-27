@@ -70,12 +70,18 @@ public class LoginController {
 
         boolean validUser = UserData.login(user, pass);
         User currentUser = UserData.getActiveUser();
-        loginActivity(currentUser);
         if(validUser){
+            loginActivity(currentUser, true);
             loginStage.close();
+            SchedulingSystem.openMainScreen();
             appointment15();
         } else {
-            //TODO add error message for incorrect login creds
+            loginActivity(currentUser, false);
+            ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText(rb.getString("error"));
+            alert.setContentText(rb.getString("userpass"));
+            alert.showAndWait();
         }
     }
 
@@ -119,13 +125,13 @@ public class LoginController {
         }
     }
 
-    private void loginActivity(User user){
+    private void loginActivity(User user, boolean valid){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
 
         Logger userLog = Logger.getLogger("login_activity.txt");
         userLog.setLevel(Level.INFO);
         try{
-            FileHandler logFile = new FileHandler("login_activity.txt", true);
+            FileHandler logFile = new FileHandler("login_activity_handler.txt", true);
             SimpleFormatter format = new SimpleFormatter();
             logFile.setFormatter(format);
             userLog.addHandler(logFile);
@@ -135,7 +141,7 @@ public class LoginController {
             e.printStackTrace();
         }
 
-        if (user != null){
+        if (valid){
             userLog.log(Level.INFO, user.getUsername() + " " + rb.getString("successLogin") + " " + LocalDateTime.now());
         } else {
             userLog.log(Level.INFO, rb.getString("invalid") + " " + LocalDateTime.now());

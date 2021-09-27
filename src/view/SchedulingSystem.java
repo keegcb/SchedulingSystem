@@ -3,11 +3,13 @@ package view;
 import db.Database;
 import javafx.application.Application;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import model.Appointment;
 import model.Contact;
 import model.Country;
@@ -24,21 +26,15 @@ public class SchedulingSystem extends Application {
 
     private static final ZoneId mainZid = ZoneId.systemDefault();
 
-    private static Stage mainStage;
+    private static AnchorPane mainAnchor;
+
+    static Stage primaryStage;
 
     @Override
-    public void start(Stage primaryStage) throws IOException{
-        mainStage = primaryStage;
-        mainStage.setTitle("Appointment Scheduling System");
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(Objects.requireNonNull(getClass().getResource("/view/MainScreen.fxml")));
-        AnchorPane mainWindow = loader.load();
-        Scene mainScene = new Scene(mainWindow);
-        mainStage.setScene(mainScene);
-        mainStage.show();
+    public void start(Stage stage) throws IOException{
+        this.primaryStage = stage;
         openLogin();
     }
-
 
     public static void main(String[] args) {
         Database.startConnection();
@@ -55,7 +51,7 @@ public class SchedulingSystem extends Application {
             Stage loginStage = new Stage();
             loginStage.setTitle("Login");
             loginStage.initModality(Modality.WINDOW_MODAL);
-            loginStage.initOwner(mainStage);
+            loginStage.initOwner(primaryStage);
 
             Scene loginScene = new Scene(loginWindow);
             loginStage.setScene(loginScene);
@@ -63,6 +59,21 @@ public class SchedulingSystem extends Application {
             stageControl.createLogin(loginStage);
             loginStage.showAndWait();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void openMainScreen(){
+        try{
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(SchedulingSystem.class.getResource("/view/MainScreen.fxml"));
+            mainAnchor = loader.load();
+            MainScreenController mainScreen = loader.getController();
+            mainScreen.toggleWeekMonth();
+            Scene scene = new Scene(mainAnchor);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (IOException e){
             e.printStackTrace();
         }
     }
@@ -76,7 +87,7 @@ public class SchedulingSystem extends Application {
             Stage stage = new Stage();
             stage.setTitle("Add Customer");
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(mainStage);
+            stage.initOwner(primaryStage);
 
             Scene scene = new Scene(window);
             stage.setScene(scene);
@@ -97,7 +108,7 @@ public class SchedulingSystem extends Application {
             Stage stage = new Stage();
             stage.setTitle("Update Customer");
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(mainStage);
+            stage.initOwner(primaryStage);
 
             Scene scene = new Scene(window);
             stage.setScene(scene);
@@ -119,7 +130,7 @@ public class SchedulingSystem extends Application {
             Stage addAppStage = new Stage();
             addAppStage.setTitle("Add Appointment");
             addAppStage.initModality(Modality.WINDOW_MODAL);
-            addAppStage.initOwner(mainStage);
+            addAppStage.initOwner(primaryStage);
 
             Scene addAppScene = new Scene(appWindow);
             addAppStage.setScene(addAppScene);
@@ -140,7 +151,7 @@ public class SchedulingSystem extends Application {
             Stage stage = new Stage();
             stage.setTitle("Update Appointment");
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(mainStage);
+            stage.initOwner(primaryStage);
 
             Scene scene = new Scene(window);
             stage.setScene(scene);
@@ -162,7 +173,7 @@ public class SchedulingSystem extends Application {
             Stage stage = new Stage();
             stage.setTitle("Appointments For Select Contact");
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(mainStage);
+            stage.initOwner(primaryStage);
 
             Scene scene = new Scene(window);
             stage.setScene(scene);
@@ -184,7 +195,7 @@ public class SchedulingSystem extends Application {
             Stage stage = new Stage();
             stage.setTitle("Appointments For Select Contact");
             stage.initModality(Modality.WINDOW_MODAL);
-            stage.initOwner(mainStage);
+            stage.initOwner(primaryStage);
 
             Scene scene = new Scene(window);
             stage.setScene(scene);

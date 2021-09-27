@@ -169,6 +169,7 @@ public class MainScreenController {
         }
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Month)){
             table_Appointment.setItems(AppointmentData.getAppsByMonth());
+
         }
     }
 
@@ -215,8 +216,8 @@ public class MainScreenController {
                                     " " + rb.getString("delSuccess"));
                             deleted.showAndWait();
                         }
+                        SchedulingSystem.openMainScreen();
                     }
-
                 }
             }
         }
@@ -250,13 +251,14 @@ public class MainScreenController {
                 Optional<ButtonType> select = delApp.showAndWait();
                 if(select.get() == ButtonType.OK){
                     if(AppointmentData.deleteAppointment(deleteApp.getAppId())){
-                        Alert deleted = new Alert(Alert.AlertType.CONFIRMATION);
+                        Alert deleted = new Alert(Alert.AlertType.INFORMATION);
                         deleted.setTitle(rb.getString("attention"));
                         deleted.setHeaderText(rb.getString("delete"));
-                        deleted.setContentText(rb.getString("appId") + " " + deleteApp.getAppId() + " " + rb.getString("delSuccess"));
+                        deleted.setContentText(rb.getString("appId") + " " + deleteApp.getAppId() + " " + rb.getString("delSuccess") + "\n"
+                            + rb.getString("type") + " " + deleteApp.getAppType());
                         deleted.showAndWait();
                     }
-                    toggleWeekMonth();
+                    SchedulingSystem.openMainScreen();
                 }
             }
         }

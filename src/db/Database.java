@@ -8,11 +8,10 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Database {
-    private static final String SERVERNAME = "wgudb.ucertify.com/";
-    private static final String PORT = ":3306";
-    private static final String DBNAME = "WJ0777L";
-    private static final String USERNAME = "U0777L";
-    private static final String PASSWORD = "53688955360";
+    private static final String SERVERNAME = "localhost/";
+    private static final String DBNAME = "client_schedule";
+    private static final String USERNAME = "sqlUser";
+    private static final String PASSWORD = "Passw0rd!";
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String FULLPATH = "jdbc:mysql://" + SERVERNAME + DBNAME;
     private static Connection dbConnect;

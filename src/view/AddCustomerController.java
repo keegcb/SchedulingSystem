@@ -77,19 +77,20 @@ public class AddCustomerController {
             CustomerData.customerList.add(customer);
             if(CustomerData.addCustomer(customer)){
                 custStage.close();
+                SchedulingSystem.openMainScreen();
             }
         }
     }
 
     @FXML
-    private void handleCountrySelection(){
+    private void handleCountrySelection() throws NullPointerException{
         Country cSelect = combo_Country.getSelectionModel().getSelectedItem();
         divList = CustomerData.getDivisionByCountry(cSelect.getCid());
         combo_State.setItems(divList);
     }
 
     @FXML
-    private void handleDivisionSelection(){
+    private void handleDivisionSelection() throws NullPointerException{
         Division dSelect = combo_State.getSelectionModel().getSelectedItem();
         Country country = CustomerData.getCountryByDivision(dSelect.getDivCountryId());
         for(Country c : combo_Country.getItems()){
