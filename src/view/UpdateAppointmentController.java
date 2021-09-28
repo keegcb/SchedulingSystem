@@ -124,10 +124,17 @@ public class UpdateAppointmentController {
             Contact contact = combo_Contact.getSelectionModel().getSelectedItem();
             Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
 
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type,
-                    tLSD, tLED, contact.getContactId(), customer.getCustId());
+            Appointment appointment = new Appointment();
+            appointment.setAppType(title);
+            appointment.setAppDescription(description);
+            appointment.setAppLocation(location);
+            appointment.setAppType(type);
+
             appointment.setZoneStart(tLSD);
             appointment.setZoneEnd(tLED);
+            appointment.setAppCustId(customer.getCustId());
+            appointment.setAppUserId(UserData.getActiveUser().getUserId());
+            appointment.setAppContactId(contact.getContactId());
 
             ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -159,9 +166,10 @@ public class UpdateAppointmentController {
         for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
             Timestamp end = app.getAppEnd();
-//TODO make sure appointment can be scheduled the start of an hour if there is one that ends that same time
-            if(!eTime.before(start) && !sTime.after(end)){
-                return true;
+            if(app.getAppId() != Integer.parseInt(text_AppId.getText())){
+                if(!eTime.before(start) && !sTime.after(end)){
+                    return true;
+                }
             }
         }
         return false;

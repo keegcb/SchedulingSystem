@@ -89,10 +89,17 @@ public class AddAppointmentController {
             Customer customer = combo_Customer.getSelectionModel().getSelectedItem();
 
 
-            Appointment appointment = new Appointment(Integer.parseInt(id), title, description, location, type,
-                    tLSD, tLED, contact.getContactId(), customer.getCustId());
+            Appointment appointment = new Appointment();
+            appointment.setAppType(title);
+            appointment.setAppDescription(description);
+            appointment.setAppLocation(location);
+            appointment.setAppType(type);
+
             appointment.setZoneStart(tLSD);
             appointment.setZoneEnd(tLED);
+            appointment.setAppCustId(customer.getCustId());
+            appointment.setAppUserId(UserData.getActiveUser().getUserId());
+            appointment.setAppContactId(contact.getContactId());
 
             AppointmentData.addAppointment(appointment);
             appStage.close();

@@ -31,6 +31,8 @@ public class MainScreenController {
     @FXML
     private RadioButton radio_Month;
     @FXML
+    private RadioButton radio_All;
+    @FXML
     private TableView<Appointment> table_Appointment;
     @FXML
     private TableColumn<Appointment, Integer> col_AppId;
@@ -131,6 +133,7 @@ public class MainScreenController {
         toggleGroup_WeekMonth = new ToggleGroup();
         this.radio_Week.setToggleGroup(toggleGroup_WeekMonth);
         this.radio_Month.setToggleGroup(toggleGroup_WeekMonth);
+        this.radio_All.setToggleGroup(toggleGroup_WeekMonth);
         radio_Week.setSelected(true);
 
         col_AppId.setCellValueFactory(new PropertyValueFactory<>("appId"));
@@ -163,13 +166,16 @@ public class MainScreenController {
         combo_Country.setItems(CustomerData.getAllCountries());
     }
 
+    @FXML
     public void toggleWeekMonth(){
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Week)){
             table_Appointment.setItems(AppointmentData.getAppsByWeek());
         }
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Month)){
             table_Appointment.setItems(AppointmentData.getAppsByMonth());
-
+        }
+        if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_All)){
+            table_Appointment.setItems(AppointmentData.getAllApps());
         }
     }
 

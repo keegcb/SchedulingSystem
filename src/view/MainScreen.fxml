@@ -28,14 +28,20 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
-                        <RadioButton fx:id="radio_Month" layoutX="450.0" layoutY="28.0" mnemonicParsing="false" text="Month">
-                           <font>
-                              <Font size="13.0" />
-                           </font></RadioButton>
-                        <RadioButton fx:id="radio_Week" layoutX="348.0" layoutY="28.0" mnemonicParsing="false" text="Week">
+                        <RadioButton fx:id="radio_Month" layoutX="450.0" layoutY="28.0" mnemonicParsing="false" onAction="#toggleWeekMonth" text="Month">
                            <font>
                               <Font size="13.0" />
                            </font>
+                        </RadioButton>
+                        <RadioButton fx:id="radio_Week" layoutX="348.0" layoutY="28.0" mnemonicParsing="false" onAction="#toggleWeekMonth" text="Week">
+                           <font>
+                              <Font size="13.0" />
+                           </font>
+                        </RadioButton>
+                        <RadioButton fx:id="radio_All" layoutX="552.0" layoutY="28.0" mnemonicParsing="false" onAction="#toggleWeekMonth" text="All">
+                            <font>
+                                <Font size="13.0" />
+                            </font>
                         </RadioButton>
                         <Label layoutX="50.0" layoutY="25.0" text="View Scheduled Appointments by">
                            <font>

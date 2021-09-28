@@ -23,7 +23,7 @@ public class AppointmentData {
             ResultSet result = query.executeQuery(
                     "SELECT * FROM appointments " +
                             "JOIN customers ON appointments.Customer_ID = customers.Customer_ID " +
-                            "JOIN contacts ON appointments.Contact_ID = customers.Contact_ID");
+                            "JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID");
             while(result.next()){
                 int id = result.getInt("Appointment_ID");
                 String title = result.getString("Title");
@@ -58,6 +58,7 @@ public class AppointmentData {
         }
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -113,6 +114,7 @@ public class AppointmentData {
         }
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -122,7 +124,7 @@ public class AppointmentData {
         Appointment app;
 
         ZonedDateTime szdt = LocalDateTime.now().atZone(ZoneId.systemDefault());
-        ZonedDateTime ezdt = LocalDateTime.now().plusMonths(1).atZone(ZoneId.systemDefault());
+        ZonedDateTime ezdt = LocalDateTime.now().plusDays(30).atZone(ZoneId.systemDefault());
 
         Timestamp start = Timestamp.valueOf(szdt.toLocalDateTime());
         Timestamp end = Timestamp.valueOf(ezdt.toLocalDateTime());
@@ -131,7 +133,7 @@ public class AppointmentData {
             ResultSet result = query.executeQuery(
                     "SELECT * FROM appointments " +
                             "JOIN customers ON appointments.Customer_ID = customers.Customer_ID " +
-                            "JOIN contacts ON appointments.Contact_ID = customers.Contact_ID " +
+                            "JOIN contacts ON appointments.Contact_ID = contacts.Contact_ID " +
                             "WHERE Start >= '" + start +
                             "' AND Start <= '" + end + "'");
             while(result.next()){
@@ -168,6 +170,7 @@ public class AppointmentData {
         }
         catch (SQLException e){
             System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+            e.printStackTrace();
             return null;
         }
     }
@@ -276,7 +279,7 @@ public class AppointmentData {
                 "', End='" + appointment.getAppEnd() + "', Last_Update= NOW(), Last_Updated_By='" +
                 UserData.getActiveUser().getUsername() + "', Customer_ID=" +
                 appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
-                ", Contact_ID=" + appointment.getAppContactId();
+                ", Contact_ID=" + appointment.getAppContactId() + ", WHERE Appointment_ID=" + appointment.getAppId();
         try{
             PreparedStatement ps = Database.getConnection().prepareStatement(sql);
             ps.executeUpdate();

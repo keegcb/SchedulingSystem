@@ -17,6 +17,7 @@ public class Appointment {
     private String appContact;
     private String appCustomer;
     private int appCustId;
+    private int appUserId;
     private int appContactId;
 
     private ZonedDateTime zdtStart;
@@ -148,5 +149,13 @@ public class Appointment {
 
     public void setAppContactId(int appContactId) {
         this.appContactId = appContactId;
+    }
+
+    public int getAppUserId() {
+        return appUserId;
+    }
+
+    public void setAppUserId(int appUserId) {
+        this.appUserId = appUserId;
     }
 }
