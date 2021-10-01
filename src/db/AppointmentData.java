@@ -279,7 +279,7 @@ public class AppointmentData {
                 "', End='" + appointment.getAppEnd() + "', Last_Update= NOW(), Last_Updated_By='" +
                 UserData.getActiveUser().getUsername() + "', Customer_ID=" +
                 appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
-                ", Contact_ID=" + appointment.getAppContactId() + ", WHERE Appointment_ID=" + appointment.getAppId();
+                ", Contact_ID=" + appointment.getAppContactId() + " WHERE Appointment_ID=" + appointment.getAppId();
         try{
             PreparedStatement ps = Database.getConnection().prepareStatement(sql);
             ps.executeUpdate();
