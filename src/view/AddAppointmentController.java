@@ -10,47 +10,97 @@ import javafx.stage.Stage;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
-
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+/**
+ * class AddAppointmentController.java
+ * Acts as controller and validation for Add Appointment screen UI when creating a new appointment.
+ */
 public class AddAppointmentController {
 
+    /**
+     * Field to display appointment id.
+     */
     @FXML
     private TextField text_AppId;
+    /**
+     * Field to input appointment title.
+     */
     @FXML
     private TextField text_Title;
+    /**
+     * Field to input appointment description.
+     */
     @FXML
     private TextArea text_Description;
+    /**
+     * Field to input appointment location.
+     */
     @FXML
     private TextField text_Location;
+    /**
+     * Date picker to select appointment start date.
+     */
     @FXML
     private DatePicker date_Start;
+    /**
+     * Date picker to select appointment end date.
+     */
     @FXML
     private DatePicker date_End;
+    /**
+     * Dropdown to select appointment type.
+     */
     @FXML
     private ComboBox<String> combo_Type;
+    /**
+     * Dropdown to select appointment start time.
+     */
     @FXML
     private ComboBox<LocalTime> combo_STime;
+    /**
+     * Dropdown to select appointment end time.
+     */
     @FXML
     private ComboBox<LocalTime> combo_ETime;
+    /**
+     * Dropdown to select appointment contact.
+     */
     @FXML
     private ComboBox<Contact> combo_Contact;
+    /**
+     * Dropdown to select appointment customer.
+     */
     @FXML
     private ComboBox<Customer> combo_Customer;
+    /**
+     * Field to display customer id.
+     */
     @FXML
     private TextField text_CustId;
+    /**
+     * Field to display user id.
+     */
     @FXML
     private TextField text_UserId;
-
+    /**
+     * Stage to display add appointment screen.
+     */
     private Stage appStage;
 
+    /**
+     * Creates and displays add appointment screen.
+     * @param stage Stage to set.
+     */
     public void createAddAppointment(Stage stage){ this.appStage = stage; }
 
-
+    /**
+     * Initializes add appointment fxml and fields.
+     */
     @FXML
     public void initialize(){
         text_AppId.setText(Integer.toString(AppointmentData.getNextAppId()));
@@ -75,10 +125,13 @@ public class AddAppointmentController {
         text_UserId.setText(Integer.toString(UserData.getActiveUser().getUserId()));
     }
 
+    /**
+     * Creates new appointment object with supplied values and adds appointment to database.
+     */
     @FXML
     private void handleSaveAppointment(){
         if(validAppointment()){
-            String id = text_AppId.getText();
+            int id = Integer.parseInt(text_AppId.getText());
             String title = text_Title.getText();
             String description = text_Description.getText();
             String location = text_Location.getText();
@@ -90,6 +143,7 @@ public class AddAppointmentController {
 
 
             Appointment appointment = new Appointment();
+            appointment.setAppId(id);
             appointment.setAppType(title);
             appointment.setAppDescription(description);
             appointment.setAppLocation(location);
@@ -107,6 +161,9 @@ public class AddAppointmentController {
         }
     }
 
+    /**
+     * Populates customer id field with next customer id when add appointment screen is opened.
+     */
     @FXML
     private void populateCustomerId(){
         Customer selCustomer = combo_Customer.getSelectionModel().getSelectedItem();
@@ -114,6 +171,13 @@ public class AddAppointmentController {
         text_CustId.setText(Integer.toString(id));
     }
 
+    /**
+     * Determines if appointments time range overlaps with an existing appointment time.
+     * @param sTime Start time of appointment to create.
+     * @param eTime End time of appointment to create.
+     * @param appointments List of appointments to compare time range.
+     * @return True if appointment time is overlapping, false if no time overlaps.
+     */
     public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
         for(Appointment app : appointments){
             Timestamp start = app.getAppStart();
@@ -125,6 +189,12 @@ public class AddAppointmentController {
         return false;
     }
 
+    /**
+     * Determines if appointment time is within hours of operation for businesses timezone.
+     * @param sTime Start time of new appointment.
+     * @param eTime End time of new appointment.
+     * @return True if appointment time is outside business hours, false if time is within business hours.
+     */
     public boolean outsideHours(Timestamp sTime, Timestamp eTime){
         ZonedDateTime selStart = sTime.toLocalDateTime().atZone(ZoneId.systemDefault());
         ZonedDateTime selEnd = eTime.toLocalDateTime().atZone(ZoneId.systemDefault());
@@ -142,6 +212,10 @@ public class AddAppointmentController {
         return selStart.isBefore(bStart) || selEnd.isAfter(bEnd);
     }
 
+    /**
+     * Makes multiple validation checks and displays any issues in alert message before appointment creation.
+     * @return True if appointment is valid for creation, false if appointment is not valid for creation.
+     */
     public boolean validAppointment(){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Appointment", Locale.getDefault());
         Timestamp tLSD = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));

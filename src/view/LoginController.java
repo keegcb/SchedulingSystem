@@ -2,19 +2,12 @@ package view;
 
 import db.AppointmentData;
 import db.UserData;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import model.Appointment;
 import model.User;
-
-import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;
@@ -24,31 +17,67 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+/**
+ * class LoginController.java
+ * Acts as controller and user validation for login screen UI when users perform login attempts.
+ */
 public class LoginController {
-
+    /**
+     * Field to input password.
+     */
     @FXML
     private PasswordField text_Password;
+    /**
+     * Field to input username.
+     */
     @FXML
     private TextField text_Username;
+    /**
+     * Button to start user login attempt.
+     */
     @FXML
     private Button button_Login;
+    /**
+     * Label displays current zone id of user for Login screen.
+     */
     @FXML
     private Label label_UserZone;
+    /**
+     * Label displays title of Login screen.
+     */
     @FXML
     private Label label_Login;
+    /**
+     * Label displays text to identify username field of Login screen.
+     */
     @FXML
     private Label label_Username;
+    /**
+     * Label displays text to identify password field of Login screen.
+     */
     @FXML
     private Label label_Password;
+    /**
+     * Label displays text to identify current location of user for Login screen.
+     */
     @FXML
     private Label label_Location;
-
+    /**
+     * Stage to display Login screen.
+     */
     private Stage loginStage;
 
+    /**
+     * Creates and displays login stage.
+     * @param loginStage Stage to display.
+     */
     public void createLogin(Stage loginStage) {
         this.loginStage = loginStage;
     }
 
+    /**
+     * Initializes login screen fxml and fields.
+     */
     public void initialize(){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
 
@@ -63,6 +92,9 @@ public class LoginController {
         label_Location.setText(rb.getString("location"));
     }
 
+    /**
+     * Starts login attempt with provided username and password.
+     */
     @FXML
     public void handleLogin(){
         String user = text_Username.getText();
@@ -85,6 +117,9 @@ public class LoginController {
         }
     }
 
+    /**
+     * Checks if logged-in user has upcoming appointments within 15min and displays alert message with result.
+     */
     public void appointment15(){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
         ObservableList<Appointment> userApps;
@@ -125,6 +160,11 @@ public class LoginController {
         }
     }
 
+    /**
+     * Identifies and updates log file with timestamp of login attempt failures and successes including user info.
+     * @param user User to attempt login.
+     * @param valid Boolean to determine if user is valid to login.
+     */
     private void loginActivity(User user, boolean valid){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
 

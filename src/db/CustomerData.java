@@ -1,14 +1,11 @@
 package db;
 
 import java.sql.*;
-import java.time.LocalDateTime;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Country;
 import model.Customer;
 import model.Division;
-import model.User;
 
 public class CustomerData {
 

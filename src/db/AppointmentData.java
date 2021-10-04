@@ -6,9 +6,7 @@ import javafx.collections.ObservableList;
 import model.Appointment;
 import model.Contact;
 import model.Customer;
-
 import java.sql.ResultSet;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -276,7 +274,7 @@ public class AppointmentData {
                 "', Description ='" + appointment.getAppDescription() + "', Location='" +
                 appointment.getAppLocation() + "', Type='" + appointment.getAppType() +
                 "', Start='" + appointment.getAppStart() +
-                "', End='" + appointment.getAppEnd() + "', Last_Update= NOW(), Last_Updated_By='" +
+                "', End='" + appointment.getAppEnd() + "', Last_Update=NOW(), Last_Updated_By='" +
                 UserData.getActiveUser().getUsername() + "', Customer_ID=" +
                 appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
                 ", Contact_ID=" + appointment.getAppContactId() + " WHERE Appointment_ID=" + appointment.getAppId();

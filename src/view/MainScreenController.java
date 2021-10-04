@@ -7,102 +7,167 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.AnchorPane;
 import model.*;
-
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * class MainScreenController.java
+ * Acts as controller and validation for main screen UI, displays customers and appointments in tables.
+ */
 public class MainScreenController {
-
-    private ObservableList<Appointment> displayAppointment = FXCollections.observableArrayList();
-    private ObservableList<Customer> displayCustomer = FXCollections.observableArrayList();
-    @FXML
-    private AnchorPane anchor_MainScreen;
-    @FXML
-    private Tab tab_Appointment;
+    /**
+     * Toggle group for sorting appointments by week and month.
+     */
     @FXML
     private ToggleGroup toggleGroup_WeekMonth;
+    /**
+     * Displays all appointments scheduled within the next week in table.
+     */
     @FXML
     private RadioButton radio_Week;
+    /**
+     * Displays all appointments scheduled within the next month in table.
+     */
     @FXML
     private RadioButton radio_Month;
+    /**
+     * Displays all existing appointments from database in table.
+     */
     @FXML
     private RadioButton radio_All;
+    /**
+     * Appointment table.
+     */
     @FXML
     private TableView<Appointment> table_Appointment;
+    /**
+     * Column of appointment table for appointment id.
+     */
     @FXML
     private TableColumn<Appointment, Integer> col_AppId;
+    /**
+     * Column of appointment table for appointment title.
+     */
     @FXML
     private TableColumn<Appointment, String> col_AppTitle;
+    /**
+     * Column of appointment table for appointment description.
+     */
     @FXML
     private TableColumn<Appointment, String> col_AppDesc;
+    /**
+     * Column of appointment table for appointment location.
+     */
     @FXML
     private TableColumn<Appointment, String> col_AppLocation;
+    /**
+     * Column of appointment table for appointment contact.
+     */
     @FXML
     private TableColumn<Appointment, String> col_AppContact;
+    /**
+     * Column of appointment table for appointment type.
+     */
     @FXML
     private TableColumn<Appointment, String> col_AppType;
+    /**
+     * Column of appointment table for appointment start datetime.
+     */
     @FXML
     private TableColumn<Appointment, Timestamp> col_AppStart;
+    /**
+     * Column of appointment table for appointment end datetime.
+     */
     @FXML
     private TableColumn<Appointment, Timestamp> col_AppEnd;
+    /**
+     * Column of appointment table for appointment customer.
+     */
     @FXML
     private TableColumn<Appointment, Integer> col_AppCust;
-    @FXML
-    private Button button_AddApp;
-    @FXML
-    private Button button_UpdateApp;
-    @FXML
-    private Button button_DeleteApp;
-    @FXML
-    private Tab tab_Customer;
+    /**
+     * Customer table.
+     */
     @FXML
     private TableView<Customer> table_Customer;
+    /**
+     * Column of customer table for customer id.
+     */
     @FXML
     private TableColumn<Customer, Integer> col_CustId;
+    /**
+     * Column of customer table for customer name.
+     */
     @FXML
     private TableColumn<Customer, String> col_CustName;
+    /**
+     * Column of customer table for customer phone number.
+     */
     @FXML
     private TableColumn<Customer, String> col_CustPhone;
+    /**
+     * Column of customer table for customer address.
+     */
     @FXML
     private TableColumn<Customer, String> col_CustAddress;
+    /**
+     * Column of customer table for customer postal code.
+     */
     @FXML
     private TableColumn<Customer, Integer> col_CustPostal;
+    /**
+     * Column of customer table for customer division.
+     */
     @FXML
     private TableColumn<Customer, String> col_CustState;
+    /**
+     * Column of customer table for customer country.
+     */
     @FXML
     private TableColumn<Customer, String> col_CustCountry;
-    @FXML
-    private Button button_AddCust;
-    @FXML
-    private Button button_UpdateCust;
-    @FXML
-    private Button button_DeleteCust;
-    @FXML
-    private Tab tab_Reports;
+    /**
+     * Dropdown for selecting appointment type to query.
+     */
     @FXML
     private ComboBox<String> combo_AppType;
+    /**
+     * Dropdown for selecting month time range to query.
+     */
     @FXML
     private ComboBox combo_Month;
+    /**
+     * Dropdown for selecting contact from db.
+     */
     @FXML
     private ComboBox<Contact> combo_Contact;
+    /**
+     * Displays number of appointments in selected month of the selected type.
+     */
     @FXML
     private Label label_TypeMonth;
+    /**
+     * Dropdown for selecting country to filter appointments by.
+     */
     @FXML
     private ComboBox<Country> combo_Country;
 
-
+    /**
+     * Boolean used to determine if a valid customer or appointment selection has been made prior to executing an event.
+     */
     private static boolean validSelect;
-
-    private ObservableList<Appointment> appointmentList = FXCollections.observableArrayList();
-    private ObservableList<Customer> customerList = FXCollections.observableArrayList();
-    private static ObservableList<String> typeList = FXCollections.observableArrayList("Introduction", "Planning Session", "Brainstorm",
+    /**
+     * List of possible appointment types.
+     */
+    private static final ObservableList<String> typeList = FXCollections.observableArrayList("Introduction", "Planning Session", "Brainstorm",
             "Status Report", "Wrap-Up", "Deliverables", "8D", "De-Briefing");
 
+    /**
+     * Enumerator containing months in year, used for querying appointments for report.
+     */
     public enum Month {
         JANUARY("January"),
         FEBRUARY("February"),
@@ -128,6 +193,9 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Initializes main screen fxml and fields.
+     */
     @FXML
     public void initialize(){
         toggleGroup_WeekMonth = new ToggleGroup();
@@ -166,6 +234,9 @@ public class MainScreenController {
         combo_Country.setItems(CustomerData.getAllCountries());
     }
 
+    /**
+     * Handles selection of radio buttons for displaying all appointments and by week or month.
+     */
     @FXML
     public void toggleWeekMonth(){
         if(this.toggleGroup_WeekMonth.getSelectedToggle().equals(this.radio_Week)){
@@ -179,11 +250,16 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Opens Add Customer screen.
+     */
     @FXML
     void handleAddCustomer(){
         SchedulingSystem.openAddCustomer();
     }
-
+    /**
+     * Opens Update Customer screen.
+     */
     @FXML
     void handleUpdateCustomer(){
         if(isValidSelection(1)){
@@ -193,7 +269,9 @@ public class MainScreenController {
             }
         }
     }
-
+    /**
+     * Attempts to delete selected customer fom db.
+     */
     @FXML
     void handleDeleteCustomer(){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
@@ -228,12 +306,16 @@ public class MainScreenController {
             }
         }
     }
-
+    /**
+     * Opens Add Appointment screen.
+     */
     @FXML
     void handleAddAppointment(){
         SchedulingSystem.openAddAppointment();
     }
-
+    /**
+     * Opens Update Appointment screen.
+     */
     @FXML
     void handleUpdateAppointment(){
         if(isValidSelection(3)){
@@ -243,7 +325,9 @@ public class MainScreenController {
             }
         }
     }
-
+    /**
+     * Attempts to delete selected appointment from db.
+     */
     @FXML
     void handleDeleteAppointment(){
         if(isValidSelection(4)){
@@ -270,6 +354,9 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Queries and displays number of appointments by selected type and month.
+     */
     @FXML
     void handleReportTypeMonth(){
         if(isValidSelection(5)){
@@ -285,6 +372,9 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Opens Reports Controller for selected contact.
+     */
     @FXML
     void handleReportAppContact(){
         if(isValidSelection(6)){
@@ -293,6 +383,9 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Opens Reports Controller for selected country.
+     */
     @FXML
     void handleReportAppCountry(){
         if(isValidSelection(7)){
@@ -301,22 +394,25 @@ public class MainScreenController {
         }
     }
 
+    /**
+     * Determines if appointments exist in db for selected customer.
+     * @param customer Customer to query for appointments.
+     * @return True if one or more appointments exist for the customer in db, false if no appointments exist for customer.
+     */
     public boolean existingAppointments(Customer customer){
         ObservableList<Appointment> appList;
-
-        Timestamp current = Timestamp.valueOf(LocalDateTime.now());
-
         appList = AppointmentData.getAppsByCustomer(customer);
         if(appList != null){
-            for(Appointment a : appList){
-                if(a.getAppStart().after(current)){
-                    return true;
-                }
-            }
+            return true;
         }
         return false;
     }
 
+    /**
+     * Makes check to verify that a valid selection has been made before performing an action, such as update or delete.
+     * @param option Identifies what validation check needs to be run for the action being attempted.
+     * @return True if selection is valid for action execution, false if no valid selection is made before performing action.
+     */
     private boolean isValidSelection(int option){
         switch (option){
             case 1 -> {
@@ -428,10 +524,12 @@ public class MainScreenController {
         return validSelect;
     }
 
+    /**
+     * Gets list of all appointment types.
+     * @return List of types to get.
+     */
     public static ObservableList<String> getTypeList(){
         return typeList;
     }
-
-
 
 }
