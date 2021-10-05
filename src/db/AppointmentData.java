@@ -11,8 +11,15 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+/**
+ * class AppointmentData.java
+ * Holds prepared statements to interact with database when appointments table or dependants are queried.
+ */
 public class AppointmentData {
-
+    /**
+     * Gets all appointments from database.
+     * @return List of all appointments in db.
+     */
     public static ObservableList<Appointment> getAllApps() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -61,6 +68,10 @@ public class AppointmentData {
         }
     }
 
+    /**
+     * Gets all appointments in database occurring within a week.
+     * @return List of appointments within week.
+     */
     public static ObservableList<Appointment> getAppsByWeek() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -117,6 +128,10 @@ public class AppointmentData {
         }
     }
 
+    /**
+     * Gets all appointments in database occurring within a month.
+     * @return List of appointments within month.
+     */
     public static ObservableList<Appointment> getAppsByMonth() {
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -173,6 +188,11 @@ public class AppointmentData {
         }
     }
 
+    /**
+     * Gets list of appointments associated with certain user.
+     * @param userId Id of user appointments to be queried.
+     * @return List of appointments for specified user.
+     */
     public static ObservableList<Appointment> getAppsByUser(int userId){
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -212,6 +232,11 @@ public class AppointmentData {
         return null;
     }
 
+    /**
+     * Checks to see if appointments exist in db for specific user.
+     * @param userId Id of user to be queried.
+     * @return True if appointments for user exist, false if no appointments exist.
+     */
     public static boolean checkCustApp(int userId){
         try{
             Statement query = Database.getConnection().createStatement();
@@ -226,6 +251,10 @@ public class AppointmentData {
         return false;
     }
 
+    /**
+     * Gets next appointment id in sequence to set for newly created appointment.
+     * @return Id for next appointment.
+     */
     public static int getNextAppId(){
         int appId;
 
@@ -246,6 +275,11 @@ public class AppointmentData {
         return -1;
     }
 
+    /**
+     * Attempts to insert a new appointment into database and reports success.
+     * @param appointment Appointment to be inserted.
+     * @return True if appointment successfully added to db, false if appointment was not successfully added to db.
+     */
     public static boolean addAppointment(Appointment appointment){
         String sql = "INSERT INTO appointments SET Title='"
                 + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
@@ -269,6 +303,11 @@ public class AppointmentData {
         return false;
     }
 
+    /**
+     * Attempts to update existing appointment in database.
+     * @param appointment Appointment to update.
+     * @return True if appointment successfully updated, false if appointment not updated.
+     */
     public static boolean updateAppointment(Appointment appointment){
         String sql = "UPDATE appointments SET Title='" + appointment.getAppTitle() +
                 "', Description ='" + appointment.getAppDescription() + "', Location='" +
@@ -291,6 +330,11 @@ public class AppointmentData {
         return false;
     }
 
+    /**
+     * Gets all appointments associated with given customer.
+     * @param customer Customer to query for.
+     * @return List of appointments by given customer.
+     */
     public static ObservableList<Appointment> getAppsByCustomer(Customer customer){
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -324,6 +368,11 @@ public class AppointmentData {
         return null;
     }
 
+    /**
+     * Attempts to delete appointment from database.
+     * @param id Id of appointment to be deleted.
+     * @return True if appointment successfully deleted, false if no appointment deleted.
+     */
     public static boolean deleteAppointment(int id){
         String sql = "DELETE FROM appointments WHERE Appointment_ID =" + id;
         try{
@@ -337,6 +386,11 @@ public class AppointmentData {
         return false;
     }
 
+    /**
+     * Gets all contact data for specified contact.
+     * @param conName Name of contact to query.
+     * @return Contact object of queried contact name.
+     */
     public static Contact getContact(String conName){
         Contact contact;
 
@@ -362,6 +416,11 @@ public class AppointmentData {
         return null;
     }
 
+    /**
+     * Gets Id value of contact object.
+     * @param contact Contact to get id.
+     * @return Id of contact.
+     */
     public static int getContactId(String contact){
         int id = 0;
         try{
@@ -381,6 +440,10 @@ public class AppointmentData {
         return -1;
     }
 
+    /**
+     * Gets all contacts in database.
+     * @return List of contacts in db.
+     */
     public static ObservableList<Contact> allContacts(){
         ObservableList<Contact> contactList = FXCollections.observableArrayList();
         Contact con;
@@ -405,6 +468,11 @@ public class AppointmentData {
         return null;
     }
 
+    /**
+     * Gets all appointments associated with given contact.
+     * @param con Contact to be queried.
+     * @return List of appointments for contact.
+     */
     public static ObservableList<Appointment> getAppByContact(Contact con){
         ObservableList<Appointment> appList = FXCollections.observableArrayList();
         Appointment app;
@@ -448,6 +516,13 @@ public class AppointmentData {
         return null;
     }
 
+    /**
+     * Gets all appointments of given type within a given month.
+     * @param selType Type of appointments to query.
+     * @param sMonth Start of Month range for appointments to query.
+     * @param eMonth End of Month range for appointments to query.
+     * @return Integer value of number of appointments of given type within given month.
+     */
     public static int appByTypeMonth(String selType, Timestamp sMonth, Timestamp eMonth){
         int count;
 

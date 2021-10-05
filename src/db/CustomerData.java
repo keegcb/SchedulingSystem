@@ -7,10 +7,20 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
+/**
+ * class CustomerData.java
+ * Holds prepared statements to interact with database when customer table or dependants are queried.
+ */
 public class CustomerData {
-
+    /**
+     * List of customers.
+     */
     public static ObservableList<Customer> customerList = FXCollections.observableArrayList();
 
+    /**
+     * Gets all customers in database.
+     * @return List of all customers in database.
+     */
     public static ObservableList<Customer> getAllCustomers(){
         ObservableList<Customer> custList = FXCollections.observableArrayList();
         Customer customer;
@@ -46,6 +56,11 @@ public class CustomerData {
         }
     }
 
+    /**
+     * Gets customer from database with given id.
+     * @param id Id of customer to query.
+     * @return Customer object of given customer.
+     */
     public static Customer getCustomerById(int id) {
         Customer customer;
 
@@ -72,6 +87,10 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Gets next integer increment for customer id in database.
+     * @return Integer value of next new customer id.
+     */
     public static int getNextCustId(){
         int customerId;
 
@@ -92,6 +111,11 @@ public class CustomerData {
         return -1;
     }
 
+    /**
+     * Gets division object for given division id.
+     * @param divId Id of division to query.
+     * @return Division object for given id.
+     */
     public static Division getCustDiv(int divId){
         Division division;
 
@@ -114,6 +138,11 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Gets country object for given country id.
+     * @param cId Id of country to query.
+     * @return Country object for given id.
+     */
     public static Country getCustCountry(int cId){
         Country country;
 
@@ -136,6 +165,10 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Gets all countries in database.
+     * @return List of all country objects in db.
+     */
     public static ObservableList<Country> getAllCountries(){
         ObservableList<Country> countryList = FXCollections.observableArrayList();
         Country country;
@@ -160,6 +193,10 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Gets all divisions in database.
+     * @return List of all division objects in db.
+     */
     public static ObservableList<Division> getAllDivisions(){
         ObservableList<Division> divisionList = FXCollections.observableArrayList();
         Division division;
@@ -185,6 +222,11 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Gets country for object for given divisions country id.
+     * @param cId Country id of division to query.
+     * @return Country object for given divisions country id.
+     */
     public static Country getCountryByDivision(int cId){
         Country country;
 
@@ -208,6 +250,11 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Gets all divisions in database associated with given country.
+     * @param id Id of country for division.
+     * @return List of all divisions for given country.
+     */
     public static ObservableList<Division> getDivisionByCountry(int id){
         ObservableList<Division> divisionList = FXCollections.observableArrayList();
         Division division;
@@ -232,6 +279,11 @@ public class CustomerData {
         return null;
     }
 
+    /**
+     * Attempts to insert new customer object data into customers table.
+     * @param customer Customer object to insert.
+     * @return True if customer was successfully added to db, false if customer not added.
+     */
     public static boolean addCustomer(Customer customer){
         String sql = "INSERT INTO customers SET Customer_Name='" +
                 customer.getCustName() + "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
@@ -251,6 +303,11 @@ public class CustomerData {
         return false;
     }
 
+    /**
+     * Attempts update on given customer in database.
+     * @param customer Customer to update.
+     * @return True if customer was successfully updated, false if customer not updated.
+     */
     public static boolean updateCustomer(Customer customer){
         String sql = "UPDATE customers SET Customer_Name='" + customer.getCustName() +
                 "', Address='" + customer.getCustAddress() + "', Postal_Code='" +
@@ -270,6 +327,11 @@ public class CustomerData {
         return false;
     }
 
+    /**
+     * Attempts to delete given customer from database.
+     * @param id Id of customer to delete.
+     * @return True if customer successfully deleted, false if customer not deleted.
+     */
     public static boolean deleteCustomer(int id){
         String sql = "DELETE FROM customers WHERE Customer_ID=" + id;
         try{
