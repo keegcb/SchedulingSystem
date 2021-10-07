@@ -49,9 +49,9 @@ public class AppointmentData {
                 app.setAppLocation(location);
                 app.setAppType(type);
                 app.setAppStart(sdate);
-                app.setZoneStart(sdate);
+                //app.setZoneStart(sdate);
                 app.setAppEnd(edate);
-                app.setZoneEnd(edate);
+                //app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppCustomer(customer);
                 app.setAppContactId(contactId);
@@ -110,8 +110,8 @@ public class AppointmentData {
                 app.setAppType(type);
                 app.setAppStart(sdate);
                 app.setAppEnd(edate);
-                app.setZoneStart(sdate);
-                app.setZoneEnd(edate);
+                //app.setZoneStart(sdate);
+                //app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppCustomer(customer);
                 app.setAppContactId(contactId);
@@ -169,9 +169,9 @@ public class AppointmentData {
                 app.setAppLocation(location);
                 app.setAppType(type);
                 app.setAppStart(sdate);
-                app.setZoneStart(sdate);
+                //app.setZoneStart(sdate);
                 app.setAppEnd(edate);
-                app.setZoneEnd(edate);
+                //app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppCustomer(customer);
                 app.setAppContactId(contactId);
@@ -218,8 +218,8 @@ public class AppointmentData {
                 app.setAppType(type);
                 app.setAppStart(sdate);
                 app.setAppEnd(edate);
-                app.setZoneStart(sdate);
-                app.setZoneEnd(edate);
+               // app.setZoneStart(sdate);
+                //app.setZoneEnd(edate);
                 app.setAppContactId(contactId);
                 app.setAppCustId(customerId);
                 appList.add(app);
@@ -283,8 +283,8 @@ public class AppointmentData {
     public static boolean addAppointment(Appointment appointment){
         String sql = "INSERT INTO appointments SET Title='"
                 + appointment.getAppTitle() + "', Description ='" + appointment.getAppDescription() + "', Location='" +
-                appointment.getAppLocation() + "', Type='" + appointment.getAppType() + "', Start='" + appointment.getAppStart() +
-                "', End='" + appointment.getAppEnd() + "', Create_Date= NOW(), Created_By='" +
+                appointment.getAppLocation() + "', Type='" + appointment.getAppType() +
+                "', Start=?, End=?, Create_Date= NOW(), Created_By='" +
                 UserData.getActiveUser().getUsername() + "', Last_Update= NOW(), Last_Updated_By='" +
                 UserData.getActiveUser().getUsername() + "', Customer_ID=" +
                 appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
@@ -292,6 +292,8 @@ public class AppointmentData {
 
         try{
             PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.setTimestamp(1, appointment.getAppStart());
+            ps.setTimestamp(2, appointment.getAppEnd());
             ps.executeUpdate();
             ps.close();
             return true;
@@ -312,13 +314,14 @@ public class AppointmentData {
         String sql = "UPDATE appointments SET Title='" + appointment.getAppTitle() +
                 "', Description ='" + appointment.getAppDescription() + "', Location='" +
                 appointment.getAppLocation() + "', Type='" + appointment.getAppType() +
-                "', Start='" + appointment.getAppStart() +
-                "', End='" + appointment.getAppEnd() + "', Last_Update=NOW(), Last_Updated_By='" +
+                "', Start=?, End=?, Last_Update=NOW(), Last_Updated_By='" +
                 UserData.getActiveUser().getUsername() + "', Customer_ID=" +
                 appointment.getAppCustId() + ", User_ID=" + UserData.getActiveUser().getUserId() +
                 ", Contact_ID=" + appointment.getAppContactId() + " WHERE Appointment_ID=" + appointment.getAppId();
         try{
             PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.setTimestamp(1, appointment.getAppStart());
+            ps.setTimestamp(2, appointment.getAppEnd());
             ps.executeUpdate();
             ps.close();
             return true;
@@ -355,8 +358,6 @@ public class AppointmentData {
                 int contactId = result.getInt("Contact_ID");
 
                 app = new Appointment(id, title, description, location, type, sdate, edate, customerId, contactId);
-                app.setZoneStart(sdate);
-                app.setZoneEnd(edate);
                 appList.add(app);
             }
             query.close();
@@ -501,8 +502,6 @@ public class AppointmentData {
                 app.setAppType(type);
                 app.setAppStart(sdate);
                 app.setAppEnd(edate);
-                app.setZoneStart(sdate);
-                app.setZoneEnd(edate);
                 app.setAppContact(contact);
                 app.setAppContactId(contactId);
                 app.setAppCustId(customerId);

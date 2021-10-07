@@ -183,13 +183,13 @@ public class UpdateAppointmentController {
 
             Appointment appointment = new Appointment();
             appointment.setAppId(id);
-            appointment.setAppType(title);
+            appointment.setAppTitle(title);
             appointment.setAppDescription(description);
             appointment.setAppLocation(location);
             appointment.setAppType(type);
 
-            appointment.setZoneStart(tLSD);
-            appointment.setZoneEnd(tLED);
+            appointment.setAppStart(tLSD);
+            appointment.setAppEnd(tLED);
             appointment.setAppCustId(customer.getCustId());
             appointment.setAppUserId(UserData.getActiveUser().getUserId());
             appointment.setAppContactId(contact.getContactId());
@@ -203,8 +203,8 @@ public class UpdateAppointmentController {
             if(select.get() == ButtonType.OK){
                 if (AppointmentData.updateAppointment(appointment)) {
                     Alert update = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText(rb.getString("confirmUp"));
-                    alert.setContentText(appointment.getAppTitle() + " " + rb.getString("upSuccess"));
+                    update.setHeaderText(rb.getString("confirmUp"));
+                    update.setContentText(appointment.getAppTitle() + " " + rb.getString("upSuccess"));
                     update.showAndWait();
                 }
             }
@@ -225,17 +225,17 @@ public class UpdateAppointmentController {
 
     /**
      * Determines if appointments time range overlaps with an existing appointment time.
-     * @param sTime Start time of appointment to create.
-     * @param eTime End time of appointment to create.
      * @param appointments List of appointments to compare time range.
      * @return True if appointment time is overlapping, false if no time overlaps.
      */
-    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
+    public boolean overlapping(ObservableList<Appointment> appointments){
         for(Appointment app : appointments){
-            Timestamp start = app.getAppStart();
-            Timestamp end = app.getAppEnd();
+            Timestamp start = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
+            Timestamp end = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
             if(app.getAppId() != Integer.parseInt(text_AppId.getText())){
-                if(!eTime.before(start) && !sTime.after(end)){
+                if (!end.before(app.getAppStart()) && !start.after(app.getAppEnd())) {
+                    System.out.println(app.getAppId() + " " + app.getAppTitle() + " " + app.getAppType() + " " + app.getAppStart() + " " + app.getAppEnd());
+                    System.out.println("The proposed times for appointment being edited: Start-" + start + " End-" + end);
                     return true;
                 }
             }
@@ -324,7 +324,7 @@ public class UpdateAppointmentController {
                 }
             }
         }
-        if(overlapping(tLSD, tLED, Objects.requireNonNull(AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem())))){
+        if(overlapping(Objects.requireNonNull(AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem())))){
             errorMessage += rb.getString("overlap") + "\n";
             valid = false;
         }

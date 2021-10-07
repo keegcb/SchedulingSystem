@@ -144,13 +144,13 @@ public class AddAppointmentController {
 
             Appointment appointment = new Appointment();
             appointment.setAppId(id);
-            appointment.setAppType(title);
+            appointment.setAppTitle(title);
             appointment.setAppDescription(description);
             appointment.setAppLocation(location);
             appointment.setAppType(type);
 
-            appointment.setZoneStart(tLSD);
-            appointment.setZoneEnd(tLED);
+            appointment.setAppStart(tLSD);
+            appointment.setAppEnd(tLED);
             appointment.setAppCustId(customer.getCustId());
             appointment.setAppUserId(UserData.getActiveUser().getUserId());
             appointment.setAppContactId(contact.getContactId());
@@ -173,17 +173,19 @@ public class AddAppointmentController {
 
     /**
      * Determines if appointments time range overlaps with an existing appointment time.
-     * @param sTime Start time of appointment to create.
-     * @param eTime End time of appointment to create.
      * @param appointments List of appointments to compare time range.
      * @return True if appointment time is overlapping, false if no time overlaps.
      */
-    public boolean overlapping(Timestamp sTime, Timestamp eTime, ObservableList<Appointment> appointments){
+    public boolean overlapping(ObservableList<Appointment> appointments){
         for(Appointment app : appointments){
-            Timestamp start = app.getAppStart();
-            Timestamp end = app.getAppEnd();
-            if(!eTime.before(start) && !sTime.after(end)){
-                return true;
+            Timestamp start = Timestamp.valueOf(LocalDateTime.of(date_Start.getValue(), combo_STime.getValue()));
+            Timestamp end = Timestamp.valueOf(LocalDateTime.of(date_End.getValue(), combo_ETime.getValue()));
+            if(app.getAppId() != Integer.parseInt(text_AppId.getText())){
+                if (!end.before(app.getAppStart()) && !start.after(app.getAppEnd())) {
+                    System.out.println(app.getAppId() + " " + app.getAppTitle() + " " + app.getAppType() + " " + app.getAppStart() + " " + app.getAppEnd());
+                    System.out.println("The proposed times for appointment being edited: Start-" + start + " End-" + end);
+                    return true;
+                }
             }
         }
         return false;
@@ -270,7 +272,7 @@ public class AddAppointmentController {
                 }
             }
         }
-        if(overlapping(tLSD, tLED, Objects.requireNonNull(AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem())))){
+        if(overlapping(Objects.requireNonNull(AppointmentData.getAppsByCustomer(combo_Customer.getSelectionModel().getSelectedItem())))){
             errorMessage += rb.getString("overlap") + "\n";
             valid = false;
         }

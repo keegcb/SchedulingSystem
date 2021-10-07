@@ -30,7 +30,7 @@ public class Database {
     /**
      * Complete database path string for connection.
      */
-    private static final String FULLPATH = "jdbc:mysql://" + SERVERNAME + DBNAME;
+    private static final String FULLPATH = "jdbc:mysql://" + SERVERNAME + DBNAME + "?connectionTimeZone=SERVER";
     /**
      * Connection object for database to start and end.
      */

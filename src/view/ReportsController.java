@@ -75,8 +75,8 @@ public class ReportsController {
         col_Title.setCellValueFactory(new PropertyValueFactory<>("appTitle"));
         col_Type.setCellValueFactory(new PropertyValueFactory<>("appType"));
         col_Description.setCellValueFactory(new PropertyValueFactory<>("appDescription"));
-        col_Start.setCellValueFactory(new PropertyValueFactory<>("zdtStart"));
-        col_End.setCellValueFactory(new PropertyValueFactory<>("zdtEnd"));
+        col_Start.setCellValueFactory(new PropertyValueFactory<>("appStart"));
+        col_End.setCellValueFactory(new PropertyValueFactory<>("appEnd"));
         col_CustId.setCellValueFactory(new PropertyValueFactory<>("appCustId"));
     }
 
@@ -95,7 +95,7 @@ public class ReportsController {
     public void setFields(Country country){
         ObservableList<Customer> allCustomers = CustomerData.getAllCustomers();
         assert allCustomers != null;
-//Lambda expression that creates customer list of customers from selected country
+//Lambda expression that creates list of appointments for customers from selected country
         ObservableList<Appointment> countryApps = null;
         ObservableList<Appointment> tempApps = null;
         ObservableList<Customer> customerByCountry = allCustomers.filtered(t -> t.getCountryId() == country.getCid());

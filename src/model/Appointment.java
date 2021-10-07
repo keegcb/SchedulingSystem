@@ -58,26 +58,28 @@ public class Appointment {
      * Id of contact for appointment.
      */
     private int appContactId;
+
     /**
      * Starting date/time of appointment in specific timezone.
      */
-    private ZonedDateTime zdtStart;
+ //   private ZonedDateTime zdtStart;
     /**
      * Ending date/time of appointment in specific timezone.
      */
-    private ZonedDateTime zdtEnd;
+   // private ZonedDateTime zdtEnd;
+
 
     /**
      * Constructor initializes an appointment object with following parameters.
-     * @param id Id for appointment
-     * @param title Title of appointment
-     * @param description Description of appointment
-     * @param location Location of appointment
-     * @param type Type of appointment
-     * @param start Starting timestamp of appointment
-     * @param end Ending timestamp of appointment
-     * @param customerId Id of customer for appointment
-     * @param contactId Id of contact for appointment
+     * @param id Id for appointment.
+     * @param title Title of appointment.
+     * @param description Description of appointment.
+     * @param location Location of appointment.
+     * @param type Type of appointment.
+     * @param start Starting timestamp of appointment.
+     * @param end Ending timestamp of appointment.
+     * @param customerId Id of customer for appointment.
+     * @param contactId Id of contact for appointment.
      */
     public Appointment(int id, String title, String description, String location, String type,
                        Timestamp start, Timestamp end, int customerId, int contactId){
@@ -90,9 +92,6 @@ public class Appointment {
         appEnd = end;
         appCustId = customerId;
         appContactId = contactId;
-
-        zdtStart = SchedulingSystem.convertToZDT(start);
-        zdtEnd = SchedulingSystem.convertToZDT(end);
     }
 
     /**
@@ -102,7 +101,7 @@ public class Appointment {
 
     /**
      * Gets appointment id value.
-     * @return appointment id
+     * @return appointment id.
      */
     public int getAppId(){
         return appId;
@@ -110,7 +109,7 @@ public class Appointment {
 
     /**
      * Gets appointment title value.
-     * @return appointment title
+     * @return appointment title.
      */
     public String getAppTitle(){
         return appTitle;
@@ -118,7 +117,7 @@ public class Appointment {
 
     /**
      * Gets appointment description value.
-     * @return appointment description
+     * @return appointment description.
      */
     public String getAppDescription(){
         return appDescription;
@@ -126,7 +125,7 @@ public class Appointment {
 
     /**
      * Gets appointment location value.
-     * @return appointment location
+     * @return appointment location.
      */
     public String getAppLocation(){
         return appLocation;
@@ -134,7 +133,7 @@ public class Appointment {
 
     /**
      * Gets appointment type value.
-     * @return appointment type
+     * @return appointment type.
      */
     public String getAppType(){
         return appType;
@@ -142,37 +141,37 @@ public class Appointment {
 
     /**
      * Get appointments starting time value.
-     * @return appointment start
+     * @return appointment start.
      */
     public Timestamp getAppStart(){
         return appStart;
     }
 
-    public ZonedDateTime getZoneStart(){return zdtStart;}
-
     /**
      * Gets appointments ending time value.
-     * @return appointment end
+     * @return appointment end.
      */
     public Timestamp getAppEnd(){
         return appEnd;
     }
 
-    public ZonedDateTime getZoneEnd(){return zdtEnd;}
-
     /**
      * Gets appointment contact value.
-     * @return
+     * @return Contact for appointment.
      */
     public String getAppContact(){
         return appContact;
     }
 
+    /**
+     * Gets appointment customer value.
+     * @return Customer for appointment.
+     */
     public String getAppCustomer(){return appCustomer;}
 
     /**
      * Sets appointment id value.
-     * @param appId id to be set
+     * @param appId id to be set.
      */
     public void setAppId(int appId) {
         this.appId = appId;
@@ -180,7 +179,7 @@ public class Appointment {
 
     /**
      * Sets appointment title value.
-     * @param appTitle title to be set
+     * @param appTitle title to be set.
      */
     public void setAppTitle(String appTitle) {
         this.appTitle = appTitle;
@@ -188,7 +187,7 @@ public class Appointment {
 
     /**
      * Sets appointment description value.
-     * @param appDescription description to be set
+     * @param appDescription description to be set.
      */
     public void setAppDescription(String appDescription) {
         this.appDescription = appDescription;
@@ -196,7 +195,7 @@ public class Appointment {
 
     /**
      * Sets appointment location value.
-     * @param appLocation location to be set
+     * @param appLocation location to be set.
      */
     public void setAppLocation(String appLocation) {
         this.appLocation = appLocation;
@@ -204,7 +203,7 @@ public class Appointment {
 
     /**
      * Sets appointment type value.
-     * @param appType type to be set
+     * @param appType type to be set.
      */
     public void setAppType(String appType) {
         this.appType = appType;
@@ -212,35 +211,23 @@ public class Appointment {
 
     /**
      * Sets appointment start value.
-     * @param appStart start time to be set
+     * @param appStart start time to be set.
      */
     public void setAppStart(Timestamp appStart) {
         this.appStart = appStart;
     }
 
     /**
-     * Sets appointment start zone time value.
-     * @param start start timestamp to convert and set
-     */
-    public void setZoneStart(Timestamp start){this.zdtStart = start.toLocalDateTime().atZone(ZoneId.systemDefault());}
-
-    /**
      * Sets appointment end timestamp value.
-     * @param appEnd end timestamp to be set
+     * @param appEnd end timestamp to be set.
      */
     public void setAppEnd(Timestamp appEnd) {
         this.appEnd = appEnd;
     }
 
-    /**
-     * Sets appointment end zone time value.
-     * @param end end timestamp to convert and set
-     */
-    public void setZoneEnd(Timestamp end){this.zdtEnd = end.toLocalDateTime().atZone(ZoneId.systemDefault());}
-
     /***
      * Sets appointment contact value.
-     * @param appContact contact to be set
+     * @param appContact contact to be set.
      */
     public void setAppContact(String appContact) {
         this.appContact = appContact;
@@ -248,39 +235,13 @@ public class Appointment {
 
     /**
      * Sets appointment customer value.
-     * @param appCustomer customer to be set
+     * @param appCustomer customer to be set.
      */
     public void setAppCustomer(String appCustomer) { this.appCustomer = appCustomer;}
 
     /**
-     * Gets appointment start in local date time value.
-     * @return local date time start
-     */
-    public LocalDate getAppDate() {
-        return zdtStart.toLocalDate();
-    }
-
-    /**
-     * Gets appointment end in local date time value.
-     * @return local date time end
-     */
-    public LocalTime getAppTime(){return zdtStart.toLocalTime();}
-
-    public void setZdtStart(ZonedDateTime zdtStart) {
-        this.zdtStart = zdtStart;
-    }
-
-    public ZonedDateTime getZdtEnd() {
-        return zdtEnd;
-    }
-
-    public void setZdtEnd(ZonedDateTime zdtEnd) {
-        this.zdtEnd = zdtEnd;
-    }
-
-    /**
      * Gets appointment customer id value.
-     * @return appointment customer id
+     * @return appointment customer id.
      */
     public int getAppCustId() {
         return appCustId;
@@ -288,7 +249,7 @@ public class Appointment {
 
     /**
      * Sets appointment customer id value.
-     * @param appCustId customer id to be set
+     * @param appCustId customer id to be set.
      */
     public void setAppCustId(int appCustId) {
         this.appCustId = appCustId;
@@ -296,7 +257,7 @@ public class Appointment {
 
     /**
      * Gets appointment contact id value.
-     * @return appointment contact id
+     * @return appointment contact id.
      */
     public int getAppContactId() {
         return appContactId;
@@ -304,12 +265,16 @@ public class Appointment {
 
     /**
      * Sets appointment contact id value.
-     * @param appContactId appointment contact id to be set
+     * @param appContactId appointment contact id to be set.
      */
     public void setAppContactId(int appContactId) {
         this.appContactId = appContactId;
     }
 
+    /**
+     * Gets appointment user id value.
+     * @return User id for appointment.
+     */
     public int getAppUserId() {
         return appUserId;
     }

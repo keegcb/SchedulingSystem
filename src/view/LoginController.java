@@ -117,6 +117,7 @@ public class LoginController {
         }
     }
 
+//TODO Fix notification for when appointment exist in next 15 min
     /**
      * Checks if logged-in user has upcoming appointments within 15min and displays alert message with result.
      */
@@ -124,22 +125,21 @@ public class LoginController {
         ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
         ObservableList<Appointment> userApps;
 
-        Timestamp current = Timestamp.valueOf(LocalDateTime.now());
-        LocalDateTime ldt = current.toLocalDateTime();
-        ldt = ldt.plusMinutes(16);
-        Timestamp next15 = Timestamp.valueOf(ldt);
+        Timestamp current = Timestamp.from(Instant.now());
+        Timestamp next15 = Timestamp.from(Instant.now().plusSeconds(960));
 
+        //Timestamp current = Timestamp.valueOf(LocalDateTime.now());
+        //Timestamp next15 = Timestamp.valueOf(LocalDateTime.now().plusMinutes(16));
         User user = UserData.getActiveUser();
         userApps = AppointmentData.getAppsByUser(user.getUserId());
-        Appointment temp = null;
-        boolean upcoming = false;
+
         if(userApps != null){
+            boolean upcoming = false;
+            Appointment temp = new Appointment();
             for(Appointment a : userApps){
-                if(a.getAppStart().after(current) && a.getAppStart().before(next15)){
+                if(a.getAppStart().after(current) && a.getAppEnd().before(next15)){
                     temp = a;
                     upcoming = true;
-                } else {
-                    upcoming =false;
                 }
             }
             if(upcoming){
@@ -147,8 +147,7 @@ public class LoginController {
                 notice15.setTitle(rb.getString("upcoming"));
                 notice15.setHeaderText(rb.getString("15min"));
                 notice15.setContentText(rb.getString("appId") + " " + temp.getAppId() +
-                        "\n" + rb.getString("date") + " " + temp.getAppDate() +
-                        "\n" + rb.getString("time") + " " + temp.getAppTime());
+                        "\n" + rb.getString("date") + " " + temp.getAppStart().toString());
                 notice15.showAndWait();
             } else {
                 Alert noUpcoming = new Alert(Alert.AlertType.INFORMATION);
