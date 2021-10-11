@@ -66,3 +66,15 @@ Oct 07, 2021 5:23:54 PM view.LoginController loginActivity
 INFO: test successfully logged in 2021-10-07T17:23:54.265182700
 Oct 07, 2021 5:29:20 PM view.LoginController loginActivity
 INFO: test successfully logged in 2021-10-07T17:29:20.201711300
+Oct 11, 2021 4:47:28 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-11T16:47:28.380958100
+Oct 11, 2021 4:50:18 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-11T16:50:18.898387800
+Oct 11, 2021 4:51:38 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-11T16:51:38.857676
+Oct 11, 2021 5:00:24 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-11T17:00:24.393122200
+Oct 11, 2021 5:02:24 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-11T17:02:24.836502200
+Oct 11, 2021 5:10:33 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-11T17:10:33.253882700
