@@ -13,7 +13,7 @@ public class UserData {
     /**
      * User object representing currently logged-in user.
      */
-    private static User activeUser = new User();
+    private static final User activeUser = new User();
 
     /**
      * Sets active user as given user object.

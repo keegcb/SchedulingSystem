@@ -182,7 +182,7 @@ public class MainScreenController {
         NOVEMBER("November"),
         DECEMBER("December");
 
-        private String month;
+        private final String month;
 
         Month(String month){
             this.month = month;
@@ -360,7 +360,7 @@ public class MainScreenController {
     @FXML
     void handleReportTypeMonth(){
         if(isValidSelection(5)){
-            String type = (String) combo_AppType.getSelectionModel().getSelectedItem();
+            String type = combo_AppType.getSelectionModel().getSelectedItem();
             int nMonth = combo_Month.getSelectionModel().getSelectedIndex()+1;
 
             LocalDateTime date = LocalDateTime.of(LocalDate.now().getYear(), nMonth, 1,0,0);
@@ -378,7 +378,7 @@ public class MainScreenController {
     @FXML
     void handleReportAppContact(){
         if(isValidSelection(6)){
-            Contact contact = (Contact) combo_Contact.getSelectionModel().getSelectedItem();
+            Contact contact = combo_Contact.getSelectionModel().getSelectedItem();
             SchedulingSystem.openReport(contact);
         }
     }
@@ -402,10 +402,7 @@ public class MainScreenController {
     public boolean existingAppointments(Customer customer){
         ObservableList<Appointment> appList;
         appList = AppointmentData.getAppsByCustomer(customer);
-        if(appList != null){
-            return true;
-        }
-        return false;
+        return appList != null;
     }
 
     /**

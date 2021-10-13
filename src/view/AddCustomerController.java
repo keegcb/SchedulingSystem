@@ -76,6 +76,7 @@ public class AddCustomerController {
 
     /**
      * Initializes add customer fxml and fields.
+     * Contains Lambda expression that amends the front of displayed Division names in combo box to display associated Country name for easy readability if users select Division dropdown prior to Country.
      */
     @FXML
     public void initialize(){

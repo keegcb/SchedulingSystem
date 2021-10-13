@@ -90,6 +90,7 @@ public class ReportsController {
 
     /**
      * Populates appointment table with appointments for users from selected country.
+     * Contains Lambda expression that returns a list of appointments with associated customers from the selected country.
      * @param country Country to query appointments by.
      */
     public void setFields(Country country){

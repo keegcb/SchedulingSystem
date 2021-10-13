@@ -39,11 +39,11 @@ public class SchedulingSystem extends Application {
     /**
      * Starts primary stage and opens Login screen.
      * @param stage Stage to be set.
-     * @throws IOException
+     * @throws IOException handles IOException when application is started.
      */
     @Override
     public void start(Stage stage) throws IOException{
-        this.primaryStage = stage;
+        primaryStage = stage;
         openLogin();
     }
 
