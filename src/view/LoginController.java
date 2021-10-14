@@ -163,10 +163,10 @@ public class LoginController {
     private void loginActivity(User user, boolean valid){
         ResourceBundle rb = ResourceBundle.getBundle("rb/Login", Locale.getDefault());
 
-        Logger userLog = Logger.getLogger("login_activity.txt");
+        Logger userLog = Logger.getLogger("login_logger.txt");
         userLog.setLevel(Level.INFO);
         try{
-            FileHandler logFile = new FileHandler("login_activity_handler.txt", true);
+            FileHandler logFile = new FileHandler("login_activity.txt", true);
             SimpleFormatter format = new SimpleFormatter();
             logFile.setFormatter(format);
             userLog.addHandler(logFile);

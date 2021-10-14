@@ -1,98 +1,20 @@
-Aug 29, 2021 5:32:13 PM view.LoginController loginActivity
-INFO: Login attempt by invalid user 2021-08-29T17:32:13.791814100
-Aug 29, 2021 5:35:49 PM view.LoginController loginActivity
-INFO: User null logged in 2021-08-29T17:35:49.868739900
-Aug 29, 2021 5:35:58 PM view.LoginController loginActivity
-INFO: User null logged in 2021-08-29T17:35:58.773858200
-Aug 29, 2021 5:41:24 PM view.LoginController loginActivity
-INFO: User null logged in 2021-08-29T17:41:24.209768
-Aug 29, 2021 5:41:36 PM view.LoginController loginActivity
-INFO: User null logged in 2021-08-29T17:41:36.886519
-Aug 29, 2021 5:44:22 PM view.LoginController loginActivity
-INFO: User null logged in 2021-08-29T17:44:22.538872300
-Aug 29, 2021 5:46:15 PM view.LoginController loginActivity
-INFO: User test logged in 2021-08-29T17:46:15.440808900
-Aug 29, 2021 5:50:58 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T17:50:58.754754700
-Aug 29, 2021 5:55:46 PM view.LoginController loginActivity
-INFO: User null successfully logged in 2021-08-29T17:55:46.280986100
-Aug 29, 2021 5:55:56 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T17:55:56.750882900
-Aug 29, 2021 6:09:08 PM view.LoginController loginActivity
-INFO: User null successfully logged in 2021-08-29T18:09:08.390075300
-Aug 29, 2021 6:13:14 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T18:13:14.235216
-Aug 29, 2021 6:19:09 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T18:19:09.832870900
-Aug 29, 2021 6:42:28 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T18:42:28.101320600
-Aug 29, 2021 6:43:03 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T18:43:03.445315700
-Aug 29, 2021 6:51:46 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T18:51:46.111506100
-Aug 29, 2021 7:12:25 PM view.LoginController loginActivity
-INFO: User test successfully logged in 2021-08-29T19:12:25.816514700
-Sep 25, 2021 7:33:48 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-25T19:33:48.354215800
-Sep 25, 2021 7:33:48 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-25T19:33:48.935617900
-Sep 25, 2021 7:33:51 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-25T19:33:51.588888100
-Sep 25, 2021 7:33:57 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-25T19:33:57.617432900
-Sep 25, 2021 7:34:02 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-25T19:34:02.717614600
-Sep 25, 2021 7:40:44 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-25T19:40:44.145935
-Sep 25, 2021 7:52:59 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-25T19:52:59.935720200
-Sep 25, 2021 8:22:04 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-25T20:22:04.262453
-Sep 26, 2021 3:40:28 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T15:40:28.380216700
-Sep 26, 2021 3:42:58 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-26T15:42:58.197423300
-Sep 26, 2021 3:43:01 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-26T15:43:01.402974300
-Sep 26, 2021 3:43:08 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-26T15:43:08.318162400
-Sep 26, 2021 3:43:10 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-26T15:43:10.549334900
-Sep 26, 2021 3:43:18 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-26T15:43:18.598110200
-Sep 26, 2021 3:43:19 PM view.LoginController loginActivity
-INFO: null successfully logged in 2021-09-26T15:43:19.436585900
-Sep 26, 2021 3:43:28 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T15:43:28.505839800
-Sep 26, 2021 4:08:36 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T16:08:36.759021700
-Sep 26, 2021 4:23:11 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T16:23:11.773674600
-Sep 26, 2021 4:24:48 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T16:24:48.916212500
-Sep 26, 2021 8:23:30 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T20:23:30.626562600
-Sep 26, 2021 8:32:29 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T20:32:29.408764700
-Sep 26, 2021 8:34:51 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T20:34:51.178189500
-Sep 26, 2021 8:55:05 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T20:55:05.829829900
-Sep 26, 2021 9:17:41 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T21:17:41.427918800
-Sep 26, 2021 9:22:42 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T21:22:42.580440400
-Sep 26, 2021 9:57:51 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T21:57:51.726835100
-Sep 26, 2021 9:59:00 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T21:59:00.401466900
-Sep 26, 2021 11:15:21 PM view.LoginController loginActivity
-INFO: Login attempt by invalid user 2021-09-26T23:15:21.870776300
-Sep 26, 2021 11:15:34 PM view.LoginController loginActivity
-INFO: Login attempt by invalid user 2021-09-26T23:15:34.256456300
-Sep 26, 2021 11:15:42 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T23:15:42.767540300
-Sep 26, 2021 11:17:37 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T23:17:37.053384300
-Sep 26, 2021 11:19:20 PM view.LoginController loginActivity
-INFO: test successfully logged in 2021-09-26T23:19:20.785627800
+Oct 12, 2021 10:15:50 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-12T22:15:50.443596100
+Oct 12, 2021 10:15:52 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-12T22:15:52.040259100
+Oct 12, 2021 10:15:53 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-12T22:15:53.203751400
+Oct 12, 2021 10:15:54 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-12T22:15:54.309693
+Oct 12, 2021 10:15:55 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-12T22:15:55.599945300
+Oct 12, 2021 10:15:58 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-12T22:15:58.797663800
+Oct 12, 2021 10:17:56 PM view.LoginController loginActivity
+INFO: Login attempt by invalid user 2021-10-12T22:17:56.552059600
+Oct 12, 2021 10:18:02 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-12T22:18:02.701097600
+Oct 12, 2021 10:18:26 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-12T22:18:26.163649700
+Oct 12, 2021 10:28:17 PM view.LoginController loginActivity
+INFO: test successfully logged in 2021-10-12T22:28:17.404922300

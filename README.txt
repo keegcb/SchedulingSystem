@@ -17,7 +17,12 @@ JDBC: mysql-connector-java-8.0.25
 
 - How to Run -
 
-Ensure the MySQL database is running and accessible from the application install location. Open the project in IntelliJ and update the paths for JavaFX and the MySQL connector. Verify that you’re able to connect to the MySQL database using the connection information “/src/db/Database.java” Run the project with "SchedulingSystem.java" as the main class; or compile and run the program using command line.
+Ensure the MySQL database is running and accessible from the application install location.
+Open the project in IntelliJ and update the paths for JavaFX and the MySQL connector.
+Edit Run Configuration to include the path of the local SDK in the VM Options.
+Set main class to "view.SchedulingSystem"
+Verify that you’re able to connect to the MySQL database using the connection information “/src/db/Database.java”
+Run the project with "SchedulingSystem/src/view/SchedulingSystem" as the main class; or compile and run the program using command line.
 
 
 - Additional report for part A3f - 
