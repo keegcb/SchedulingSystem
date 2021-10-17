@@ -402,7 +402,11 @@ public class MainScreenController {
     public boolean existingAppointments(Customer customer){
         ObservableList<Appointment> appList;
         appList = AppointmentData.getAppsByCustomer(customer);
-        return appList != null;
+        if(appList.isEmpty()){
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /**
@@ -429,16 +433,16 @@ public class MainScreenController {
             case 2 -> {
                 Customer deleteAttempt = table_Customer.getSelectionModel().getSelectedItem();
                 if(deleteAttempt != null){
-                    if(!existingAppointments(deleteAttempt)){
-                        validSelect = true;
-                    } else {
+                    if(existingAppointments(deleteAttempt)){
                         ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
                         Alert existApp = new Alert(Alert.AlertType.INFORMATION);
-                        existApp.setTitle(rb.getString("attention"));
-                        existApp.setHeaderText(rb.getString("conflict"));
-                        existApp.setContentText(rb.getString("existing"));
+                        existApp.setTitle(rb.getString("warning"));
+                        existApp.setHeaderText(rb.getString("hasApp"));
+                        existApp.setContentText(rb.getString("removeApps"));
                         existApp.showAndWait();
                         validSelect = false;
+                    } else {
+                        validSelect = true;
                     }
                 } else {
                     ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
