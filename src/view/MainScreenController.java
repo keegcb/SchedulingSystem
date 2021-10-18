@@ -271,6 +271,7 @@ public class MainScreenController {
     }
     /**
      * Attempts to delete selected customer fom db.
+     * Existing appointments for the customer are removed from the db before the customer is deleted.
      */
     @FXML
     void handleDeleteCustomer(){
@@ -279,29 +280,24 @@ public class MainScreenController {
         if(isValidSelection(2)){
             Customer deleteCust = table_Customer.getSelectionModel().getSelectedItem();
             if(deleteCust != null){
-                if(AppointmentData.checkCustApp(deleteCust.getCustId())){
-                    Alert hasApp = new Alert(Alert.AlertType.ERROR);
-                    hasApp.setTitle(rb.getString("error"));
-                    hasApp.setHeaderText(rb.getString("hasApp"));
-                    hasApp.setContentText(rb.getString("removeApps"));
-                    hasApp.showAndWait();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle(rb.getString("warning"));
-                    alert.setHeaderText(rb.getString("confirm"));
-                    alert.setContentText(rb.getString("delCustomer") + "\n" +
-                            deleteCust.getCustName());
-                    Optional<ButtonType> select = alert.showAndWait();
-                    if(select.get() == ButtonType.OK){
-                        if(CustomerData.deleteCustomer(deleteCust.getCustId())){
-                            Alert deleted = new Alert(Alert.AlertType.INFORMATION);
-                            deleted.setHeaderText(rb.getString("confirm"));
-                            deleted.setContentText(deleteCust.getCustName() +
-                                    " " + rb.getString("delSuccess"));
-                            deleted.showAndWait();
-                        }
-                        SchedulingSystem.openMainScreen();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle(rb.getString("warning"));
+                alert.setHeaderText(rb.getString("confirm"));
+                alert.setContentText(rb.getString("delCustomer") + "\n" +
+                        deleteCust.getCustName());
+                Optional<ButtonType> select = alert.showAndWait();
+                if(select.get() == ButtonType.OK){
+                    if(existingAppointments(deleteCust)){
+                        AppointmentData.deleteAppByCustomer(deleteCust.getCustId());
                     }
+                    if(CustomerData.deleteCustomer(deleteCust.getCustId())){
+                        Alert deleted = new Alert(Alert.AlertType.INFORMATION);
+                        deleted.setHeaderText(rb.getString("confirm"));
+                        deleted.setContentText(deleteCust.getCustName() +
+                                " " + rb.getString("delSuccess"));
+                        deleted.showAndWait();
+                    }
+                    SchedulingSystem.openMainScreen();
                 }
             }
         }
@@ -433,17 +429,7 @@ public class MainScreenController {
             case 2 -> {
                 Customer deleteAttempt = table_Customer.getSelectionModel().getSelectedItem();
                 if(deleteAttempt != null){
-                    if(existingAppointments(deleteAttempt)){
-                        ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
-                        Alert existApp = new Alert(Alert.AlertType.INFORMATION);
-                        existApp.setTitle(rb.getString("warning"));
-                        existApp.setHeaderText(rb.getString("hasApp"));
-                        existApp.setContentText(rb.getString("removeApps"));
-                        existApp.showAndWait();
-                        validSelect = false;
-                    } else {
-                        validSelect = true;
-                    }
+                    validSelect = true;
                 } else {
                     ResourceBundle rb = ResourceBundle.getBundle("rb/Customer", Locale.getDefault());
                     Alert notValid = new Alert(Alert.AlertType.WARNING);

@@ -388,6 +388,21 @@ public class AppointmentData {
     }
 
     /**
+     * Deletes all appointments associated with selected customer.
+     * @param id Id of customer to have appointments deleted.
+     */
+    public static void deleteAppByCustomer(int id){
+        String sql = "DELETE FROM appointments WHERE Customer_ID =" + id;
+        try{
+            PreparedStatement ps = Database.getConnection().prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
+        }catch (SQLException e){
+            System.out.println("The following SQL exception occurred:\n" + e.getMessage());
+        }
+    }
+
+    /**
      * Gets all contact data for specified contact.
      * @param conName Name of contact to query.
      * @return Contact object of queried contact name.
