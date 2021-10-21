@@ -16,18 +16,35 @@ JDBC: mysql-connector-java-8.0.25
 
 
 - How to Run -
+*Assumes use of IntelliJ IDEA*
 
-Ensure the MySQL database is running and accessible from the application install location.
+Ensure the MySQL database is installed and the time setting for the db is set to UTC
+Follow these steps to ensure the UTC is set correctly if the db is installed locally:
+    1. Edit my.ini file usually found here C:\ProgramData\MySQL\MySQL Server8.0\my.ini
+    2. Find [mysqld] section
+    3. Add the following line, including the quotations
+        default-time-zone="+00:00"
+    4. Restart DB server
+Create the database tables and insert data using the provided documents.
+    C195_db_ddl.txt
+    C195_db_dml.txt
+        Note: Edit the Start & End dates for appointments to more logically reflect current date/times.
+Ensure SDK 11.0.2 & JDK 15.0.2 are downloaded on the local machine and added to the Libraries in Project Structure.
 Open the project in IntelliJ and update the paths for JavaFX and the MySQL connector.
 Edit Run Configuration to include the path of the local SDK in the VM Options.
+String entered for the path should look similar to the example below.
+    --module-path "C:\Program Files\Java\javafx-sdk-11.0.2\lib" --add-modules javafx.controls,javafx.fxml
 Set main class to "view.SchedulingSystem"
-Verify that you’re able to connect to the MySQL database using the connection information “/src/db/Database.java”
+Verify that you’re able to connect to the MySQL database using the connection information in “/src/db/Database.java”
 Run the project with "SchedulingSystem/src/view/SchedulingSystem" as the main class; or compile and run the program using command line.
 
 
 - Additional report for part A3f - 
 
-The third report allows the user to select a country from the countries present in the database. Running the report will display each existing appointment in the database that is associated with a customer with an address in the specified country. The report effectively displays all appointments for a selected country. If the database is not populated with multiple customers and appointments per country, the report will appear to only display appointments for a single customer.
+The third report allows the user to select a country from the countries present in the database.
+Running the report will display each existing appointment in the database that is associated with a customer with an address in the specified country.
+The report effectively displays all appointments for a selected country.
+If the database is not populated with multiple customers and appointments per country, the report will appear to only display appointments for a single customer.
 
 
 
